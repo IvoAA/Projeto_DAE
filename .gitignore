@@ -1,0 +1,6 @@
+/build/
+/dist/
+/DAE-ejb/build/
+/DAE-ejb/dist/
+/DAE-war/dist/
+/DAE-war/build/
