@@ -5,11 +5,11 @@
  */
 package entities;
 
-import com.sun.istack.internal.NotNull;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -21,34 +21,26 @@ public class Utente implements Serializable {
 
         
     @Id
-    private String username;
+    protected long id;
     @NotNull
-    private String password;
+    protected String name;
     @NotNull
-    private String name;
+    protected String password;
     
     public Utente(){ }
     
-    public Utente(String username, String password, String name) {
-        this.username = username;
-        this.password = password;
+    public Utente(long id, String name, String password) {
+        this.id = id;
         this.name = name;
+        this.password = password;
     }
         
-    public String getUsername() {
-        return username;
+    public long getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUsername(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -57,6 +49,14 @@ public class Utente implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     

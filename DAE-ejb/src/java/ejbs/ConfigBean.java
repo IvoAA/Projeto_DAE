@@ -1,8 +1,5 @@
 package ejbs;
 
-import exceptions.EntityAlreadyExistsException;
-import exceptions.EntityDoesNotExistsException;
-import exceptions.MyConstraintViolationException;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -12,29 +9,21 @@ import javax.ejb.Startup;
 @Startup
 public class ConfigBean {
 
+    //@EJB
+    //private AdministratorBean administratorBean;
     @EJB
-    private AdministratorBean administratorBean;
-    @EJB
-    private CourseBean courseBean;
-    @EJB
-    private StudentBean studentBean;
-    @EJB
-    private SubjectBean subjectBean;
-    @EJB
-    private TeacherBean teacherBean;
+    private UtenteBean utenteBean;
 
     @PostConstruct
     public void populateBD() {
 
         try {
 
-            courseBean.create(1, "EI");
-            courseBean.create(2, "IS");
-            courseBean.create(3, "JDM");
-            courseBean.create(4, "SIS");
-            courseBean.create(5, "MEI-CM");
-            courseBean.create(6, "MGSIM");
+            utenteBean.create(1, "Ivo Amador", "pass");
+            utenteBean.create(2, "Rodrigo Faria", "pass");
+            utenteBean.create(3, "Pedro Figueiredo", "pass");
 
+            /*
             studentBean.create("1111111", "Manuel", "Manuel", "dae.ei.ipleiria@gmail.com", 1);
             studentBean.create("2222222", "Antonio", "António", "dae.ei.ipleiria@gmail.com", 1);
             studentBean.create("3333333", "Ana", "Ana", "dae.ei.ipleiria@gmail.com", 2);
@@ -74,11 +63,7 @@ public class ConfigBean {
             teacherBean.addSubjectTeacher(1, "t1");
             teacherBean.addSubjectTeacher(2, "t2");
             teacherBean.addSubjectTeacher(1, "t3");
-
-        } catch (EntityAlreadyExistsException | EntityDoesNotExistsException 
-                | StudentEnrolledException | SubjectNotInCourseException 
-                | MyConstraintViolationException e) {
-            System.err.println("Error: " + e.getMessage());
+            */
         } catch(Exception e){
             System.err.println(e.getMessage());
         }

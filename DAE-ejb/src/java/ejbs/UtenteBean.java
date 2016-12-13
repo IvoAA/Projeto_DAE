@@ -5,6 +5,7 @@
  */
 package ejbs;
 
+import entities.Utente;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -21,9 +22,13 @@ public class UtenteBean {
     @PersistenceContext
     private EntityManager em;
 
-    public void createUtente(String username, String password, String name) {
+    public void create(long id, String name, String password) {
         try {
-            
+            if(em.find(Utente.class, id) != null){
+                
+            }
+            Utente utente = new Utente(id, name, password);
+            em.persist(utente);
         } catch ( Exception e){
             
         }
