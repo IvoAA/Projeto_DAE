@@ -8,3 +8,5 @@
 /build.xml/
 /nbproject/
 
+/DAE-war/nbproject/private/
+/DAE-ejb/nbproject/private/
