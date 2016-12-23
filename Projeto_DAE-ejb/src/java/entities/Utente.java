@@ -7,58 +7,24 @@ package entities;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  *
  * @author Ivo
  */
 @Entity
-@Table(name="UTENTES")
-public class Utente implements Serializable {
-
-        
-    @Id
-    protected long id;
-    @NotNull
-    protected String name;
-    @NotNull
-    protected String password;
+@NamedQueries({
+    @NamedQuery(name = "getAllUtentes",
+    query = "SELECT u FROM Utente u ORDER BY u.name")})
+public class Utente extends User implements Serializable {
     
     public Utente(){ }
     
-    public Utente(long id, String name, String password) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
+    public Utente(String username, String name, String password) {
+        super(username, name, password);
     }
-        
-    public long getId() {
-        return id;
-    }
-
-    public void setUsername(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     
 }
     

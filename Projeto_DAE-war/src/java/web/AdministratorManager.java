@@ -69,7 +69,7 @@ public class AdministratorManager {
     public String createUtente() {
         try {
             utenteBean.create(
-                    newUtente.getId(),
+                    newUtente.getUsername(),
                     newUtente.getName(),
                     newUtente.getPassword());
             newUtente.reset();
@@ -270,24 +270,33 @@ public class AdministratorManager {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
     }
-
+    */
     /////////////// GETTERS & SETTERS /////////////////    
-    public StudentDTO getNewStudent() {
-        return newStudent;
+    
+    public UIComponent getComponent() {
+        return component;
     }
 
-    public void setNewStudent(StudentDTO newStudent) {
-        this.newStudent = newStudent;
+    public void setComponent(UIComponent component) {
+        this.component = component;
+    }
+    
+    public UtenteDTO getNewUtente() {
+        return newUtente;
     }
 
-    public StudentDTO getCurrentStudent() {
-        return currentStudent;
+    public void setNewUtente(UtenteDTO newStudent) {
+        this.newUtente = newStudent;
     }
 
-    public void setCurrentStudent(StudentDTO currentStudent) {
-        this.currentStudent = currentStudent;
+    public UtenteDTO getCurrentUtente() {
+        return currentUtente;
     }
 
+    public void setCurrentUtente(UtenteDTO currentUtente) {
+        this.currentUtente = currentUtente;
+    }
+    /*
     public CourseDTO getNewCourse() {
         return newCourse;
     }
@@ -318,14 +327,6 @@ public class AdministratorManager {
 
     public void setCurrentSubject(SubjectDTO currentSubject) {
         this.currentSubject = currentSubject;
-    }
-
-    public UIComponent getComponent() {
-        return component;
-    }
-
-    public void setComponent(UIComponent component) {
-        this.component = component;
     }
 
     ///////////// VALIDATORS ////////////////////////

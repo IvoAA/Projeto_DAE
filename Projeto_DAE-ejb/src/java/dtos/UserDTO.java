@@ -4,33 +4,33 @@ import java.io.Serializable;
 
 public class UserDTO implements Serializable{
 
-    protected long id;
+    protected String username;
+
     protected String name;
     protected String password;
 
     public UserDTO() {
     }    
     
-    public UserDTO(long id, String name, String password) {
-        this.id = id;
+    public UserDTO(String username, String name, String password) {
+        this.username = username;
         this.name = name;
         this.password = password;
     }
     
     public void reset() {
-        setId(-1);
+        setUsername(null);
         setName(null);
         setPassword(null);
     }        
 
     
-
-    public long getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
     
     public String getName() {

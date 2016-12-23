@@ -19,9 +19,9 @@ public class ConfigBean {
 
         try {
 
-            utenteBean.create(1, "Ivo Amador", "pass");
-            utenteBean.create(2, "Rodrigo Faria", "pass");
-            utenteBean.create(3, "Pedro Figueiredo", "pass");
+            utenteBean.create("iGank", "Ivo Amador", "pass");
+            utenteBean.create("babilu", "Rodrigo Faria", "pass");
+            utenteBean.create("klisar", "Pedro Figueiredo", "pass");
 
             /*
             studentBean.create("1111111", "Manuel", "Manuel", "dae.ei.ipleiria@gmail.com", 1);

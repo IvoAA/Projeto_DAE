@@ -24,8 +24,7 @@ import javax.validation.constraints.Pattern;
 public class User implements Serializable {
 
     @Id
-    protected long id;
-
+    protected String username;
     @NotNull(message = "Name must not be empty")
     protected String name;
     @NotNull
@@ -37,19 +36,18 @@ public class User implements Serializable {
     protected User() {
     }
 
-    protected User(long id, String name, String password) {
-        this.id = id;
+    protected User(String username, String name, String password) {
+        this.username = username;
         this.name = name;
         this.password = hashPassword(password);
     }
 
-    
-    public long getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
     
     public String getName() {

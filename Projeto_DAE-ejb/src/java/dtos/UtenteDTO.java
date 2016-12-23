@@ -14,10 +14,10 @@ public class UtenteDTO extends UserDTO implements Serializable{
     }
 
     public UtenteDTO(
-            long id,
+            String username,
             String name,
             String password) {
-        super(id, name, password);
+        super(username, name, password);
     }
     
     @Override
