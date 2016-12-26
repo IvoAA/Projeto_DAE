@@ -8,6 +8,7 @@ package ejbs;
 import dtos.UtenteDTO;
 import entities.Utente;
 import exceptions.EntityAlreadyExistsException;
+import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.ArrayList;
@@ -49,6 +50,46 @@ public class UtenteBean {
             throw new EJBException(e.getMessage()); 
         }
     }
+    
+
+    public void update(String username, String password, String name) 
+        throws EntityDoesNotExistsException, MyConstraintViolationException{
+        try {
+            
+            Utente utente = em.find(Utente.class, username);
+            if (utente == null) {
+                throw new EntityDoesNotExistsException("There is no utente with that username.");
+            }
+
+            utente.setPassword(password);
+            utente.setName(name);
+            em.merge(utente);
+            
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (ConstraintViolationException e) {
+            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));            
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
+    public void remove(String username) throws EntityDoesNotExistsException {
+        try {
+            Utente utente = em.find(Utente.class, username);
+            if (utente == null) {
+                throw new EntityDoesNotExistsException("There is no utente with that username.");
+            }
+            
+            em.remove(utente);
+        
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     
     @GET
     //@RolesAllowed({"Administrator"})

@@ -15,6 +15,7 @@ import exceptions.MyConstraintViolationException;
 import dtos.UtenteDTO;
 import ejbs.UtenteBean;
 import exceptions.EntityAlreadyExistsException;
+import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import java.util.List;
 import java.util.logging.Logger;
@@ -22,6 +23,8 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
+import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
@@ -68,25 +71,7 @@ public class AdministratorManager {
     
     
     
-    ///////////// STUDENTS /////////////////
-    public String createUtente() {
-        try {
-            utenteBean.create(
-                    newUtente.getUsername(),
-                    newUtente.getName(),
-                    newUtente.getPassword());
-            newUtente.reset();
-            return "index?faces-redirect=true";
-        } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
-        }
-        return null;
-    }
-    
-    
-
+    ///////////// UTENTE /////////////////  
     public List<UtenteDTO> getAllUtentesREST() {
         List<UtenteDTO> returnedUtentes = null;
         returnedUtentes = client.target(baseUri)
@@ -95,25 +80,30 @@ public class AdministratorManager {
                 .get(new GenericType<List<UtenteDTO>>() {});
         return returnedUtentes;
     }
-/*
-    public List<StudentDTO> getAllStudents() {
+    
+    public String createUtente() {
         try {
-            return studentBean.getAll();
+            utenteBean.create(
+                    newUtente.getUsername(),
+                    newUtente.getName(),
+                    newUtente.getPassword());
+            newUtente.reset();
+            return "admin_index?faces-redirect=true";
+        } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
         }
         return null;
     }
-
-    public String updateStudent() {
+          
+    public String updateUtente() {
         try {
-            studentBean.update(
-                    currentStudent.getUsername(),
-                    currentStudent.getPassword(),
-                    currentStudent.getName(),
-                    currentStudent.getEmail(),
-                    currentStudent.getCourseCode());
-            return "index?faces-redirect=true";
+            utenteBean.update(
+                    currentUtente.getUsername(),
+                    currentUtente.getPassword(),
+                    currentUtente.getName());
+            return "admin_index?faces-redirect=true";
 
         } catch (EntityDoesNotExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
@@ -123,16 +113,25 @@ public class AdministratorManager {
         return "admin_students_update";
     }
 
-    public void removeStudent(ActionEvent event) {
+    public void removeUtente(ActionEvent event) {
         try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("studentUsername");
+            UIParameter param = (UIParameter) event.getComponent().findComponent("utenteUsername");
             String id = param.getValue().toString();
-            studentBean.remove(id);
+            utenteBean.remove(id);
         } catch (EntityDoesNotExistsException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
+    }
+/*
+    public List<StudentDTO> getAllStudents() {
+        try {
+            return studentBean.getAll();
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return null;
     }
 
     public List<SubjectDTO> getCurrentStudentSubjects() {
