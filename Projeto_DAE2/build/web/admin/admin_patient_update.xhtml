@@ -13,17 +13,8 @@
                 <h:outputLabel for="username" value="Username: " />
                 <h:outputText 
                     id="username"
-                    value="#{administratorManager.currentPatient.username}"/>
-                <br></br>
-                
-                <h:outputLabel for="password" value="Password: " />
-                <h:inputSecret
-                    id="password"
-                    size="20"
-                    required="true"
-                    requiredMessage="Error: Password cannot be empty."
-                    value="#{administratorManager.currentPatient.password}"/>
-                <h:message for="password" errorStyle="color: red" />                        
+                    value="#{administratorManager.currentPatient.id}"/>
+                <br></br>                    
 
                 <h:outputLabel for="name" value="Name: " />
                 <h:inputText 
@@ -33,6 +24,17 @@
                     requiredMessage="Error: Name cannot be empty."                            
                     value="#{administratorManager.currentPatient.name}" />
                 <h:message for="name" errorStyle="color: red" />
+                
+                      <h:outputLabel for="caretaker" value="Caretaker: " />
+                <h:selectOneMenu
+                    id="caretaker"
+                    value="#{administratorManager.currentPatient.caretaker}" >
+                    <f:selectItems
+                        value="#{administratorManager.allCaretakersREST}"
+                        var="caretaker"
+                        itemValue="#{caretaker.username}"
+                        itemLabel="#{caretaker.name}" />
+                </h:selectOneMenu>
 
                 
                 <br></br>
@@ -42,7 +44,7 @@
                 <h:commandButton
                     id="submit"
                     value="Update"
-                    action="#{administratorManager.updatePatient}" />
+                    action="#{administratorManager.updatePatientsREST}" />
                 <h:message for="submit" style="color: red"/>
             </h:panelGrid>  
 

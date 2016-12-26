@@ -19,7 +19,9 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -56,17 +58,23 @@ public class PatientBean {
     }
     
 
-    /*public void update(String username, String password, String name) 
+    public void update(int id, String name, String caretakerUser) 
         throws EntityDoesNotExistsException, MyConstraintViolationException{
         try {
             
-            Patient patient = em.find(Patient.class, username);
+            Patient patient = em.find(Patient.class, id);
             if (patient == null) {
                 throw new EntityDoesNotExistsException("There is no patient with that username.");
             }
+            
+            Caretaker caretaker = em.find(Caretaker.class, caretakerUser);
+            if (caretaker == null) {
+                throw new EntityDoesNotExistsException("There is no caretaker with that username.");
+            }
 
-            patient.setPassword(password);
+            patient.setId(id);
             patient.setName(name);
+            patient.setCaretaker(caretaker);
             em.merge(patient);
             
         } catch (EntityDoesNotExistsException e) {
@@ -76,7 +84,37 @@ public class PatientBean {
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
-    }*/
+    }
+    
+    @PUT
+    @Path("updateREST")
+    @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+    public void updateREST2(PatientDTO patientDTO) 
+        throws EntityDoesNotExistsException, MyConstraintViolationException{
+        try {
+            Patient patient = em.find(Patient.class, patientDTO.getId());
+            if (patient == null) {
+                throw new EntityDoesNotExistsException("There is no patient with that username.");
+            }
+           
+            Caretaker caretaker = em.find(Caretaker.class, patientDTO.getCaretaker());
+            if (caretaker == null) {
+                throw new EntityDoesNotExistsException("There is no caretaker with that username.");
+            }
+
+            patient.setId(patientDTO.getId());
+            patient.setName(patientDTO.getName());
+            patient.setCaretaker(caretaker);
+            em.merge(patient);
+            
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (ConstraintViolationException e) {
+            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));            
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
 
     public void remove(int id) throws EntityDoesNotExistsException {
         try {
@@ -116,7 +154,7 @@ public class PatientBean {
     }
     
 
-    List<PatientDTO> patientsToDTOs(List<Patient> patients) {
+    public List<PatientDTO> patientsToDTOs(List<Patient> patients) {
         List<PatientDTO> dtos = new ArrayList<>();
         for (Patient s : patients) {
             dtos.add(patientToDTO(s));

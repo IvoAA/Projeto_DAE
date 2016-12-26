@@ -36,10 +36,10 @@
                     id="caretaker"
                     value="#{administratorManager.newPatient.caretaker}" >
                     <f:selectItems
-                        value="#{administratorManager.allCaretakers}"
+                        value="#{administratorManager.allCaretakersREST}"
                         var="caretaker"
                         itemValue="#{caretaker.username}"
-                        itemLabel="#{caretaker.username}" />
+                        itemLabel="#{caretaker.name}" />
                 </h:selectOneMenu>
                 
 

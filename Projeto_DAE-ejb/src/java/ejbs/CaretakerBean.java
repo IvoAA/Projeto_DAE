@@ -1,5 +1,6 @@
 package ejbs;
 
+import exceptions.PatientAssociateException;
 import dtos.CaretakerDTO;
 import dtos.PatientDTO;
 import entities.Caretaker;
@@ -7,6 +8,10 @@ import entities.Patient;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
+import exceptions.PatientNotAssociatedException;
+import exceptions.StudentEnrolledException;
+import exceptions.StudentNotEnrolledException;
+import exceptions.SubjectNotInCourseException;
 import exceptions.Utils;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +65,6 @@ public class CaretakerBean {
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
-            int a = 1;
     }
 
     List<CaretakerDTO> caretakersToDTOs(List<Caretaker> caretakers) {
@@ -83,4 +87,55 @@ public class CaretakerBean {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    public List<Patient> getCaretakerPatients(String caretakerUsername) throws EntityDoesNotExistsException {
+        try {
+            Caretaker caretaker = em.find(Caretaker.class, caretakerUsername);
+            if (caretaker == null) {
+                throw new EntityDoesNotExistsException("Caretaker does not exists.");
+            }
+            
+            return caretaker.getPatients();
+            
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }  
+    
+    
+
+    public void associatePatientToCaretaker(String username, int id) throws EntityDoesNotExistsException {            {
+        try {
+
+            
+            Patient patient = em.find(Patient.class, id);
+            if (patient == null) {
+                throw new EntityDoesNotExistsException("There is no patient with that id.");
+            }
+
+            Caretaker caretaker = em.find(Caretaker.class, username);
+            if (caretaker == null) {
+                throw new EntityDoesNotExistsException("There is no caretaker with that username.");
+            }
+
+            patient.getCaretaker().removePatient(patient);
+            
+            if (caretaker.getPatients().contains(patient)) {
+                throw new PatientAssociateException("Patient is already associated to this caretaker.");
+            }           
+
+            caretaker.addPatient(patient);
+            patient.setCaretaker(caretaker);
+
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+        }
+    }
+    
+    
 }

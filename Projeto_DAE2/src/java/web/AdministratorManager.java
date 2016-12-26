@@ -32,6 +32,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
@@ -94,6 +95,7 @@ public class AdministratorManager {
                     newPatient.getId(),
                     newPatient.getName(),
                     newPatient.getCaretaker());
+            
             newPatient.reset();
             return "admin_index?faces-redirect=true";
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
@@ -103,13 +105,13 @@ public class AdministratorManager {
         }
         return null;
     }
-          
-    /*public String updatePatient() {
+    /*      
+    public String updatePatient() {
         try {
             patientBean.update(
-                    currentPatient.getUsername(),
-                    currentPatient.getPassword(),
-                    currentPatient.getName());
+                    currentPatient.getId(),
+                    currentPatient.getName(),
+                    currentPatient.getCaretaker());
             return "admin_index?faces-redirect=true";
 
         } catch (EntityDoesNotExistsException | MyConstraintViolationException e) {
@@ -119,7 +121,21 @@ public class AdministratorManager {
         }
         return "admin_patient_update";
     }
-*/
+    */
+    
+    public String updatePatientsREST(){   
+        try {
+           client.target(baseUri)
+                    .path("/patients/updateREST")
+                    .request(MediaType.APPLICATION_XML).put(Entity.xml(currentPatient));
+            return "admin_index?faces-redirect=true";
+           
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return "admin_patient_update";
+    }
+
     public void removePatient(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("patientId");
@@ -189,24 +205,28 @@ public class AdministratorManager {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("caretakerUsername");
             String username = param.getValue().toString();
-            caretakerBean.remove(username);
+            if(caretakerBean.getCaretakerPatients(username).isEmpty()){
+                caretakerBean.remove(username);
+            }else{
+                throw new EntityDoesNotExistsException("Can't remove a caretaker with patients!");
+            }
             
         } catch (EntityDoesNotExistsException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again later!", logger);
         }
     }
-/*
-    public List<SubjectDTO> getCurrentCourseSubjects() {
+
+    public List<PatientDTO> getCurrentCaretakerPatients() {
         try {
-            return subjectBean.getCourseSubjects(currentCourse.getCode());
+            return patientBean.patientsToDTOs( caretakerBean.getCaretakerPatients(currentCaretaker.getUsername()) );
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
         return null;
     }
-
+/*
     /////////////// SUBJECTS /////////////////
     public String createSubject() {
         try {
