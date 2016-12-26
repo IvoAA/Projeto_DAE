@@ -190,6 +190,7 @@ public class AdministratorManager {
             UIParameter param = (UIParameter) event.getComponent().findComponent("caretakerUsername");
             String username = param.getValue().toString();
             caretakerBean.remove(username);
+            
         } catch (EntityDoesNotExistsException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
         } catch (Exception e) {

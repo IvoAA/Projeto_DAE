@@ -50,7 +50,7 @@ public class CaretakerBean {
         try {
             Caretaker caretaker = em.find(Caretaker.class, username);
             if (caretaker == null) {
-                throw new EntityDoesNotExistsException("There is no caretaker with that code");
+                throw new EntityDoesNotExistsException("There is no caretaker with that username");
             }
 
             em.remove(caretaker);
@@ -60,6 +60,7 @@ public class CaretakerBean {
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
+            int a = 1;
     }
 
     List<CaretakerDTO> caretakersToDTOs(List<Caretaker> caretakers) {
