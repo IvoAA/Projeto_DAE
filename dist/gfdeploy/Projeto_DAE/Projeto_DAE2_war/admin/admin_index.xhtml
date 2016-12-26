@@ -9,21 +9,21 @@
     <h:body>
 
         <h:dataTable
-            var="utente"
-            summary="List of all utentes"
-            value="#{administratorManager.allUtentesREST}"
+            var="patient"
+            summary="List of all patients"
+            value="#{administratorManager.allPatientsREST}"
             rules="all"
             cellpadding="5">
             
             <f:facet name="header">
-                <h:outputText value="Utentes" />
+                <h:outputText value="Patients" />
             </f:facet>            
 
             <h:column>
                 <f:facet name="header">
-                    <h:outputText value="Username" />
+                    <h:outputText value="Id" />
                 </f:facet>
-                <h:outputText value="#{utente.username}" />
+                <h:outputText value="#{patient.id}" />
                 <!--Falta validar o formato-->
             </h:column>
 
@@ -31,7 +31,7 @@
                 <f:facet name="header">
                     <h:outputText value="Name" />
                 </f:facet>
-                <h:outputText value="#{utente.name}" />
+                <h:outputText value="#{patient.name}" />
             </h:column>              
 
             <h:column>
@@ -39,16 +39,16 @@
                     <h:outputText value="Actions" />
                 </f:facet>
                 <h:form>
-                    <h:commandLink value="Details" action="admin_utente_details?faces-redirect=true">
-                        <f:setPropertyActionListener target="#{administratorManager.currentUtente}" value="#{utente}" />
+                    <h:commandLink value="Details" action="admin_patient_details?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentPatient}" value="#{patient}" />
                     </h:commandLink>
                     &nbsp;
-                    <h:commandLink value="Update" action="admin_utente_update?faces-redirect=true">
-                        <f:setPropertyActionListener target="#{administratorManager.currentUtente}" value="#{utente}" />
+                    <h:commandLink value="Update" action="admin_patient_update?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentPatient}" value="#{patient}" />
                     </h:commandLink>
                     &nbsp;
-                    <h:commandLink value="Remove" actionListener="#{administratorManager.removeUtente}">
-                        <f:param name="studentUsername" id="utenteUsername" value="#{utente.username}" />
+                    <h:commandLink value="Remove" actionListener="#{administratorManager.removePatient}">
+                        <f:param name="patientId" id="patientId" value="#{patient.id}" />
                     </h:commandLink>
                 </h:form>
             </h:column>                        
@@ -59,7 +59,64 @@
         <br/>
         
         <h:form>
-            <h:commandLink value="New utente" action="admin_utente_create?faces-redirect=true"/>
+            <h:commandLink value="New patient" action="admin_patient_create?faces-redirect=true"/>
+        </h:form>
+        
+        <br/>
+        <br/>
+        
+        <h:dataTable
+            var="caretaker"
+            summary="List of all caretakers"
+            value="#{administratorManager.allCaretakersREST}"
+            rules="all"
+            cellpadding="5">
+            
+            <f:facet name="header">
+                <h:outputText value="Caretakers" />
+            </f:facet>            
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="username" />
+                </f:facet>
+                <h:outputText value="#{caretaker.username}" />
+                <!--Falta validar o formato-->
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Name" />
+                </f:facet>
+                <h:outputText value="#{caretaker.name}" />
+            </h:column>              
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions" />
+                </f:facet>
+                <h:form>
+                    <h:commandLink value="Details" action="admin_caretaker_details?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentCaretaker}" value="#{caretaker}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Update" action="admin_caretaker_update?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentCaretaker}" value="#{caretaker}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Remove" actionListener="#{administratorManager.removeCaretaker}">
+                        <f:param name="caretakerUsername" id="caretakerUsername" value="#{caretaker.username}" />
+                    </h:commandLink>
+                </h:form>
+            </h:column>                        
+
+        </h:dataTable>
+        
+        <br/>
+        <br/>
+        
+        <h:form>
+            <h:commandLink value="New caretaker" action="admin_caretaker_create?faces-redirect=true"/>
         </h:form>
         
         <br/>

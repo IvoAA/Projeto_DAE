@@ -5,8 +5,9 @@
  */
 package ejbs;
 
-import dtos.UtenteDTO;
-import entities.Utente;
+import dtos.PatientDTO;
+import entities.Caretaker;
+import entities.Patient;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
-import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
@@ -29,19 +29,23 @@ import javax.ws.rs.core.MediaType;
  * @author Ivo
  */
 @Stateless
-@Path("/utentes")
-public class UtenteBean {
+@Path("/patients")
+public class PatientBean {
     
     @PersistenceContext
     private EntityManager em;
 
-    public void create(String username, String name, String password) throws EntityAlreadyExistsException, MyConstraintViolationException {
+    public void create(int id, String name, String caretakerUser) throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
-            if(em.find(Utente.class, username) != null){
-                throw new EntityAlreadyExistsException("A utente with that id already exists");
+            if(em.find(Patient.class, id) != null){
+                throw new EntityAlreadyExistsException("A patient with that id already exists");
             }
-            Utente utente = new Utente(username, name, password);
-            em.persist(utente);
+            Caretaker caretaker = em.find(Caretaker.class, caretakerUser);
+            if (caretaker == null) {
+                throw new EntityDoesNotExistsException("There is no caretaker with that username.");
+            }
+            Patient patient = new Patient(id, name, caretaker);
+            em.persist(patient);
         } catch (EntityAlreadyExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
@@ -52,18 +56,18 @@ public class UtenteBean {
     }
     
 
-    public void update(String username, String password, String name) 
+    /*public void update(String username, String password, String name) 
         throws EntityDoesNotExistsException, MyConstraintViolationException{
         try {
             
-            Utente utente = em.find(Utente.class, username);
-            if (utente == null) {
-                throw new EntityDoesNotExistsException("There is no utente with that username.");
+            Patient patient = em.find(Patient.class, username);
+            if (patient == null) {
+                throw new EntityDoesNotExistsException("There is no patient with that username.");
             }
 
-            utente.setPassword(password);
-            utente.setName(name);
-            em.merge(utente);
+            patient.setPassword(password);
+            patient.setName(name);
+            em.merge(patient);
             
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -72,16 +76,15 @@ public class UtenteBean {
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
-    }
+    }*/
 
-    public void remove(String username) throws EntityDoesNotExistsException {
+    public void remove(int id) throws EntityDoesNotExistsException {
         try {
-            Utente utente = em.find(Utente.class, username);
-            if (utente == null) {
-                throw new EntityDoesNotExistsException("There is no utente with that username.");
-            }
-            
-            em.remove(utente);
+            Patient patient = em.find(Patient.class, id);
+            if (patient == null) {
+                throw new EntityDoesNotExistsException("There is no patient with that username.");
+            }            
+            em.remove(patient);
         
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -95,28 +98,28 @@ public class UtenteBean {
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("all")
-    public List<UtenteDTO> getAll() {
+    public List<PatientDTO> getAll() {
         try {
-            List<Utente> utentes = (List<Utente>) em.createNamedQuery("getAllUtentes").getResultList();
-            return utentesToDTOs(utentes);
+            List<Patient> patients = (List<Patient>) em.createNamedQuery("getAllPatients").getResultList();
+            return patientsToDTOs(patients);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
     
     
-    UtenteDTO utenteToDTO(Utente utente) {
-        return new UtenteDTO(
-                utente.getUsername(),
-                utente.getName(),
-                null);
+    PatientDTO patientToDTO(Patient patient) {
+        return new PatientDTO(
+                patient.getId(),
+                patient.getName(),
+                patient.getCaretaker().getUsername());
     }
     
 
-    List<UtenteDTO> utentesToDTOs(List<Utente> utentes) {
-        List<UtenteDTO> dtos = new ArrayList<>();
-        for (Utente s : utentes) {
-            dtos.add(utenteToDTO(s));
+    List<PatientDTO> patientsToDTOs(List<Patient> patients) {
+        List<PatientDTO> dtos = new ArrayList<>();
+        for (Patient s : patients) {
+            dtos.add(patientToDTO(s));
         }
         return dtos;
     }

@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Create Patient</title>
+    </h:head>
+    <h:body>
+        <h:form>                  
+            <h:panelGrid columns="3">
+
+                <h:outputLabel for="id" value="Id :" />
+                <h:inputText 
+                    id="id"
+                    size="20"
+                    validator="#{administratorManager.validateId}"  
+                    required="true"
+                    requiredMessage="Error: Username cannot be empty."
+                    value="#{administratorManager.newPatient.id}">
+                </h:inputText>
+                <h:message for="username" errorStyle="color: red" />
+
+                <h:outputLabel for="name" value="Name: " />
+                <h:inputText 
+                    id="name"
+                    size="52"
+                    required="true"
+                    requiredMessage="Error: Name cannot be empty."                            
+                    value="#{administratorManager.newPatient.name}" />
+                <h:message for="name" errorStyle="color: red" />
+                
+                
+                  <h:outputLabel for="caretaker" value="Caretaker: " />
+                <h:selectOneMenu
+                    id="caretaker"
+                    value="#{administratorManager.newPatient.caretaker}" >
+                    <f:selectItems
+                        value="#{administratorManager.allCaretakers}"
+                        var="caretaker"
+                        itemValue="#{caretaker.username}"
+                        itemLabel="#{caretaker.username}" />
+                </h:selectOneMenu>
+                
+
+                <h:commandButton
+                    id="submit"
+                    value="Create"
+                    binding="#{administratorManager.component}" 
+                    action="#{administratorManager.createPatient}" />
+                <h:message for="submit" style="color: red"/>
+            </h:panelGrid >                       
+
+        </h:form>
+
+        <!--<h:messages style="color:red"/> -->        
+
+    </h:body>
+</html>
+

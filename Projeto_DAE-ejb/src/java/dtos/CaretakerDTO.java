@@ -5,15 +5,16 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "Student")
+@XmlRootElement(name = "Caretaker")
 @XmlAccessorType(XmlAccessType.FIELD)
 
-public class UtenteDTO extends UserDTO implements Serializable{
-   
-    public UtenteDTO(){
-    }
+public class CaretakerDTO extends UserDTO  implements Serializable{
 
-    public UtenteDTO(
+    
+    public CaretakerDTO(){
+    }
+    
+    public CaretakerDTO(
             String username,
             String name,
             String password) {
@@ -24,4 +25,5 @@ public class UtenteDTO extends UserDTO implements Serializable{
     public void reset() {
         super.reset();
     }
+
 }

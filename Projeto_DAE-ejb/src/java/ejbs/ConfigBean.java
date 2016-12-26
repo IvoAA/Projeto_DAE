@@ -12,16 +12,21 @@ public class ConfigBean {
     //@EJB
     //private AdministratorBean administratorBean;
     @EJB
-    private UtenteBean utenteBean;
+    private PatientBean patientBean;
+    @EJB
+    private CaretakerBean caretakerBean;
 
     @PostConstruct
     public void populateBD() {
 
         try {
+            
+            caretakerBean.create("user1", "name1", "pass1");
+            caretakerBean.create("user2", "name2", "pass2");
 
-            utenteBean.create("iGank", "Ivo Amador", "pass");
-            utenteBean.create("babilu", "Rodrigo Faria", "pass");
-            utenteBean.create("klisar", "Pedro Figueiredo", "pass");
+            patientBean.create(1, "Ivo Amador", "user1");
+            patientBean.create(2, "Rodrigo Faria", "user1");
+            patientBean.create(3, "Pedro Figueiredo", "user2");
 
             /*
             studentBean.create("1111111", "Manuel", "Manuel", "dae.ei.ipleiria@gmail.com", 1);

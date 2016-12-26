@@ -4,21 +4,30 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Create Utente</title>
+        <title>Create Caretaker</title>
     </h:head>
     <h:body>
         <h:form>                  
             <h:panelGrid columns="3">
 
-                <h:outputLabel for="username" value="Username :" />
+                <h:outputLabel for="username" value="Username: " />
                 <h:inputText 
                     id="username"
                     size="20"
                     required="true"
                     requiredMessage="Error: Username cannot be empty."
-                    value="#{administratorManager.newUtente.username}">
+                    value="#{administratorManager.newCaretaker.username}">
                 </h:inputText>
                 <h:message for="username" errorStyle="color: red" />
+
+                <h:outputLabel for="password" value="Password: " />
+                <h:inputSecret
+                    id="password"
+                    size="20"
+                    required="true"
+                    requiredMessage="Error: Password cannot be empty."
+                    value="#{administratorManager.newCaretaker.password}"/>
+                <h:message for="password" errorStyle="color: red" />                        
 
                 <h:outputLabel for="name" value="Name: " />
                 <h:inputText 
@@ -26,25 +35,20 @@
                     size="52"
                     required="true"
                     requiredMessage="Error: Name cannot be empty."                            
-                    value="#{administratorManager.newUtente.name}" />
+                    value="#{administratorManager.newCaretaker.name}" />
                 <h:message for="name" errorStyle="color: red" />
+
                 
-                <h:outputLabel for="password" value="Password: " />
-                <h:inputSecret
-                    id="password"
-                    size="20"
-                    required="true"
-                    requiredMessage="Error: Password cannot be empty."
-                    value="#{administratorManager.newUtente.password}"/>
-                <h:message for="password" errorStyle="color: red" />                        
+                <br></br>
 
 
+                <br></br>
 
                 <h:commandButton
                     id="submit"
                     value="Create"
                     binding="#{administratorManager.component}" 
-                    action="#{administratorManager.createUtente}" />
+                    action="#{administratorManager.createCaretaker}" />
                 <h:message for="submit" style="color: red"/>
             </h:panelGrid >                       
 

@@ -12,18 +12,23 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 */
 
-import dtos.UtenteDTO;
-import ejbs.UtenteBean;
+import dtos.CaretakerDTO;
+import dtos.PatientDTO;
+import ejbs.CaretakerBean;
+import ejbs.PatientBean;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.component.UIParameter;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -48,9 +53,14 @@ public class AdministratorManager {
     */
     
     @EJB
-    private UtenteBean utenteBean;
-    private UtenteDTO newUtente;
-    private UtenteDTO currentUtente;
+    private PatientBean patientBean;
+    @EJB
+    private CaretakerBean caretakerBean;
+    private PatientDTO newPatient;
+    private PatientDTO currentPatient;
+    private CaretakerDTO newCaretaker;
+    private CaretakerDTO currentCaretaker;
+
     
     private static final Logger logger = Logger.getLogger("web.AdministratorManager");
     private UIComponent component;
@@ -60,34 +70,31 @@ public class AdministratorManager {
 
     public AdministratorManager() {
         
-        /*
-        newCourse = new CourseDTO();
-        newSubject = new SubjectDTO();
-        */
-        newUtente = new UtenteDTO();
+        newPatient = new PatientDTO();
+        newCaretaker = new CaretakerDTO();
         client = ClientBuilder.newClient();
     }
 
     
     
     
-    ///////////// UTENTE /////////////////  
-    public List<UtenteDTO> getAllUtentesREST() {
-        List<UtenteDTO> returnedUtentes = null;
-        returnedUtentes = client.target(baseUri)
-                .path("/utentes/all")
+    ///////////// Patient /////////////////  
+    public List<PatientDTO> getAllPatientsREST() {
+        List<PatientDTO> returnedPatients = null;
+        returnedPatients = client.target(baseUri)
+                .path("/patients/all")
                 .request(MediaType.APPLICATION_XML)
-                .get(new GenericType<List<UtenteDTO>>() {});
-        return returnedUtentes;
+                .get(new GenericType<List<PatientDTO>>() {});
+        return returnedPatients;
     }
     
-    public String createUtente() {
+    public String createPatient() {
         try {
-            utenteBean.create(
-                    newUtente.getUsername(),
-                    newUtente.getName(),
-                    newUtente.getPassword());
-            newUtente.reset();
+            patientBean.create(
+                    newPatient.getId(),
+                    newPatient.getName(),
+                    newPatient.getCaretaker());
+            newPatient.reset();
             return "admin_index?faces-redirect=true";
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
@@ -97,12 +104,12 @@ public class AdministratorManager {
         return null;
     }
           
-    public String updateUtente() {
+    /*public String updatePatient() {
         try {
-            utenteBean.update(
-                    currentUtente.getUsername(),
-                    currentUtente.getPassword(),
-                    currentUtente.getName());
+            patientBean.update(
+                    currentPatient.getUsername(),
+                    currentPatient.getPassword(),
+                    currentPatient.getName());
             return "admin_index?faces-redirect=true";
 
         } catch (EntityDoesNotExistsException | MyConstraintViolationException e) {
@@ -110,14 +117,14 @@ public class AdministratorManager {
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
-        return "admin_students_update";
+        return "admin_patient_update";
     }
-
-    public void removeUtente(ActionEvent event) {
+*/
+    public void removePatient(ActionEvent event) {
         try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("utenteUsername");
-            String id = param.getValue().toString();
-            utenteBean.remove(id);
+            UIParameter param = (UIParameter) event.getComponent().findComponent("patientId");
+            int id = Integer.parseInt(param.getValue().toString());
+            patientBean.remove(id);
         } catch (EntityDoesNotExistsException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
         } catch (Exception e) {
@@ -143,14 +150,24 @@ public class AdministratorManager {
         }
     }
 
-    /////////////// COURSES /////////////////
-    public String createCourse() {
+    /////////////// CARETAKERS /////////////////*/
+    public List<CaretakerDTO> getAllCaretakersREST() {
+        List<CaretakerDTO> returnedCaretakers = null;
+        returnedCaretakers = client.target(baseUri)
+                .path("/caretakers/all")
+                .request(MediaType.APPLICATION_XML)
+                .get(new GenericType<List<CaretakerDTO>>() {});
+        return returnedCaretakers;
+    }
+    
+    public String createCaretaker() {
         try {
-            courseBean.create(
-                    newCourse.getCode(),
-                    newCourse.getName());
-            newCourse.reset();
-            return "index?faces-redirect=true";
+            caretakerBean.create(
+                    newCaretaker.getUsername(),
+                    newCaretaker.getName(),
+                    newCaretaker.getPassword());
+            newCaretaker.reset();
+            return "admin_index?faces-redirect=true";
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
         } catch (Exception e) {
@@ -158,28 +175,28 @@ public class AdministratorManager {
         }
         return null;
     }
-
-    public List<CourseDTO> getAllCourses() {
+/*
+    public List<CaretakerDTO> getAllCaretakers() {
         try {
-            return courseBean.getAll();
+            return caretakerBean.getAll();
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
         return null;
     }
-
-    public void removeCourse(ActionEvent event) {
+*/
+    public void removeCaretaker(ActionEvent event) {
         try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("courseCode");
-            int code = Integer.parseInt(param.getValue().toString());
-            courseBean.remove(code);
+            UIParameter param = (UIParameter) event.getComponent().findComponent("caretakerUsername");
+            String username = param.getValue().toString();
+            caretakerBean.remove(username);
         } catch (EntityDoesNotExistsException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
     }
-
+/*
     public List<SubjectDTO> getCurrentCourseSubjects() {
         try {
             return subjectBean.getCourseSubjects(currentCourse.getCode());
@@ -285,21 +302,40 @@ public class AdministratorManager {
         this.component = component;
     }
     
-    public UtenteDTO getNewUtente() {
-        return newUtente;
+    public PatientDTO getNewPatient() {
+        return newPatient;
     }
 
-    public void setNewUtente(UtenteDTO newStudent) {
-        this.newUtente = newStudent;
+    public void setNewPatient(PatientDTO newStudent) {
+        this.newPatient = newStudent;
     }
 
-    public UtenteDTO getCurrentUtente() {
-        return currentUtente;
+    public PatientDTO getCurrentPatient() {
+        return currentPatient;
     }
 
-    public void setCurrentUtente(UtenteDTO currentUtente) {
-        this.currentUtente = currentUtente;
+    public void setCurrentPatient(PatientDTO currentPatient) {
+        this.currentPatient = currentPatient;
     }
+    
+    
+    public CaretakerDTO getNewCaretaker() {
+        return newCaretaker;
+    }
+
+    public void setNewCaretaker(CaretakerDTO newCaretaker) {
+        this.newCaretaker = newCaretaker;
+    }
+
+    public CaretakerDTO getCurrentCaretaker() {
+        return currentCaretaker;
+    }
+
+    public void setCurrentCaretaker(CaretakerDTO currentCaretaker) {
+        this.currentCaretaker = currentCaretaker;
+    }
+    
+    
     /*
     public CourseDTO getNewCourse() {
         return newCourse;
@@ -333,7 +369,26 @@ public class AdministratorManager {
         this.currentSubject = currentSubject;
     }
 
-    ///////////// VALIDATORS ////////////////////////
+    ///////////// VALIDATORS ////////////////////////*/
+    
+    public void validateId(FacesContext context, UIComponent toValidate, Object value) {
+        try {
+            //Your validation code goes here
+            //If the validation fails
+
+              if(Integer.parseInt(value.toString()) < 1 ){ 
+                  throw new NumberFormatException();
+              } 
+            } catch(NumberFormatException nfe){                  
+                FacesMessage message = new FacesMessage("Error: invalid id.");
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                context.addMessage(toValidate.getClientId(context), message);
+                ((UIInput) toValidate).setValid(false);
+            } catch (Exception e) {
+                FacesExceptionHandler.handleException(e, "Unkown error.", logger);
+        }
+    }
+    /*
     public void validateUsername(FacesContext context, UIComponent toValidate, Object value) {
         try {
             //Your validation code goes here
