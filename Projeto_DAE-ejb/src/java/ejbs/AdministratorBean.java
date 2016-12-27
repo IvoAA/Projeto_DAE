@@ -7,6 +7,7 @@ package ejbs;
 
 
 import dtos.AdministratorDTO;
+import dtos.CaretakerDTO;
 import dtos.PatientDTO;
 import entities.Administrator;
 import entities.Caretaker;
@@ -15,14 +16,18 @@ import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -81,7 +86,7 @@ public class AdministratorBean {
     @PUT
     @Path("upateREST")
     @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    public void updateREST2(AdministratorDTO administratorDTO) 
+    public void updateREST(AdministratorDTO administratorDTO) 
         throws EntityDoesNotExistsException, MyConstraintViolationException{
         try {
             Administrator administrator = em.find(Administrator.class, administratorDTO.getUsername());
@@ -89,7 +94,7 @@ public class AdministratorBean {
                 throw new EntityDoesNotExistsException("There is no patient with that username.");
             }
           
-
+            administrator.setUsername(administratorDTO.getUsername());
             administrator.setName(administratorDTO.getName());
             administrator.setPassword(administratorDTO.getPassword());
             em.merge(administrator);
@@ -117,4 +122,27 @@ public class AdministratorBean {
             throw new EJBException(e.getMessage());
         }
     }
+       
+       
+        List<AdministratorDTO> administratorToDTO(List<Administrator> administrators) {
+        List<AdministratorDTO> dtos = new ArrayList<>();
+        for (Administrator a : administrators) {
+            dtos.add(new AdministratorDTO(a.getUsername(), a.getName(), a.getPassword()));            
+        }
+        return dtos;
+    } 
+       
+     @GET
+    //@RolesAllowed({"Administrator"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("all")
+    public List<AdministratorDTO> getAll() {
+        try {
+            List<Administrator> administrators = (List<Administrator>) em.createNamedQuery("getAllAdministrators").getResultList();
+            return administratorToDTO(administrators);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+       
 }

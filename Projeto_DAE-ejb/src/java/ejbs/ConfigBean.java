@@ -15,12 +15,19 @@ public class ConfigBean {
     private PatientBean patientBean;
     @EJB
     private CaretakerBean caretakerBean;
+     @EJB
+    private AdministratorBean administratorBean;
 
     @PostConstruct
     public void populateBD() {
 
         try {
             
+            
+            administratorBean.create("admin1", "adminName1", "adminPass1");
+            administratorBean.create("admin2", "adminName2", "adminPass2");
+                    
+                    
             caretakerBean.create("user1", "name1", "pass1");
             caretakerBean.create("user2", "name2", "pass2");
 

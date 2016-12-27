@@ -122,6 +122,60 @@
         <br/>
         <br/>
         
+           <h:dataTable
+            var="administrator"
+            summary="List of all admninistrators"
+            value="#{administratorManager.allAdministratorsREST}"
+            rules="all"
+            cellpadding="5">
+            
+            <f:facet name="header">
+                <h:outputText value="Administrators" />
+            </f:facet>            
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="username" />
+                </f:facet>
+                <h:outputText value="#{administrator.username}" />
+                <!--Falta validar o formato-->
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Name" />
+                </f:facet>
+                <h:outputText value="#{administrator.name}" />
+            </h:column>              
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions" />
+                </f:facet>
+                <h:form>
+                    <h:commandLink value="Details" action="admin_administrator_details?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentAdministrator}" value="#{administrator}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Update" action="admin_administrator_update?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentAdministrator}" value="#{administrator}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Remove" actionListener="#{administratorManager.removeAdministrator}">
+                        <f:param name="caretakerUsername" id="administratorUsername" value="#{administrator.username}" />
+                    </h:commandLink>
+                </h:form>
+            </h:column>                        
+
+        </h:dataTable>
+        
+        <br/>
+        <br/>
+        
+        <h:form>
+            <h:commandLink value="New Administrator" action="admin_administrator_create?faces-redirect=true"/>
+        </h:form>
+        
         <h:messages errorStyle="color: red" />
         
     </h:body>

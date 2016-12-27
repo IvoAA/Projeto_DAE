@@ -10,9 +10,9 @@
         <h:form>                  
             <h:panelGrid columns="3">
 
-                <h:outputLabel for="username" value="Username: " />
+                <h:outputLabel for="id" value="Id: " />
                 <h:outputText 
-                    id="username"
+                    id="id"
                     value="#{administratorManager.currentPatient.id}"/>
                 <br></br>                    
 
@@ -24,6 +24,7 @@
                     requiredMessage="Error: Name cannot be empty."                            
                     value="#{administratorManager.currentPatient.name}" />
                 <h:message for="name" errorStyle="color: red" />
+                                 
                 
                       <h:outputLabel for="caretaker" value="Caretaker: " />
                 <h:selectOneMenu
