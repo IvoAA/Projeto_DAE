@@ -12,8 +12,10 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 */
 
+import dtos.AdministratorDTO;
 import dtos.CaretakerDTO;
 import dtos.PatientDTO;
+import ejbs.AdministratorBean;
 import ejbs.CaretakerBean;
 import ejbs.PatientBean;
 import exceptions.EntityAlreadyExistsException;
@@ -57,10 +59,15 @@ public class AdministratorManager {
     private PatientBean patientBean;
     @EJB
     private CaretakerBean caretakerBean;
+    @EJB
+    private AdministratorBean administratorBean;
+    
     private PatientDTO newPatient;
     private PatientDTO currentPatient;
     private CaretakerDTO newCaretaker;
     private CaretakerDTO currentCaretaker;
+    private AdministratorDTO newAdministrator;
+    private AdministratorDTO currentAdministrator;
 
     
     private static final Logger logger = Logger.getLogger("web.AdministratorManager");
@@ -73,6 +80,7 @@ public class AdministratorManager {
         
         newPatient = new PatientDTO();
         newCaretaker = new CaretakerDTO();
+        newAdministrator = new AdministratorDTO();
         client = ClientBuilder.newClient();
     }
 
@@ -226,6 +234,77 @@ public class AdministratorManager {
         }
         return null;
     }
+    
+    ////////////////////ADMINISTRATOR ///////////////////////
+    
+    
+    
+   public List<AdministratorDTO> getAllAdministratorsREST() {
+        List<AdministratorDTO> returnedAdministrators = null;
+        returnedAdministrators = client.target(baseUri)
+                .path("/administrators/all")
+                .request(MediaType.APPLICATION_XML)
+                .get(new GenericType<List<AdministratorDTO>>() {});
+        return returnedAdministrators;
+    }
+    
+    public String createAdministrator() {
+        try {
+            administratorBean.create(
+                    newAdministrator.getUsername(),
+                    newAdministrator.getName(),
+                    newAdministrator.getPassword());
+            newAdministrator.reset();
+            return "admin_index?faces-redirect=true";
+        } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
+        }
+        return null;
+    }
+/*
+    public List<CaretakerDTO> getAllCaretakers() {
+        try {
+            return caretakerBean.getAll();
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return null;
+    }
+*/
+        public String updateAdministratorsREST(){   
+        try {
+           client.target(baseUri)
+                    .path("/administrators/updateREST")
+                    .request(MediaType.APPLICATION_XML).put(Entity.xml(currentAdministrator));
+            return "admin_index?faces-redirect=true";
+           
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return "admin_administrator_update";
+    }
+    
+    
+    public void removeAdministrator(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("administratorUsername");
+            String username = param.getValue().toString();
+            
+            
+            administratorBean.remove(username);
+         
+            
+        } catch (EntityDoesNotExistsException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Can't remove a caretaker with patients!", logger);
+        }
+    }
+    
+    
+    
 /*
     /////////////// SUBJECTS /////////////////
     public String createSubject() {
@@ -355,6 +434,24 @@ public class AdministratorManager {
     public void setCurrentCaretaker(CaretakerDTO currentCaretaker) {
         this.currentCaretaker = currentCaretaker;
     }
+
+    public AdministratorDTO getNewAdministrator() {
+        return newAdministrator;
+    }
+
+    public void setNewAdministrator(AdministratorDTO newAdministrator) {
+        this.newAdministrator = newAdministrator;
+    }
+
+    public AdministratorDTO getCurrentAdministrator() {
+        return currentAdministrator;
+    }
+
+    public void setCurrentAdministrator(AdministratorDTO currentAdministrator) {
+        this.currentAdministrator = currentAdministrator;
+    }
+    
+    
     
     
     /*
