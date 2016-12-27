@@ -3,8 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Desktop/Ivo/Escola/3ano/3_DAE/Projeto_DAE/Projeto_DAE-ejb/src/java/entities/Utente.java</file>
-            <file>file:/D:/Desktop/Ivo/Escola/3ano/3_DAE/Projeto_DAE/Projeto_DAE-ejb/src/java/ejbs/UtenteBean.java</file>
+            <file>file:/C:/Users/Figueiredo/Desktop/EI/Projeto_DAE/Projeto_DAE-ejb/src/java/entities/Administrator.java</file>
+            <file>file:/C:/Users/Figueiredo/Desktop/EI/Projeto_DAE/Projeto_DAE-ejb/src/java/entities/Patient.java</file>
+            <file>file:/C:/Users/Figueiredo/Desktop/EI/Projeto_DAE/Projeto_DAE-ejb/src/java/dtos/AdministratorDTO.java</file>
+            <file>file:/C:/Users/Figueiredo/Desktop/EI/Projeto_DAE/Projeto_DAE-ejb/src/java/ejbs/PatientBean.java</file>
+            <file>file:/C:/Users/Figueiredo/Desktop/EI/Projeto_DAE/Projeto_DAE-ejb/src/java/ejbs/AdministratorBean.java</file>
+            <file>file:/C:/Users/Figueiredo/Desktop/EI/Projeto_DAE/Projeto_DAE-ejb/src/java/dtos/PatientDTO.java</file>
+            <file>file:/C:/Users/Figueiredo/Desktop/EI/Projeto_DAE/Projeto_DAE-ejb/src/java/ejbs/ConfigBean.java</file>
+            <file>file:/C:/Users/Figueiredo/Desktop/EI/Projeto_DAE/Projeto_DAE-ejb/src/java/ejbs/CaretakerBean.java</file>
+            <file>file:/C:/Users/Figueiredo/Desktop/EI/Projeto_DAE/Projeto_DAE-ejb/src/java/entities/User.java</file>
         </group>
     </open-files>
 </project-private>

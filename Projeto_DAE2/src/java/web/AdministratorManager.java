@@ -214,7 +214,7 @@ public class AdministratorManager {
         } catch (EntityDoesNotExistsException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again later!", logger);
+            FacesExceptionHandler.handleException(e, "Can't remove a caretaker with patients!", logger);
         }
     }
 
