@@ -72,7 +72,6 @@ public class PatientBean {
                 throw new EntityDoesNotExistsException("There is no caretaker with that username.");
             }
 
-            patient.setId(id);
             patient.setName(name);
             patient.setCaretaker(caretaker);
             em.merge(patient);
