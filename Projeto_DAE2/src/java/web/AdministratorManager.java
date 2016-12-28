@@ -14,10 +14,13 @@ import exceptions.MyConstraintViolationException;
 
 import dtos.AdministratorDTO;
 import dtos.CaretakerDTO;
+import dtos.HealthCareProfessionalDTO;
 import dtos.PatientDTO;
 import ejbs.AdministratorBean;
 import ejbs.CaretakerBean;
+import ejbs.HealthCareProfessionalBean;
 import ejbs.PatientBean;
+import entities.HealthCareProfessional;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -61,6 +64,8 @@ public class AdministratorManager {
     private CaretakerBean caretakerBean;
     @EJB
     private AdministratorBean administratorBean;
+    @EJB
+    private HealthCareProfessionalBean healthCareProfessionalBean;
     
     private PatientDTO newPatient;
     private PatientDTO currentPatient;
@@ -68,6 +73,24 @@ public class AdministratorManager {
     private CaretakerDTO currentCaretaker;
     private AdministratorDTO newAdministrator;
     private AdministratorDTO currentAdministrator;
+    private HealthCareProfessionalDTO newHealthCareProfessional; 
+    private HealthCareProfessionalDTO currentHealthCareProfessional; 
+
+    public HealthCareProfessionalDTO getNewHealthCareProfessional() {
+        return newHealthCareProfessional;
+    }
+
+    public void setNewHealthCareProfessional(HealthCareProfessionalDTO newHealthCareProfessional) {
+        this.newHealthCareProfessional = newHealthCareProfessional;
+    }
+
+    public HealthCareProfessionalDTO getCurrentHealthCareProfessional() {
+        return currentHealthCareProfessional;
+    }
+
+    public void setCurrentHealthCareProfessional(HealthCareProfessionalDTO currentHealthCareProfessional) {
+        this.currentHealthCareProfessional = currentHealthCareProfessional;
+    }
 
     
     private static final Logger logger = Logger.getLogger("web.AdministratorManager");
@@ -81,6 +104,7 @@ public class AdministratorManager {
         newPatient = new PatientDTO();
         newCaretaker = new CaretakerDTO();
         newAdministrator = new AdministratorDTO();
+        newHealthCareProfessional = new HealthCareProfessionalDTO();
         client = ClientBuilder.newClient();
     }
 
@@ -199,6 +223,19 @@ public class AdministratorManager {
         }
         return null;
     }
+    
+    public String updateCaretakersREST(){   
+        try {
+           client.target(baseUri)
+                    .path("/caretakers/updateREST")
+                    .request(MediaType.APPLICATION_XML).put(Entity.xml(currentCaretaker));
+            return "admin_index?faces-redirect=true";
+           
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return "admin_administrator_update";
+    }
 /*
     public List<CaretakerDTO> getAllCaretakers() {
         try {
@@ -213,7 +250,7 @@ public class AdministratorManager {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("caretakerUsername");
             String username = param.getValue().toString();
-            if(caretakerBean.getCaretakerPatients(username).isEmpty()){
+            if(patientBean.getCaretakerPatients(username).isEmpty()){
                 caretakerBean.remove(username);
             }else{
                 throw new EntityDoesNotExistsException("Can't remove a caretaker with patients!");
@@ -228,11 +265,95 @@ public class AdministratorManager {
 
     public List<PatientDTO> getCurrentCaretakerPatients() {
         try {
-            return patientBean.patientsToDTOs( caretakerBean.getCaretakerPatients(currentCaretaker.getUsername()) );
+            return patientBean.patientsToDTOs( patientBean.getCaretakerPatients(currentCaretaker.getUsername()) );
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
         return null;
+    }
+    
+        public void unrollPatients(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("patientId");
+            int id = Integer.parseInt(param.getValue().toString());
+            patientBean.unrollPatient(id, currentCaretaker.getUsername());
+            
+        } catch (EntityDoesNotExistsException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+    }
+    
+
+    
+    
+    ////////////////////HealthCareProfessional ///////////////////////
+    
+    
+    
+   public List<HealthCareProfessionalDTO> getAllHealthCareProfessionalsREST() {
+        List<HealthCareProfessionalDTO> returnedHealthCareProfessionals = null;
+        returnedHealthCareProfessionals = client.target(baseUri)
+                .path("/healthCareProfessionals/all")
+                .request(MediaType.APPLICATION_XML)
+                .get(new GenericType<List<HealthCareProfessionalDTO>>() {});
+        return returnedHealthCareProfessionals;
+    }
+    
+    public String createHealthCareProfessional() {
+        try {
+            healthCareProfessionalBean.create(
+                    newHealthCareProfessional.getUsername(),
+                    newHealthCareProfessional.getName(),
+                    newHealthCareProfessional.getPassword());
+            newHealthCareProfessional.reset();
+            return "admin_index?faces-redirect=true";
+        } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
+        }
+        return null;
+    }
+/*
+    public List<CaretakerDTO> getAllCaretakers() {
+        try {
+            return caretakerBean.getAll();
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return null;
+    }
+*/
+        public String updateHealthCareProfessionalREST(){   
+        try {
+           client.target(baseUri)
+                    .path("/healthCareProfessionals/updateREST")
+                    .request(MediaType.APPLICATION_XML).put(Entity.xml(currentHealthCareProfessional));
+            return "admin_index?faces-redirect=true";
+           
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return "admin_administrator_update";
+    }
+    
+    
+    public void removeHealthCareProfessional(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("healthCareProfessionalUsername");
+            String username = param.getValue().toString();
+            
+            
+            healthCareProfessionalBean.remove(username);
+         
+            
+        } catch (EntityDoesNotExistsException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
     }
     
     ////////////////////ADMINISTRATOR ///////////////////////

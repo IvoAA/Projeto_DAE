@@ -4,7 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Update Patient</title>
+        <title>Update Administrator</title>
     </h:head>
     <h:body>
         <h:form>                  
@@ -16,18 +16,15 @@
                     value="#{administratorManager.currentAdministrator.username}"/>
                 <br></br>                    
 
-                    <h:outputLabel for="password" value="Password: " />
+                <h:outputLabel for="password" value="Password: " />
                 <h:inputSecret
                     id="password"
                     size="20"
                     required="true"
                     requiredMessage="Error: Password cannot be empty."
                     value="#{administratorManager.currentAdministrator.password}"/>
-                <h:message for="password" errorStyle="color: red" />   
-                
-
-                
-                
+                <br></br>
+         
                 <h:outputLabel for="name" value="Name: " />
                 <h:inputText 
                     id="name"
@@ -35,7 +32,7 @@
                     required="true"
                     requiredMessage="Error: Name cannot be empty."                            
                     value="#{administratorManager.currentAdministrator.name}" />
-                <h:message for="name" errorStyle="color: red" />
+                
                                                 
 
                 

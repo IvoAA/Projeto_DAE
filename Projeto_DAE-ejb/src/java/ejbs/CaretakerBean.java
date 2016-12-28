@@ -20,7 +20,9 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -36,7 +38,7 @@ public class CaretakerBean {
             throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
             if (em.find(Caretaker.class, username) != null) {
-                throw new EntityAlreadyExistsException("A caretaker with that code already exists.");
+                throw new EntityAlreadyExistsException("A caretaker with that username already exists.");
             }
             Caretaker caretaker = new Caretaker(username, name, password);
             em.persist(caretaker);
@@ -45,6 +47,31 @@ public class CaretakerBean {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    @Path("updateREST")
+    @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+    public void updateREST(CaretakerDTO caretakerDTO) 
+        throws EntityDoesNotExistsException, MyConstraintViolationException{
+        try {
+            Caretaker caretaker = em.find(Caretaker.class, caretakerDTO.getUsername());
+            if (caretaker == null) {
+                throw new EntityDoesNotExistsException("There is no caretaker with that username.");
+            }
+           
+
+            caretaker.setName(caretakerDTO.getName());
+            caretaker.setPassword(caretakerDTO.getPassword());
+            em.merge(caretaker);
+            
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (ConstraintViolationException e) {
+            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));            
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -87,23 +114,6 @@ public class CaretakerBean {
             throw new EJBException(e.getMessage());
         }
     }
-    
-    public List<Patient> getCaretakerPatients(String caretakerUsername) throws EntityDoesNotExistsException {
-        try {
-            Caretaker caretaker = em.find(Caretaker.class, caretakerUsername);
-            if (caretaker == null) {
-                throw new EntityDoesNotExistsException("Caretaker does not exists.");
-            }
-            
-            return caretaker.getPatients();
-            
-        } catch (EntityDoesNotExistsException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
-        }
-    }  
-    
     
 
     public void associatePatientToCaretaker(String username, int id) throws EntityDoesNotExistsException {            {

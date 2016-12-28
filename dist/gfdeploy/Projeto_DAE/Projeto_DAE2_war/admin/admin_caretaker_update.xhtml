@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Update Caretaker</title>
+    </h:head>
+    <h:body>
+        <h:form>                  
+            <h:panelGrid columns="3">
+
+                <h:outputLabel for="username" value="Username: " />
+                <h:outputText 
+                    id="username"
+                    value="#{administratorManager.currentCaretaker.username}"/>
+                <br></br>                    
+
+                <h:outputLabel for="password" value="Password: " />
+                <h:inputSecret
+                    id="password"
+                    size="20"
+                    required="true"
+                    requiredMessage="Error: Password cannot be empty."
+                    value="#{administratorManager.currentCaretaker.password}"/>
+                <br></br>
+         
+                <h:outputLabel for="name" value="Name: " />
+                <h:inputText 
+                    id="name"
+                    size="52"
+                    required="true"
+                    requiredMessage="Error: Name cannot be empty."                            
+                    value="#{administratorManager.currentCaretaker.name}" />
+                
+                   </h:panelGrid>                    
+                  
+        <br/>
+
+
+                
+                <br></br>
+
+                <h:commandButton
+                    id="submit"
+                    value="Update"
+                    action="#{administratorManager.updateCaretakersREST}" />
+                <h:message for="submit" style="color: red"/>
+        </h:form>
+        <h:form>   
+        <h:dataTable
+            var="patient"
+            summary="Enrolled patients"
+            value="#{administratorManager.currentCaretakerPatients}"
+            rules="all"
+            cellpadding="5">
+
+            <f:facet name="header">
+                <h:outputText value="Enrolled patients" />
+            </f:facet>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id" />
+                </f:facet>
+                <h:outputText value="#{patient.id}" />
+                <!--Falta validar o formato-->
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Name" />
+                </f:facet>
+                <h:outputText value="#{patient.name}" />
+            </h:column>                      
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions" />
+                </f:facet>
+                <h:commandLink value="Unroll"  actionListener="#{administratorManager.unrollPatients}">
+                    <f:param name="patientId" id="patientId" value="#{patient.id}" />
+                </h:commandLink>
+            </h:column>
+
+  
+         </h:dataTable>    
+        
+        </h:form>
+        <h:messages errorStyle="color: red" />        
+
+    </h:body>
+</html>
+

@@ -84,7 +84,7 @@ public class AdministratorBean {
     }
     
     @PUT
-    @Path("upateREST")
+    @Path("updateREST")
     @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
     public void updateREST(AdministratorDTO administratorDTO) 
         throws EntityDoesNotExistsException, MyConstraintViolationException{
@@ -94,7 +94,6 @@ public class AdministratorBean {
                 throw new EntityDoesNotExistsException("There is no patient with that username.");
             }
           
-            administrator.setUsername(administratorDTO.getUsername());
             administrator.setName(administratorDTO.getName());
             administrator.setPassword(administratorDTO.getPassword());
             em.merge(administrator);
