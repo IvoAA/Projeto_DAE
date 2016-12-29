@@ -27,7 +27,22 @@
                                  
                 
                 
-                    <h:outputLabel for="trainingMaterial" value="Training Material Support: " />
+                    <h:outputLabel for="trainingMaterialSupport" value="Training Material Support: " />
+                <h:selectOneMenu
+                    id="trainingMaterialSupport"
+                    value="#{administratorManager.currentTrainingMaterial.support}" >
+                    <f:selectItems
+                        value="#{administratorManager.allTrainingMaterialSupports}"
+                        var="support"
+                        itemValue="#{support}"
+                        itemLabel="#{support}" />
+                </h:selectOneMenu>
+                    
+                    
+                 <br></br>      
+
+                    
+                             <h:outputLabel for="trainingMaterialType" value="Training Material Type: " />
                 <h:selectOneMenu
                     id="trainingMaterialType"
                     value="#{administratorManager.currentTrainingMaterial.type}" >
@@ -36,23 +51,6 @@
                         var="type"
                         itemValue="#{type}"
                         itemLabel="#{type}" />
-                </h:selectOneMenu>
-                    
-                    
-                 <br></br>
-                
-                <br></br>
-
-                    
-                             <h:outputLabel for="trainingMaterial" value="Training Material Type: " />
-                <h:selectOneMenu
-                    id="trainingMaterialSupport"
-                    value="#{administratorManager.currentTrainingMaterial.support}" >
-                    <f:selectItems
-                        value="#{administratorManager.allTrainingMaterialSupports}"
-                        var="type"
-                        itemValue="#{support}"
-                        itemLabel="#{support}" />
                 </h:selectOneMenu>
                 
 

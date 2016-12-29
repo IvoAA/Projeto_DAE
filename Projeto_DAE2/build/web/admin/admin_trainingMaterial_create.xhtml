@@ -29,11 +29,26 @@
                     requiredMessage="Error: Name cannot be empty."                            
                     value="#{administratorManager.newTrainingMaterial.name}" />
                 <h:message for="name" errorStyle="color: red" />
-                
-                
-                  <h:outputLabel for="trainingMaterial" value="Training Material: " />
+                           
+                 
+                  
+                   <h:outputLabel for="trainingMaterialSupport" value="Training Material Support: " />
                 <h:selectOneMenu
-                    id="trainingMaterialId"
+                    id="trainingMaterialSupport"
+                    value="#{administratorManager.newTrainingMaterial.support}" >
+                    <f:selectItems
+                        value="#{administratorManager.allTrainingMaterialSupports}"
+                        var="support"
+                        itemValue="#{support}"
+                        itemLabel="#{support}" />
+                </h:selectOneMenu>
+                   
+                   <br></br>      
+
+                    
+                             <h:outputLabel for="trainingMaterialType" value="Training Material Type: " />
+                <h:selectOneMenu
+                    id="trainingMaterialType"
                     value="#{administratorManager.newTrainingMaterial.type}" >
                     <f:selectItems
                         value="#{administratorManager.allTrainingMaterialTypes}"
