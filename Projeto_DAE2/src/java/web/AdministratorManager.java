@@ -16,10 +16,12 @@ import dtos.AdministratorDTO;
 import dtos.CaretakerDTO;
 import dtos.HealthCareProfessionalDTO;
 import dtos.PatientDTO;
+import dtos.TrainingMaterialDTO;
 import ejbs.AdministratorBean;
 import ejbs.CaretakerBean;
 import ejbs.HealthCareProfessionalBean;
 import ejbs.PatientBean;
+import ejbs.TrainingMaterialBean;
 import entities.HealthCareProfessional;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
@@ -67,6 +69,8 @@ public class AdministratorManager {
     private AdministratorBean administratorBean;
     @EJB
     private HealthCareProfessionalBean healthCareProfessionalBean;
+    @EJB
+    private TrainingMaterialBean trainingMaterialBean;
     
     private PatientDTO newPatient;
     private PatientDTO currentPatient;
@@ -76,10 +80,14 @@ public class AdministratorManager {
     private AdministratorDTO currentAdministrator;
     private HealthCareProfessionalDTO newHealthCareProfessional; 
     private HealthCareProfessionalDTO currentHealthCareProfessional; 
+    private TrainingMaterialDTO newTrainingMaterial;
+    private TrainingMaterialDTO currentTrainingMaterial;
+    
     private String userType;
     private String searchCaretakersText;
     private String searchAdminsText;
     private String searchHCProsText;
+    private String searchTrainingMaterialsText;
     
     private List<CaretakerDTO> allCaretakers;
     private List<CaretakerDTO> caretakers;
@@ -87,6 +95,9 @@ public class AdministratorManager {
     private List<AdministratorDTO> admins;
     private List<HealthCareProfessionalDTO> allHCPros;
     private List<HealthCareProfessionalDTO> hCPros;
+    private List<TrainingMaterialDTO> allTrainingMaterials;
+    private List<TrainingMaterialDTO> trainingMaterials;
+
 
     private static final Logger logger = Logger.getLogger("web.AdministratorManager");
     private UIComponent component;
@@ -100,6 +111,7 @@ public class AdministratorManager {
         newCaretaker = new CaretakerDTO();
         newAdministrator = new AdministratorDTO();
         newHealthCareProfessional = new HealthCareProfessionalDTO();
+        newTrainingMaterial = new TrainingMaterialDTO();
         client = ClientBuilder.newClient();
         
         allCaretakers = getAllCaretakersREST();
@@ -108,6 +120,8 @@ public class AdministratorManager {
         admins = allAdmins;
         allHCPros = getAllHealthCareProfessionalsREST();
         hCPros = allHCPros;
+        allTrainingMaterials = getAllTrainingMaterialsREST();
+        trainingMaterials = allTrainingMaterials;
     }
 
     
@@ -346,16 +360,7 @@ public class AdministratorManager {
         }
         return null;
     }
-/*
-    public List<CaretakerDTO> getAllCaretakers() {
-        try {
-            return caretakerBean.getAll();
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-        return null;
-    }
-*/
+    
         public String updateHealthCareProfessionalREST(){   
         try {
            client.target(baseUri)
@@ -420,16 +425,7 @@ public class AdministratorManager {
         }
         return null;
     }
-/*
-    public List<CaretakerDTO> getAllCaretakers() {
-        try {
-            return caretakerBean.getAll();
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-        return null;
-    }
-*/
+    
         public String updateAdministratorsREST(){   
         try {
            client.target(baseUri)
@@ -463,95 +459,76 @@ public class AdministratorManager {
         }
     }
     
+        
+ ////////////////////TrainingMaterial ///////////////////////
     
     
-/*
-    /////////////// SUBJECTS /////////////////
-    public String createSubject() {
+    
+   private List<TrainingMaterialDTO> getAllTrainingMaterialsREST() {
+        List<TrainingMaterialDTO> returnedTrainingMaterials = null;
+        returnedTrainingMaterials = client.target(baseUri)
+                .path("/trainingMaterials/all")
+                .request(MediaType.APPLICATION_XML)
+                .get(new GenericType<List<TrainingMaterialDTO>>() {});
+        return returnedTrainingMaterials;
+    }
+    
+    public String createTrainingMaterial() {
         try {
-            subjectBean.create(
-                    newSubject.getCode(),
-                    newSubject.getName(),
-                    newSubject.getCourseCode(),
-                    newSubject.getCourseYear(),
-                    newSubject.getScholarYear());
-            newSubject.reset();
-            return "index?faces-redirect=true";
+            trainingMaterialBean.create(
+                    newTrainingMaterial.getId(),
+                    newTrainingMaterial.getName(),
+                    newTrainingMaterial.getType());
+            newAdministrator.reset();
+            return "admin_index?faces-redirect=true";
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
+        }
+        return null;
+    }
+/*
+    public List<CaretakerDTO> getAllCaretakers() {
+        try {
+            return caretakerBean.getAll();
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
         return null;
     }
-
-    public List<SubjectDTO> getAllSubjects() {
+*/
+        public String updateTrainingMaterialsREST(){   
         try {
-            return subjectBean.getAll();
+           client.target(baseUri)
+                    .path("/trainingMaterials/updateREST")
+                    .request(MediaType.APPLICATION_XML).put(Entity.xml(currentTrainingMaterial));
+            return "admin_index?faces-redirect=true";
+           
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
-        return null;
+        return "admin_trainingMaterial_update";
     }
-
-    public void removeSubject(ActionEvent event) {
+    
+    
+    public void removeTrainingMaterial(ActionEvent event) {
         try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("subjectCode");
-            int code = Integer.parseInt(param.getValue().toString());
-            subjectBean.remove(code);
+            UIParameter param = (UIParameter) event.getComponent().findComponent("trainingMaterialId");
+            int id = Integer.parseInt(param.getValue().toString()) ;
+            
+            
+            trainingMaterialBean.remove(id);
+         
+            
         } catch (EntityDoesNotExistsException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Something is wrong!", logger);
         }
     }
-
-    public List<StudentDTO> getEnrolledStudents() {
-        try {
-            return studentBean.getEnrolledStudents(currentSubject.getCode());
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-        return null;
-    }
-
-    public List<StudentDTO> getUnrolledStudents() {
-        try {
-            return studentBean.getUnrolledStudents(currentSubject.getCode());
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-        return null;
-    }
-
-    public void enrollStudent(ActionEvent event) {
-        try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("studentUsername");
-            String username = param.getValue().toString();
-            studentBean.enrollStudent(username, currentSubject.getCode());
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-    }
-
-    public void unrollStudent(ActionEvent event) {
-        try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("studentUsername");
-            String username = param.getValue().toString();
-            studentBean.unrollStudent(username, currentSubject.getCode());
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-    }
-    */
+    
+    
     /////////////// GETTERS & SETTERS /////////////////    
     
     public UIComponent getComponent() {
@@ -589,6 +566,10 @@ public class AdministratorManager {
     public List<HealthCareProfessionalDTO> gethCPros() {
         return hCPros;
     }
+
+    public List<TrainingMaterialDTO> getTrainingMaterials() {
+        return trainingMaterials;
+    }
     
     
 
@@ -622,6 +603,14 @@ public class AdministratorManager {
 
     public void setSearchHCProsText(String searchHCProsText) {
         this.searchHCProsText = searchHCProsText;
+    }
+
+    public String getSearchTrainingMaterialsText() {
+        return searchTrainingMaterialsText;
+    }
+
+    public void setSearchTrainingMaterialsText(String searchTrainingMaterialsText) {
+        this.searchTrainingMaterialsText = searchTrainingMaterialsText;
     }
     
     
@@ -657,42 +646,23 @@ public class AdministratorManager {
     public void setCurrentAdministrator(AdministratorDTO currentAdministrator) {
         this.currentAdministrator = currentAdministrator;
     }
+
+    public TrainingMaterialDTO getNewTrainingMaterial() {
+        return newTrainingMaterial;
+    }
+
+    public void setNewTrainingMaterial(TrainingMaterialDTO newTrainingMaterial) {
+        this.newTrainingMaterial = newTrainingMaterial;
+    }
+
+    public TrainingMaterialDTO getCurrentTrainingMaterial() {
+        return currentTrainingMaterial;
+    }
+
+    public void setCurrentTrainingMaterial(TrainingMaterialDTO currentTrainingMaterial) {
+        this.currentTrainingMaterial = currentTrainingMaterial;
+    }
     
-    
-    
-    
-    /*
-    public CourseDTO getNewCourse() {
-        return newCourse;
-    }
-
-    public void setNewCourse(CourseDTO newCourse) {
-        this.newCourse = newCourse;
-    }
-
-    public CourseDTO getCurrentCourse() {
-        return currentCourse;
-    }
-
-    public void setCurrentCourse(CourseDTO currentCourse) {
-        this.currentCourse = currentCourse;
-    }
-
-    public SubjectDTO getNewSubject() {
-        return newSubject;
-    }
-
-    public void setNewSubject(SubjectDTO newSubject) {
-        this.newSubject = newSubject;
-    }
-
-    public SubjectDTO getCurrentSubject() {
-        return currentSubject;
-    }
-
-    public void setCurrentSubject(SubjectDTO currentSubject) {
-        this.currentSubject = currentSubject;
-    }
 
     ///////////// VALIDATORS ////////////////////////*/
     
@@ -740,7 +710,7 @@ public class AdministratorManager {
             case "caretaker":
                 List<CaretakerDTO> resultC = new LinkedList();
                 caretakers = allCaretakers;                    
-                caretakers.stream().filter((c) -> (c.getUsername().contains(searchCaretakersText))).forEach((c) -> {
+                caretakers.stream().filter((c) -> (c.getName().contains(searchCaretakersText))).forEach((c) -> {
                     resultC.add(c);
                 });
 
@@ -749,7 +719,7 @@ public class AdministratorManager {
             case "admin":
                 List<AdministratorDTO> resultA = new LinkedList();
                 admins = allAdmins;                    
-                admins.stream().filter((a) -> (a.getUsername().contains(searchAdminsText))).forEach((a) -> {
+                admins.stream().filter((a) -> (a.getName().contains(searchAdminsText))).forEach((a) -> {
                     resultA.add(a);
                 });
 
@@ -758,11 +728,20 @@ public class AdministratorManager {
             case "hCPro":
                 List<HealthCareProfessionalDTO> resultH = new LinkedList();
                 hCPros = allHCPros;                    
-                hCPros.stream().filter((h) -> (h.getUsername().contains(searchHCProsText))).forEach((h) -> {
+                hCPros.stream().filter((h) -> (h.getName().contains(searchHCProsText))).forEach((h) -> {
                     resultH.add(h);
                 });
 
                 hCPros = resultH;
+                break;
+            case "trainingM":
+                List<TrainingMaterialDTO> resultT = new LinkedList();
+                trainingMaterials = allTrainingMaterials;                    
+                trainingMaterials.stream().filter((t) -> (t.getName().contains(searchTrainingMaterialsText))).forEach((t) -> {
+                    resultT.add(t);
+                });
+
+                trainingMaterials = resultT;
                 break;
         }
     }
@@ -780,6 +759,9 @@ public class AdministratorManager {
             case "hCPro":
                 hCPros = allHCPros;
                 searchHCProsText = null;
+            case "trainingM":
+                trainingMaterials = allTrainingMaterials;
+                searchTrainingMaterialsText = null;
         }
     }
 }

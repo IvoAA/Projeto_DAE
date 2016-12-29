@@ -1,5 +1,6 @@
 package ejbs;
 
+import enumerations.MaterialType;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -17,6 +18,8 @@ public class ConfigBean {
     private CaretakerBean caretakerBean;
      @EJB
     private AdministratorBean administratorBean;
+     @EJB
+    private TrainingMaterialBean trainingMaterialBean;
 
     @PostConstruct
     public void populateBD() {
@@ -34,6 +37,9 @@ public class ConfigBean {
             patientBean.create(1, "Ivo Amador", "user1");
             patientBean.create(2, "Rodrigo Faria", "user1");
             patientBean.create(3, "Pedro Figueiredo", "user2");
+            
+            trainingMaterialBean.create(1, "Venancio de 4", MaterialType.vídeos.name());
+            trainingMaterialBean.create(2, "Figas de 2", MaterialType.tutoriais.name());
 
             /*
             studentBean.create("1111111", "Manuel", "Manuel", "dae.ei.ipleiria@gmail.com", 1);
