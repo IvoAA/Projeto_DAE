@@ -1,5 +1,6 @@
 package ejbs;
 
+import enumerations.MaterialSupport;
 import enumerations.MaterialType;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -38,8 +39,8 @@ public class ConfigBean {
             patientBean.create(2, "Rodrigo Faria", "user1");
             patientBean.create(3, "Pedro Figueiredo", "user2");
             
-            trainingMaterialBean.create(1, "Venancio de 4", MaterialType.vídeos.name());
-            trainingMaterialBean.create(2, "Figas de 2", MaterialType.tutoriais.name());
+            trainingMaterialBean.create(1, "Venancio de 4", MaterialType.questionários.name(), MaterialSupport.texto.name());
+            trainingMaterialBean.create(2, "Figas de 2", MaterialType.tutoriais.name(),MaterialSupport.video.name());
 
             /*
             studentBean.create("1111111", "Manuel", "Manuel", "dae.ei.ipleiria@gmail.com", 1);

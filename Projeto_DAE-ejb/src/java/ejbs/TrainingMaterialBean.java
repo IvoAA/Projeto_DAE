@@ -14,6 +14,7 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -41,14 +42,16 @@ public class TrainingMaterialBean {
     
     @PersistenceContext
     private EntityManager em;
+    
+    
 
-    public void create(int id, String name, String type)
+    public void create(int id, String name, String type, String support)
             throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
             if (em.find(TrainingMaterial.class, id) != null) {
                 throw new EntityAlreadyExistsException("A TrainingMaterial with that id already exists.");
             }
-            TrainingMaterial trainingMaterial = new TrainingMaterial(id, name, type);
+            TrainingMaterial trainingMaterial = new TrainingMaterial(id, name, type, support);
             em.persist(trainingMaterial);
 
         } catch (EntityAlreadyExistsException e) {
@@ -89,7 +92,7 @@ public class TrainingMaterialBean {
         try {
             TrainingMaterial trainingMaterial = em.find(TrainingMaterial.class, id);
             if (trainingMaterial == null) {
-                throw new EntityDoesNotExistsException("There is no trainingMaterial with that username");
+                throw new EntityDoesNotExistsException("There is no trainingMaterial with that id");
             }
 
             em.remove(trainingMaterial);
@@ -104,7 +107,7 @@ public class TrainingMaterialBean {
     List<TrainingMaterialDTO> trainingMaterialsToDTOs(List<TrainingMaterial> trainingMaterials) {
         List<TrainingMaterialDTO> dtos = new ArrayList<>();
         for (TrainingMaterial t : trainingMaterials) {
-            dtos.add(new TrainingMaterialDTO(t.getId(), t.getName(), t.getType()));            
+            dtos.add(new TrainingMaterialDTO(t.getId(), t.getName(), t.getType(), t.getSupport()));            
         }
         return dtos;
     }
@@ -117,8 +120,14 @@ public class TrainingMaterialBean {
         try {
             List<TrainingMaterial> trainingMaterials = (List<TrainingMaterial>) em.createNamedQuery("getAllTrainingMaterials").getResultList();
             return trainingMaterialsToDTOs(trainingMaterials);
+            
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    
+    
+
+    
 }

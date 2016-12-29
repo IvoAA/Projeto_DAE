@@ -5,11 +5,9 @@
  */
 package entities;
 
-import enumerations.MaterialType;
+
 import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -34,14 +32,18 @@ public class TrainingMaterial implements Serializable {
     @NotNull(message = "Name must not be empty")
     private String name;
     private String type;
-
+    private String support;
+    
+    
+    
     public TrainingMaterial() {
     }
 
-    public TrainingMaterial(int id, String name, String type) {
+    public TrainingMaterial(int id, String name, String type, String support) {
         this.id = id;
         this.name = name;
         this.type = type;
+        this.support = support;
     }
     
     public int getId() {
@@ -68,6 +70,15 @@ public class TrainingMaterial implements Serializable {
         this.type = type;
     }
 
+    public String getSupport() {
+        return support;
+    }
+
+    public void setSupport(String support) {
+        this.support = support;
+    }
+
+    
     
     
     

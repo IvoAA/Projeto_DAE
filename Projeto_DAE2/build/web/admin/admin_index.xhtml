@@ -320,26 +320,33 @@
                     <h:outputText value="Type" />
                 </f:facet>
                  <h:outputText value="#{trainingMaterial.type}" />
+            </h:column>   
+             
+             <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Support" />
+                </f:facet>
+                 <h:outputText value="#{trainingMaterial.support}" />
             </h:column>    
 
-            <h:column>
+
+      <h:column>
                 <f:facet name="header">
                     <h:outputText value="Actions" />
                 </f:facet>
-                <h:form>
-                    <h:commandLink value="Details" action="admin_patient_details?faces-redirect=true">
+                    <h:commandLink value="Details" action="admin_trainingMaterial_details?faces-redirect=true">
                         <f:setPropertyActionListener target="#{administratorManager.currentTrainingMaterial}" value="#{trainingMaterial}" />
                     </h:commandLink>
                     &nbsp;
-                    <h:commandLink value="Update" action="admin_patient_update?faces-redirect=true">
+                    <h:commandLink value="Update" action="admin_trainingMaterial_update?faces-redirect=true">
                         <f:setPropertyActionListener target="#{administratorManager.currentTrainingMaterial}" value="#{trainingMaterial}" />
                     </h:commandLink>
                     &nbsp;
                     <h:commandLink value="Remove" actionListener="#{administratorManager.removeTrainingMaterial}">
                         <f:param name="trainingMaterialId" id="trainingMaterialId" value="#{trainingMaterial.id}" />
                     </h:commandLink>
-                </h:form>
             </h:column>                        
+                       
 
         </h:dataTable>
         

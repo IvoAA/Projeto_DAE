@@ -23,6 +23,8 @@ import ejbs.HealthCareProfessionalBean;
 import ejbs.PatientBean;
 import ejbs.TrainingMaterialBean;
 import entities.HealthCareProfessional;
+import enumerations.MaterialSupport;
+import enumerations.MaterialType;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -83,11 +85,13 @@ public class AdministratorManager {
     private TrainingMaterialDTO newTrainingMaterial;
     private TrainingMaterialDTO currentTrainingMaterial;
     
+    
     private String userType;
     private String searchCaretakersText;
     private String searchAdminsText;
     private String searchHCProsText;
     private String searchTrainingMaterialsText;
+    
     
     private List<CaretakerDTO> allCaretakers;
     private List<CaretakerDTO> caretakers;
@@ -113,6 +117,7 @@ public class AdministratorManager {
         newHealthCareProfessional = new HealthCareProfessionalDTO();
         newTrainingMaterial = new TrainingMaterialDTO();
         client = ClientBuilder.newClient();
+ 
         
         allCaretakers = getAllCaretakersREST();
         caretakers = allCaretakers;
@@ -149,7 +154,7 @@ public class AdministratorManager {
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again later!", component, logger);
         }
         return null;
     }
@@ -478,8 +483,14 @@ public class AdministratorManager {
             trainingMaterialBean.create(
                     newTrainingMaterial.getId(),
                     newTrainingMaterial.getName(),
-                    newTrainingMaterial.getType());
-            newAdministrator.reset();
+                    newTrainingMaterial.getType(),
+                    newTrainingMaterial.getSupport());
+            newTrainingMaterial.reset();
+                        userType = "trainingM";
+            allTrainingMaterials = getAllTrainingMaterialsREST();
+            search();
+            
+            
             return "admin_index?faces-redirect=true";
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
@@ -515,11 +526,13 @@ public class AdministratorManager {
     public void removeTrainingMaterial(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("trainingMaterialId");
-            int id = Integer.parseInt(param.getValue().toString()) ;
-            
+            int id = Integer.parseInt(param.getValue().toString()) ;            
             
             trainingMaterialBean.remove(id);
-         
+            userType = "trainingM";
+            allTrainingMaterials = getAllTrainingMaterialsREST();
+            search();
+                        
             
         } catch (EntityDoesNotExistsException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
@@ -527,6 +540,30 @@ public class AdministratorManager {
             FacesExceptionHandler.handleException(e, "Something is wrong!", logger);
         }
     }
+    
+    
+      
+   public List<String> getAllTrainingMaterialTypes() {
+            List<String> trainingMaterialsTypes = new LinkedList(); // = (List<TrainingMaterial>) em.createNamedQuery("getAllTrainingMaterials").getResultList();
+            //return trainingMaterialsToDTOs(trainingMaterials);
+            for (MaterialType type : MaterialType.values()) {
+                trainingMaterialsTypes.add(type.name());
+            }
+            
+            return trainingMaterialsTypes;
+    }
+   
+    public List<String> getAllTrainingMaterialSupports() {
+            List<String> trainingMaterialSupports = new LinkedList(); // = (List<TrainingMaterial>) em.createNamedQuery("getAllTrainingMaterials").getResultList();
+            //return trainingMaterialsToDTOs(trainingMaterials);
+            for (MaterialSupport support : MaterialSupport.values()) {
+                trainingMaterialSupports.add(support.name());
+            }
+            
+            return trainingMaterialSupports;
+    }
+    
+    
     
     
     /////////////// GETTERS & SETTERS /////////////////    

@@ -22,6 +22,7 @@ public class TrainingMaterialDTO {
     private String name;
 
     private String type;
+    private String support;
 
     public TrainingMaterialDTO() {
     }
@@ -34,14 +35,21 @@ public class TrainingMaterialDTO {
         this.type = type;
     }
 
-    public TrainingMaterialDTO(int id, String name, String type ) {
+    public TrainingMaterialDTO(int id, String name, String type, String support ) {
         this.id = id;
         this.name = name;
         this.type = type;
+        this.support = support;
     }
 
+    public String getSupport() {
+        return support;
+    }
 
-   
+    public void setSupport(String support) {
+        this.support = support;
+    }
+
 
     public int getId() {
         return id;
@@ -65,5 +73,7 @@ public class TrainingMaterialDTO {
         this.id = -1;
         this.name = null;
     }
+    
+    
     
 }

@@ -9,8 +9,8 @@ package enumerations;
  *
  * @author Figueiredo
  */
-public enum MaterialType {
-    tutoriais, questionários
+public enum MaterialSupport {
+    
+    texto, video, imagem
+    
 }
-
-

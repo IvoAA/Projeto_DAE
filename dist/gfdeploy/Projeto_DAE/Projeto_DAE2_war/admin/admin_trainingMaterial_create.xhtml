@@ -4,7 +4,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
-        <title>Create Patient</title>
+        <title>Create Training Material</title>
     </h:head>
     <h:body>
         <h:form>                  
@@ -17,7 +17,7 @@
                     validator="#{administratorManager.validateId}"  
                     required="true"
                     requiredMessage="Error: Username cannot be empty."
-                    value="#{administratorManager.newPatient.id}">
+                    value="#{administratorManager.newTrainingMaterial.id}">
                 </h:inputText>
                 <h:message for="username" errorStyle="color: red" />
 
@@ -27,19 +27,19 @@
                     size="52"
                     required="true"
                     requiredMessage="Error: Name cannot be empty."                            
-                    value="#{administratorManager.newPatient.name}" />
+                    value="#{administratorManager.newTrainingMaterial.name}" />
                 <h:message for="name" errorStyle="color: red" />
                 
                 
-                  <h:outputLabel for="caretaker" value="Caretaker: " />
+                  <h:outputLabel for="trainingMaterial" value="Training Material: " />
                 <h:selectOneMenu
-                    id="caretaker"
-                    value="#{administratorManager.newPatient.caretaker}" >
+                    id="trainingMaterialId"
+                    value="#{administratorManager.newTrainingMaterial.type}" >
                     <f:selectItems
-                        value="#{administratorManager.allCaretakersREST}"
-                        var="caretaker"
-                        itemValue="#{caretaker.username}"
-                        itemLabel="#{caretaker.name}" />
+                        value="#{administratorManager.allTrainingMaterialTypes}"
+                        var="type"
+                        itemValue="#{type}"
+                        itemLabel="#{type}" />
                 </h:selectOneMenu>
                 
 
@@ -47,7 +47,7 @@
                     id="submit"
                     value="Create"
                     binding="#{administratorManager.component}" 
-                    action="#{administratorManager.createPatient}" />
+                    action="#{administratorManager.createTrainingMaterial()}" />
                 <h:message for="submit" style="color: red"/>
             </h:panelGrid >                       
 
