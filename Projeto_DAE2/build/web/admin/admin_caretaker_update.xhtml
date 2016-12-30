@@ -33,7 +33,11 @@
                     requiredMessage="Error: Name cannot be empty."                            
                     value="#{administratorManager.currentCaretaker.name}" />
                 
-                   </h:panelGrid>                    
+                   </h:panelGrid>    
+            
+             <br></br>
+            
+               
                   
         <br/>
 
@@ -41,11 +45,7 @@
                 
                 <br></br>
 
-                <h:commandButton
-                    id="submit"
-                    value="Update"
-                    action="#{administratorManager.updateCaretakersREST}" />
-                <h:message for="submit" style="color: red"/>
+               
         </h:form>
         <h:form>   
         <h:dataTable
@@ -84,7 +84,59 @@
             </h:column>
 
   
-         </h:dataTable>    
+         </h:dataTable> 
+            
+            <br></br>
+            
+         <h:dataTable
+            var="patient"
+            summary="All patients"
+            value="#{administratorManager.allPatientsREST}"
+            rules="all"
+            cellpadding="5">
+
+            <f:facet name="header">
+                <h:outputText value="All patients" />
+            </f:facet>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id" />
+                </f:facet>
+                <h:outputText value="#{patient.id}" />
+                <!--Falta validar o formato-->
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Name" />
+                </f:facet>
+                <h:outputText value="#{patient.name}" />
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Caretaker" />
+                </f:facet>
+                <h:outputText value="#{patient.caretaker}" />
+            </h:column>                        
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions" />
+                </f:facet>
+                    <h:commandLink value="Enroll" actionListener="#{administratorManager.enrollPatient}">
+                        <f:param name="patientId" id="patientId" value="#{patient.id}" />
+                    </h:commandLink>
+            </h:column>
+
+        </h:dataTable>   
+            
+             <h:commandButton
+                    id="submit"
+                    value="Update"
+                    action="#{administratorManager.updateCaretakersREST}" />
+                <h:message for="submit" style="color: red"/>
         
         </h:form>
         <h:messages errorStyle="color: red" />        

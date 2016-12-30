@@ -7,8 +7,13 @@ package entities;
 
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -33,10 +38,20 @@ public class TrainingMaterial implements Serializable {
     private String name;
     private String type;
     private String support;
+   
+    
+    @ManyToMany
+    @JoinTable(name = "TRAININGMATERIAL_CARETAKER",
+            joinColumns
+            = @JoinColumn(name = "TRAININGMATERIALS_ID", referencedColumnName = "ID"),
+            inverseJoinColumns
+            = @JoinColumn(name = "CARETAKER_USERNAME", referencedColumnName = "USERNAME"))
+    private List<Caretaker> caretakers;
     
     
     
     public TrainingMaterial() {
+        caretakers = new LinkedList<>();
     }
 
     public TrainingMaterial(int id, String name, String type, String support) {
@@ -44,6 +59,7 @@ public class TrainingMaterial implements Serializable {
         this.name = name;
         this.type = type;
         this.support = support;
+        caretakers = new LinkedList<>();
     }
     
     public int getId() {
@@ -78,6 +94,18 @@ public class TrainingMaterial implements Serializable {
         this.support = support;
     }
 
+    public List<Caretaker> getCaretakers() {
+        return caretakers;
+    }
+
+    public void setCaretakers(List<Caretaker> caretakers) {
+        this.caretakers = caretakers;
+    }
+
+
+    
+
+    
     
     
     

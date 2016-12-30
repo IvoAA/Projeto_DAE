@@ -2,16 +2,11 @@ package ejbs;
 
 import exceptions.PatientAssociateException;
 import dtos.CaretakerDTO;
-import dtos.PatientDTO;
 import entities.Caretaker;
 import entities.Patient;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
-import exceptions.PatientNotAssociatedException;
-import exceptions.StudentEnrolledException;
-import exceptions.StudentNotEnrolledException;
-import exceptions.SubjectNotInCourseException;
 import exceptions.Utils;
 import java.util.ArrayList;
 import java.util.List;

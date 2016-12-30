@@ -17,30 +17,32 @@ public class ConfigBean {
     private PatientBean patientBean;
     @EJB
     private CaretakerBean caretakerBean;
-     @EJB
+    @EJB
     private AdministratorBean administratorBean;
-     @EJB
+    @EJB
     private TrainingMaterialBean trainingMaterialBean;
 
     @PostConstruct
     public void populateBD() {
 
         try {
-            
-            
+
             administratorBean.create("admin1", "adminName1", "adminPass1");
             administratorBean.create("admin2", "adminName2", "adminPass2");
-                    
-                    
+
             caretakerBean.create("user1", "name1", "pass1");
             caretakerBean.create("user2", "name2", "pass2");
 
-            patientBean.create(1, "Ivo Amador", "user1");
-            patientBean.create(2, "Rodrigo Faria", "user1");
-            patientBean.create(3, "Pedro Figueiredo", "user2");
-            
+            patientBean.create(1, "Ivo Amador");
+            patientBean.create(2, "Rodrigo Faria");
+            patientBean.create(3, "Pedro Figueiredo");
+
             trainingMaterialBean.create(1, "Venancio de 4", MaterialType.questionários.name(), MaterialSupport.texto.name());
-            trainingMaterialBean.create(2, "Figas de 2", MaterialType.tutoriais.name(),MaterialSupport.video.name());
+            trainingMaterialBean.create(2, "Figas de 2", MaterialType.tutoriais.name(), MaterialSupport.video.name());
+
+            patientBean.enrollPatient(1, "user1");
+            patientBean.enrollPatient(2, "user1");
+           
 
             /*
             studentBean.create("1111111", "Manuel", "Manuel", "dae.ei.ipleiria@gmail.com", 1);
@@ -82,8 +84,8 @@ public class ConfigBean {
             teacherBean.addSubjectTeacher(1, "t1");
             teacherBean.addSubjectTeacher(2, "t2");
             teacherBean.addSubjectTeacher(1, "t3");
-            */
-        } catch(Exception e){
+             */
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }

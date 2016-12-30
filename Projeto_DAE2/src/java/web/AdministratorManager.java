@@ -146,8 +146,8 @@ public class AdministratorManager {
         try {
             patientBean.create(
                     newPatient.getId(),
-                    newPatient.getName(),
-                    newPatient.getCaretaker());
+                    newPatient.getName()
+                    );
             
             newPatient.reset();
             return "admin_index?faces-redirect=true";
@@ -299,6 +299,23 @@ public class AdministratorManager {
         return null;
     }
     
+    
+        public void enrollPatient(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("patientId");
+            int id = Integer.parseInt(param.getValue().toString()) ;
+            patientBean.enrollPatient(id, currentCaretaker.getUsername());
+            
+            
+        } catch (EntityDoesNotExistsException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+    }
+    
+    
+    
         public void unrollPatients(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("patientId");
@@ -311,6 +328,8 @@ public class AdministratorManager {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
     }
+        
+        
     
 
     

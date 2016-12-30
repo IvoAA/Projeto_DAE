@@ -7,18 +7,14 @@ package ejbs;
 
 import dtos.TrainingMaterialDTO;
 import entities.TrainingMaterial;
-import entities.TrainingMaterial;
-import enumerations.MaterialType;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
-import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;

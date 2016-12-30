@@ -11,6 +11,7 @@ import entities.Patient;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
+import exceptions.PatientAssociateException;
 import exceptions.PatientNotAssociatedException;
 import exceptions.Utils;
 import java.util.ArrayList;
@@ -38,18 +39,14 @@ public class PatientBean {
     @PersistenceContext
     private EntityManager em;
 
-    public void create(int id, String name, String caretakerUser) throws EntityAlreadyExistsException, MyConstraintViolationException {
+    public void create(int id, String name) throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
             if(em.find(Patient.class, id) != null){
                 throw new EntityAlreadyExistsException("A patient with that id already exists");
             }
-            Caretaker caretaker = em.find(Caretaker.class, caretakerUser);
-            if (caretaker == null) {
-                throw new EntityDoesNotExistsException("There is no caretaker with that username.");
-            }
-            Patient patient = new Patient(id, name, caretaker);
+            
+            Patient patient = new Patient(id, name);
             em.persist(patient);
-            caretaker.addPatient(patient);
             
         } catch (EntityAlreadyExistsException e) {
             throw e;
@@ -150,6 +147,45 @@ public class PatientBean {
         }
     } 
         
+        
+        public void enrollPatient(int id, String username) 
+            throws EntityDoesNotExistsException, PatientAssociateException{
+        try {
+
+            Patient patient = em.find(Patient.class, id);
+            if (patient == null) {
+                throw new EntityDoesNotExistsException("There is no patient with that id.");
+            }
+
+            Caretaker caretaker = em.find(Caretaker.class, username);
+            if (caretaker == null) {
+                throw new EntityDoesNotExistsException("There is no subject with that code.");
+            }
+            
+            if(patient.getCaretaker() != null){
+               patient.getCaretaker().removePatient(patient);
+                
+                
+            }
+            
+            if(!caretaker.getPatients().contains(patient)){
+             caretaker.addPatient(patient);
+             patient.setCaretaker(caretaker);
+                
+            }
+            
+
+          
+
+      } catch (EntityDoesNotExistsException e) {
+            throw e;             
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+        
+        
+        
             public void unrollPatient(int id, String username) 
             throws EntityDoesNotExistsException, PatientNotAssociatedException {
         try {
@@ -168,7 +204,7 @@ public class PatientBean {
             }            
             
             caretaker.removePatient(patient);
-           //patient.setCaretaker(null);
+            patient.setCaretaker(null);
 
         } catch (EntityDoesNotExistsException | PatientNotAssociatedException e) {
             throw e;             
@@ -198,7 +234,7 @@ public class PatientBean {
         return new PatientDTO(
                 patient.getId(),
                 patient.getName(),
-                patient.getCaretaker().getUsername());
+                patient.getCaretaker() == null? "Not Defined" : patient.getCaretaker().getUsername());
     }
     
 

@@ -6,9 +6,12 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -36,15 +39,18 @@ public class Patient implements Serializable {
     
     @ManyToOne
     @JoinColumn(name = "CARETAKER_USERNAME")
-    @NotNull (message="A patient must have a caretaker")
+    //@NotNull (message="A patient must have a caretaker")
     private Caretaker caretaker;
     
-    public Patient(){ }
+    public Patient(){ 
+  
+    }
     
-    public Patient(int id, String name, Caretaker caretaker) {
+    public Patient(int id, String name) {
         this.id = id;
         this.name = name;
-        this.caretaker = caretaker;
+        this.caretaker = null;
+        
     }
     
 
@@ -71,6 +77,10 @@ public class Patient implements Serializable {
     public void setCaretaker(Caretaker caretaker) {
         this.caretaker = caretaker;
     }
+
+
+    
+    
     
 }
     

@@ -7,11 +7,7 @@ package ejbs;
 
 
 import dtos.AdministratorDTO;
-import dtos.CaretakerDTO;
-import dtos.PatientDTO;
 import entities.Administrator;
-import entities.Caretaker;
-import entities.Patient;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
