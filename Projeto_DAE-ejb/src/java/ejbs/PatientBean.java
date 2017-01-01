@@ -35,38 +35,37 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("/patients")
 public class PatientBean {
-    
+
     @PersistenceContext
     private EntityManager em;
 
-    public void create(int id, String name) throws EntityAlreadyExistsException, MyConstraintViolationException {
+    public void create(int id, String name, String necessity, String necessityType) throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
-            if(em.find(Patient.class, id) != null){
+            if (em.find(Patient.class, id) != null) {
                 throw new EntityAlreadyExistsException("A patient with that id already exists");
             }
-            
-            Patient patient = new Patient(id, name);
+
+            Patient patient = new Patient(id, name, necessity, necessityType);
             em.persist(patient);
-            
+
         } catch (EntityAlreadyExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
         } catch (Exception e) {
-            throw new EJBException(e.getMessage()); 
+            throw new EJBException(e.getMessage());
         }
     }
-    
 
-    public void update(int id, String name, String caretakerUser) 
-        throws EntityDoesNotExistsException, MyConstraintViolationException{
+    public void update(int id, String name, String caretakerUser)
+            throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            
+
             Patient patient = em.find(Patient.class, id);
             if (patient == null) {
                 throw new EntityDoesNotExistsException("There is no patient with that username.");
             }
-            
+
             Caretaker caretaker = em.find(Caretaker.class, caretakerUser);
             if (caretaker == null) {
                 throw new EntityDoesNotExistsException("There is no caretaker with that username.");
@@ -75,27 +74,27 @@ public class PatientBean {
             patient.setName(name);
             patient.setCaretaker(caretaker);
             em.merge(patient);
-            
+
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
-            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));            
+            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     @PUT
     @Path("updateREST")
-    @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    public void updateREST(PatientDTO patientDTO) 
-        throws EntityDoesNotExistsException, MyConstraintViolationException{
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void updateREST(PatientDTO patientDTO)
+            throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
             Patient patient = em.find(Patient.class, patientDTO.getId());
             if (patient == null) {
                 throw new EntityDoesNotExistsException("There is no patient with that username.");
             }
-           
+
             Caretaker caretaker = em.find(Caretaker.class, patientDTO.getCaretaker());
             if (caretaker == null) {
                 throw new EntityDoesNotExistsException("There is no caretaker with that username.");
@@ -105,11 +104,11 @@ public class PatientBean {
             patient.setName(patientDTO.getName());
             patient.setCaretaker(caretaker);
             em.merge(patient);
-            
+
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
-            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));            
+            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -120,36 +119,34 @@ public class PatientBean {
             Patient patient = em.find(Patient.class, id);
             if (patient == null) {
                 throw new EntityDoesNotExistsException("There is no patient with that username.");
-            }            
+            }
             em.remove(patient);
-        
+
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
-    
-    
-        public List<Patient> getCaretakerPatients(String caretakerUsername) throws EntityDoesNotExistsException {
+
+    public List<Patient> getCaretakerPatients(String caretakerUsername) throws EntityDoesNotExistsException {
         try {
             Caretaker caretaker = em.find(Caretaker.class, caretakerUsername);
             if (caretaker == null) {
                 throw new EntityDoesNotExistsException("Caretaker does not exists.");
             }
-            
+
             return caretaker.getPatients();
-            
+
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
-    } 
-        
-        
-        public void enrollPatient(int id, String username) 
-            throws EntityDoesNotExistsException, PatientAssociateException{
+    }
+
+    public void enrollPatient(int id, String username)
+            throws EntityDoesNotExistsException, PatientAssociateException {
         try {
 
             Patient patient = em.find(Patient.class, id);
@@ -161,61 +158,52 @@ public class PatientBean {
             if (caretaker == null) {
                 throw new EntityDoesNotExistsException("There is no subject with that code.");
             }
-            
-            if(patient.getCaretaker() != null){
-               patient.getCaretaker().removePatient(patient);
-                
-                
-            }
-            
-            if(!caretaker.getPatients().contains(patient)){
-             caretaker.addPatient(patient);
-             patient.setCaretaker(caretaker);
-                
-            }
-            
 
-          
+            if (patient.getCaretaker() != null) {
+                patient.getCaretaker().removePatient(patient);
 
-      } catch (EntityDoesNotExistsException e) {
-            throw e;             
+            }
+
+            if (!caretaker.getPatients().contains(patient)) {
+                caretaker.addPatient(patient);
+                patient.setCaretaker(caretaker);
+
+            }
+
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
-        
-        
-        
-            public void unrollPatient(int id, String username) 
+
+    public void unrollPatient(int id, String username)
             throws EntityDoesNotExistsException, PatientNotAssociatedException {
         try {
             Caretaker caretaker = em.find(Caretaker.class, username);
-            if(caretaker == null){
+            if (caretaker == null) {
                 throw new EntityDoesNotExistsException("There is no subject with that code.");
-            }            
-            
+            }
+
             Patient patient = em.find(Patient.class, id);
-            if(patient == null){
+            if (patient == null) {
                 throw new EntityDoesNotExistsException("There is no student with that username.");
             }
-            
-            if(!caretaker.getPatients().contains(patient)){
+
+            if (!caretaker.getPatients().contains(patient)) {
                 throw new PatientNotAssociatedException();
-            }            
-            
+            }
+
             caretaker.removePatient(patient);
             patient.setCaretaker(null);
 
         } catch (EntityDoesNotExistsException | PatientNotAssociatedException e) {
-            throw e;             
+            throw e;
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
-    
-    
-    
-    
+
     @GET
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -228,15 +216,15 @@ public class PatientBean {
             throw new EJBException(e.getMessage());
         }
     }
-    
-    
+
     PatientDTO patientToDTO(Patient patient) {
         return new PatientDTO(
                 patient.getId(),
                 patient.getName(),
-                patient.getCaretaker() == null? "Not Defined" : patient.getCaretaker().getUsername());
+                patient.getCaretaker() == null ? "Not Defined" : patient.getCaretaker().getUsername(),
+                patient.getNecessity(),
+                patient.getNecessityType());
     }
-    
 
     public List<PatientDTO> patientsToDTOs(List<Patient> patients) {
         List<PatientDTO> dtos = new ArrayList<>();
@@ -245,9 +233,6 @@ public class PatientBean {
         }
         return dtos;
     }
-    
-       
-    
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

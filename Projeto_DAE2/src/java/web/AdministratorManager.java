@@ -146,7 +146,9 @@ public class AdministratorManager {
         try {
             patientBean.create(
                     newPatient.getId(),
-                    newPatient.getName()
+                    newPatient.getName(),
+                    newPatient.getNecessity(),
+                    newPatient.getNecessityType()
                     );
             
             newPatient.reset();

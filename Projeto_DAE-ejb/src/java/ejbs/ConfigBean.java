@@ -2,6 +2,7 @@ package ejbs;
 
 import enumerations.MaterialSupport;
 import enumerations.MaterialType;
+import enumerations.NecessityType;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -33,9 +34,9 @@ public class ConfigBean {
             caretakerBean.create("user1", "name1", "pass1");
             caretakerBean.create("user2", "name2", "pass2");
 
-            patientBean.create(1, "Ivo Amador");
-            patientBean.create(2, "Rodrigo Faria");
-            patientBean.create(3, "Pedro Figueiredo");
+            patientBean.create(1, "Ivo Amador", "Dor de estômago", NecessityType.TRONCO.getNecessityType());
+            patientBean.create(2, "Rodrigo Faria", "Dor de cu",NecessityType.TRONCO.getNecessityType() );
+            patientBean.create(3, "Pedro Figueiredo", "Dor de corno",NecessityType.PSICOLOGICA.getNecessityType());
 
             trainingMaterialBean.create(1, "Venancio de 4", MaterialType.questionários.name(), MaterialSupport.texto.name());
             trainingMaterialBean.create(2, "Figas de 2", MaterialType.tutoriais.name(), MaterialSupport.video.name());

@@ -36,6 +36,11 @@ public class Patient implements Serializable {
     protected int id;
     @NotNull(message = "Name must not be empty")
     protected String name;
+    @NotNull(message = "Necessity must not be empty")
+    private String necessity;
+    @NotNull(message = "NecessityTYpe must not be empty")
+    private String necessityType;
+    
     
     @ManyToOne
     @JoinColumn(name = "CARETAKER_USERNAME")
@@ -46,11 +51,13 @@ public class Patient implements Serializable {
   
     }
     
-    public Patient(int id, String name) {
+    public Patient(int id, String name, String necessity, String necessityType) {
         this.id = id;
         this.name = name;
         this.caretaker = null;
-        
+        this.necessity = necessity;
+        this.necessityType = necessityType; 
+       
     }
     
 
@@ -76,6 +83,22 @@ public class Patient implements Serializable {
 
     public void setCaretaker(Caretaker caretaker) {
         this.caretaker = caretaker;
+    }
+
+    public String getNecessity() {
+        return necessity;
+    }
+
+    public void setNecessity(String necessity) {
+        this.necessity = necessity;
+    }
+
+    public String getNecessityType() {
+        return necessityType;
+    }
+
+    public void setNecessityType(String necessityType) {
+        this.necessityType = necessityType;
     }
 
 
