@@ -104,6 +104,10 @@
                         <f:setPropertyActionListener target="#{administratorManager.currentCaretaker}" value="#{caretaker}" />
                     </h:commandLink>
                     &nbsp;
+                    <h:commandLink value="Manage Materials" action="admin_caretaker_materialsManagement?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentCaretaker}" value="#{caretaker}" />
+                    </h:commandLink>
+                    &nbsp;
                     <h:commandLink value="Remove" actionListener="#{administratorManager.removeCaretaker}">
                         <f:param name="caretakerUsername" id="caretakerUsername" value="#{caretaker.username}" />
                     </h:commandLink>
