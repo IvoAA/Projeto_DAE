@@ -131,7 +131,7 @@
                     <f:facet name="header">
                         <h:outputText value="Name" />
                     </f:facet>
-                    <h:outputText value="#{trainingMaterial.name}" />
+                    <h:outputText value="#{materials.name}" />
                     <!--Falta validar o formato-->
                 </h:column> 
 
@@ -139,14 +139,23 @@
                     <f:facet name="header">
                         <h:outputText value="NecessityType" />
                     </f:facet>
-                    <h:outputText value="#{trainingMaterial.type}" />
+                    <h:outputText value="#{materials.type}" />
                 </h:column> 
 
                 <h:column>
                     <f:facet name="header">
                         <h:outputText value="NecessityType" />
                     </f:facet>
-                    <h:outputText value="#{trainingMaterial.support}" />
+                    <h:outputText value="#{materials.support}" />
+                </h:column> 
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Actions" />
+                    </f:facet>
+                    <h:commandLink value="Disassociate from caretaker "  actionListener="#{administratorManager.unrollTrainingMaterial}">
+                        <f:param name="trainingMaterialId" id="trainingMaterialId" value="#{trainingMaterial.id}" />
+                    </h:commandLink>
                 </h:column> 
 
 

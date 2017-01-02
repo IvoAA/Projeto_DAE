@@ -12,6 +12,7 @@ import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.PatientAssociateException;
+import exceptions.PatientNotAssociatedException;
 import exceptions.Utils;
 import java.util.ArrayList;
 import java.util.List;
@@ -147,6 +148,35 @@ public class TrainingMaterialBean {
             throw new EJBException(e.getMessage());
         }
     }
+    
+     public void unrollTrainingMaterial(int id, String username)
+            throws EntityDoesNotExistsException, PatientNotAssociatedException {
+        try {
+            Caretaker caretaker = em.find(Caretaker.class, username);
+            if (caretaker == null) {
+                throw new EntityDoesNotExistsException("There is no caretaker with that username.");
+            }
+
+            TrainingMaterial trainingMaterial = em.find(TrainingMaterial.class, id);
+            if (trainingMaterial == null) {
+                throw new EntityDoesNotExistsException("There is no trainingMaterial with that id.");
+            }
+
+            if (!caretaker.getTrainingMaterials().contains(trainingMaterial)) {
+                throw new PatientNotAssociatedException();
+            }
+
+            caretaker.removeTrainingMateial(trainingMaterial);
+            trainingMaterial.removeCaretaker(caretaker);
+
+        } catch (EntityDoesNotExistsException | PatientNotAssociatedException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    
     
         TrainingMaterialDTO trainingMaterialDTO(TrainingMaterial trainingMaterial) {
         return new TrainingMaterialDTO(

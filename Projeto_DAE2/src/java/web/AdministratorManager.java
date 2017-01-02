@@ -606,6 +606,19 @@ public class AdministratorManager {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
     }
+           
+            public void unrollTrainingMaterial(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("trainingMaterialId");
+            int id = Integer.parseInt(param.getValue().toString());
+            trainingMaterialBean.unrollTrainingMaterial(id, currentCaretaker.getUsername());
+            
+        } catch (EntityDoesNotExistsException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+    }
     
     
     
