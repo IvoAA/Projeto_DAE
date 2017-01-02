@@ -9,6 +9,7 @@
     <h:body>
         <h:form>           
 
+            <h1>Caretaker</h1>
 
             <h:panelGrid columns="2">
 
@@ -59,7 +60,7 @@
                     <f:facet name="header">
                         <h:outputText value="NecessityType" />
                     </f:facet>
-                    <h:outputText value="#{patient.name}" />
+                    <h:outputText value="#{patient.necessityType}" />
                 </h:column> 
 
                 <h:column>
@@ -109,6 +110,87 @@
 
             </h:dataTable> 
 
+            <br></br>
+            <br></br>
+            <br></br>
+            
+            
+                 </h:form>
+        <h:form>   
+            <h:dataTable
+                var="patient"
+                summary="Enrolled patients"
+                value="#{administratorManager.currentCaretakerPatients}"
+                rules="all"
+                cellpadding="5">
+
+                <f:facet name="header">
+                    <h:outputText value="Enrolled patients necessities" />
+                </f:facet>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Necessity" />
+                    </f:facet>
+                    <h:outputText value="#{patient.necessity}" />
+                    <!--Falta validar o formato-->
+                </h:column> 
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="NecessityType" />
+                    </f:facet>
+                    <h:outputText value="#{patient.necessityType}" />
+                </h:column> 
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Materials Type Available" />
+                    </f:facet>
+
+                    <h:selectOneMenu
+                        id="trainingMaterialType"
+                        value="#{administratorManager.newTrainingMaterial.type}" >
+                        <f:selectItems
+                            value="#{administratorManager.allTrainingMaterialTypes}"
+                            var="type"
+                            itemValue="#{type}"
+                            itemLabel="#{type}" />
+                    </h:selectOneMenu>
+                </h:column> 
+
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Materials Support Available" />
+                    </f:facet>
+
+                    <h:selectOneMenu
+                        id="trainingMaterialSupport"
+                        value="#{administratorManager.newTrainingMaterial.support}" >
+                        <f:selectItems
+                            value="#{administratorManager.allTrainingMaterialSupports}"
+                            var="support"
+                            itemValue="#{support}"
+                            itemLabel="#{support}" />
+                    </h:selectOneMenu>
+                </h:column> 
+
+
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Actions" />
+                    </f:facet>
+                    <h:commandLink value="Associate to caretaker "  actionListener="#{administratorManager.unrollPatients}">
+                        <f:param name="patientId" id="patientId" value="#{patient.id}" />
+                    </h:commandLink>
+                </h:column>
+
+
+            </h:dataTable> 
+            
+            
             <br></br>
 
 
