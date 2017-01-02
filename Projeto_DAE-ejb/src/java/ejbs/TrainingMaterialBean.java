@@ -136,13 +136,13 @@ public class TrainingMaterialBean {
             }
 
             if (caretaker.getTrainingMaterials().contains(trainingMaterial)) {
-                throw new PatientAssociateException("Material is already enrolled in that caretaker.");
+                throw new PatientAssociateException("Material is already associated to that caretaker.");
             }
 
             caretaker.addTrainingMateial(trainingMaterial);
             trainingMaterial.addCaretaker(caretaker);
 
-        } catch (EntityDoesNotExistsException e) {
+        } catch (PatientAssociateException | EntityDoesNotExistsException e) {
             throw e;
         } catch (Exception e) {
             throw new EJBException(e.getMessage());

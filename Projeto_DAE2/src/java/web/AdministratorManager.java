@@ -28,6 +28,7 @@ import enumerations.MaterialType;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
+import exceptions.PatientAssociateException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -600,7 +601,7 @@ public class AdministratorManager {
             trainingMaterialBean.enrollTrainingMaterial(id, currentCaretaker.getUsername());
             
             
-        } catch (EntityDoesNotExistsException e) {
+        } catch (PatientAssociateException | EntityDoesNotExistsException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
