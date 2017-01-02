@@ -33,7 +33,7 @@ public class Caretaker extends User implements Serializable {
     public Caretaker() {
         patients = new LinkedList<>();
         trainingMaterials = new LinkedList<>();
-        
+
     }
 
     public Caretaker(String username, String name, String password) {
@@ -61,6 +61,13 @@ public class Caretaker extends User implements Serializable {
     public void setTrainingMaterials(List<TrainingMaterial> trainingMaterials) {
         this.trainingMaterials = trainingMaterials;
     }
-    
-    
+
+    public void addTrainingMateial(TrainingMaterial trainingMaterial) {
+        trainingMaterials.add(trainingMaterial);
+    }
+
+    public void removeTrainingMateial(TrainingMaterial trainingMaterial) {
+        trainingMaterials.remove(trainingMaterial);
+    }
+
 }

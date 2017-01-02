@@ -78,9 +78,9 @@
                 <f:facet name="header">
                     <h:outputText value="Actions" />
                 </f:facet>
-                <h:commandLink value="Unroll"  actionListener="#{administratorManager.unrollPatients}">
+                <h:commandButton value="Unroll"  actionListener="#{administratorManager.unrollPatients}">
                     <f:param name="patientId" id="patientId" value="#{patient.id}" />
-                </h:commandLink>
+                </h:commandButton>
             </h:column>
 
   
@@ -104,7 +104,6 @@
                     <h:outputText value="Id" />
                 </f:facet>
                 <h:outputText value="#{patient.id}" />
-                <!--Falta validar o formato-->
             </h:column>
 
             <h:column>
@@ -125,9 +124,9 @@
                 <f:facet name="header">
                     <h:outputText value="Actions" />
                 </f:facet>
-                    <h:commandLink value="Enroll" actionListener="#{administratorManager.enrollPatient}">
+                <h:commandButton value="Enroll" actionListener="#{administratorManager.enrollPatient}" disabled="#{patient.caretaker==administratorManager.currentCaretaker.username? true : false}">
                         <f:param name="patientId" id="patientId" value="#{patient.id}" />
-                    </h:commandLink>
+                    </h:commandButton>
             </h:column>
 
         </h:dataTable>   

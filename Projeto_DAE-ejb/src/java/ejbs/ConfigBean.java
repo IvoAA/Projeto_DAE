@@ -40,10 +40,13 @@ public class ConfigBean {
 
             trainingMaterialBean.create(1, "Venancio de 4", MaterialType.questionários.name(), MaterialSupport.texto.name());
             trainingMaterialBean.create(2, "Figas de 2", MaterialType.tutoriais.name(), MaterialSupport.video.name());
+            trainingMaterialBean.create(3, "Massagens Superiores", MaterialType.tutoriais.name(), MaterialSupport.video.name());
 
             patientBean.enrollPatient(1, "user1");
             patientBean.enrollPatient(2, "user1");
-           
+            
+            trainingMaterialBean.enrollTrainingMaterial(1, "user1");
+
 
             /*
             studentBean.create("1111111", "Manuel", "Manuel", "dae.ei.ipleiria@gmail.com", 1);

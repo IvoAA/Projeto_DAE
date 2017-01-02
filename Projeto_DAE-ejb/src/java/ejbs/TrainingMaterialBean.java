@@ -6,10 +6,12 @@
 package ejbs;
 
 import dtos.TrainingMaterialDTO;
+import entities.Caretaker;
 import entities.TrainingMaterial;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
+import exceptions.PatientAssociateException;
 import exceptions.Utils;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +37,8 @@ public class TrainingMaterialBean {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    
     @PersistenceContext
     private EntityManager em;
-    
-    
 
     public void create(int id, String name, String type, String support)
             throws EntityAlreadyExistsException, MyConstraintViolationException {
@@ -58,26 +57,25 @@ public class TrainingMaterialBean {
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     @PUT
     @Path("updateREST")
-    @Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    public void updateREST(TrainingMaterialDTO trainingMaterialDTO) 
-        throws EntityDoesNotExistsException, MyConstraintViolationException{
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void updateREST(TrainingMaterialDTO trainingMaterialDTO)
+            throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
             TrainingMaterial trainingMaterial = em.find(TrainingMaterial.class, trainingMaterialDTO.getId());
             if (trainingMaterial == null) {
                 throw new EntityDoesNotExistsException("There is no trainingMaterial with that username.");
             }
-           
 
-            trainingMaterial.setName(trainingMaterialDTO.getName());   
+            trainingMaterial.setName(trainingMaterialDTO.getName());
             em.merge(trainingMaterial);
-            
+
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
-            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));            
+            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -103,12 +101,12 @@ public class TrainingMaterialBean {
     List<TrainingMaterialDTO> trainingMaterialsToDTOs(List<TrainingMaterial> trainingMaterials) {
         List<TrainingMaterialDTO> dtos = new ArrayList<>();
         for (TrainingMaterial t : trainingMaterials) {
-            dtos.add(new TrainingMaterialDTO(t.getId(), t.getName(), t.getType(), t.getSupport()));            
+            dtos.add(new TrainingMaterialDTO(t.getId(), t.getName(), t.getType(), t.getSupport()));
         }
         return dtos;
     }
-    
-     @GET
+
+    @GET
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("all")
@@ -116,14 +114,72 @@ public class TrainingMaterialBean {
         try {
             List<TrainingMaterial> trainingMaterials = (List<TrainingMaterial>) em.createNamedQuery("getAllTrainingMaterials").getResultList();
             return trainingMaterialsToDTOs(trainingMaterials);
-            
+
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
+    public void enrollTrainingMaterial(int id, String username)
+            throws EntityDoesNotExistsException, PatientAssociateException {
+        try {
+
+            TrainingMaterial trainingMaterial = em.find(TrainingMaterial.class, id);
+            if (trainingMaterial == null) {
+                throw new EntityDoesNotExistsException("There is no trainingMaterial with that id.");
+            }
+
+            Caretaker caretaker = em.find(Caretaker.class, username);
+            if (caretaker == null) {
+                throw new EntityDoesNotExistsException("There is no subject with that code.");
+            }
+
+            if (caretaker.getTrainingMaterials().contains(trainingMaterial)) {
+                throw new PatientAssociateException("Material is already enrolled in that caretaker.");
+            }
+
+            caretaker.addTrainingMateial(trainingMaterial);
+            trainingMaterial.addCaretaker(caretaker);
+
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
     
+        TrainingMaterialDTO trainingMaterialDTO(TrainingMaterial trainingMaterial) {
+        return new TrainingMaterialDTO(
+                trainingMaterial.getId(),
+                trainingMaterial.getName(),
+                trainingMaterial.getType(),
+                trainingMaterial.getSupport());
+  
+    }
     
     
+        public List<TrainingMaterialDTO> trainingMaterialsToDTO(List<TrainingMaterial> trainingMaterials) {
+        List<TrainingMaterialDTO> dtos = new ArrayList<>();
+        for (TrainingMaterial s : trainingMaterials) {
+            dtos.add(trainingMaterialDTO(s));
+        }
+        return dtos;
+    }
+        
+             public List<TrainingMaterial> getCaretakerTrainingMaterials(String caretakerUsername) throws EntityDoesNotExistsException {
+        try {
+            Caretaker caretaker = em.find(Caretaker.class, caretakerUsername);
+            if (caretaker == null) {
+                throw new EntityDoesNotExistsException("Caretaker does not exists.");
+            }
 
-    
+            return caretaker.getTrainingMaterials();
+
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
 }

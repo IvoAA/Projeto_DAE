@@ -38,93 +38,6 @@
                 cellpadding="5">
 
                 <f:facet name="header">
-                    <h:outputText value="Enrolled patients" />
-                </f:facet>
-
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Id" />
-                    </f:facet>
-                    <h:outputText value="#{patient.id}" />
-                    <!--Falta validar o formato-->
-                </h:column>
-
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Name" />
-                    </f:facet>
-                    <h:outputText value="#{patient.name}" />
-                </h:column>  
-
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="NecessityType" />
-                    </f:facet>
-                    <h:outputText value="#{patient.necessityType}" />
-                </h:column> 
-
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Materials Type Available" />
-                    </f:facet>
-
-                    <h:selectOneMenu
-                        id="trainingMaterialType"
-                        value="#{administratorManager.newTrainingMaterial.type}" >
-                        <f:selectItems
-                            value="#{administratorManager.allTrainingMaterialTypes}"
-                            var="type"
-                            itemValue="#{type}"
-                            itemLabel="#{type}" />
-                    </h:selectOneMenu>
-                </h:column> 
-
-
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Materials Support Available" />
-                    </f:facet>
-
-                    <h:selectOneMenu
-                        id="trainingMaterialSupport"
-                        value="#{administratorManager.newTrainingMaterial.support}" >
-                        <f:selectItems
-                            value="#{administratorManager.allTrainingMaterialSupports}"
-                            var="support"
-                            itemValue="#{support}"
-                            itemLabel="#{support}" />
-                    </h:selectOneMenu>
-                </h:column> 
-
-
-
-                <h:column>
-                    <f:facet name="header">
-                        <h:outputText value="Actions" />
-                    </f:facet>
-                    <h:commandLink value="Associate to caretaker "  actionListener="#{administratorManager.unrollPatients}">
-                        <f:param name="patientId" id="patientId" value="#{patient.id}" />
-                    </h:commandLink>
-                </h:column>
-
-
-            </h:dataTable> 
-
-            <br></br>
-            <br></br>
-            <br></br>
-            
-            
-                 </h:form>
-        <h:form>   
-            <h:dataTable
-                var="patient"
-                summary="Enrolled patients"
-                value="#{administratorManager.currentCaretakerPatients}"
-                rules="all"
-                cellpadding="5">
-
-                <f:facet name="header">
                     <h:outputText value="Enrolled patients necessities" />
                 </f:facet>
 
@@ -143,38 +56,48 @@
                     <h:outputText value="#{patient.necessityType}" />
                 </h:column> 
 
+
+            </h:dataTable> 
+
+
+
+            <br></br>
+
+            <h:dataTable
+                var="trainingMaterial"
+                summary="Enrolled patients"
+                value="#{administratorManager.trainingMaterials}"
+                rules="all"
+                cellpadding="5">
+
+                <f:facet name="header">
+                    <h:outputText value="Material available" />
+                </f:facet>
+
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="Materials Type Available" />
+                        <h:outputText value="Material Name" />
                     </f:facet>
+                    <h:outputText value="#{trainingMaterial.name}" />
+                    <!--Falta validar o formato-->
+                </h:column>
 
-                    <h:selectOneMenu
-                        id="trainingMaterialType"
-                        value="#{administratorManager.newTrainingMaterial.type}" >
-                        <f:selectItems
-                            value="#{administratorManager.allTrainingMaterialTypes}"
-                            var="type"
-                            itemValue="#{type}"
-                            itemLabel="#{type}" />
-                    </h:selectOneMenu>
-                </h:column> 
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Material Type Avaible" />
+                    </f:facet>
+                    <h:outputText value="#{trainingMaterial.type}" />
+                    <!--Falta validar o formato-->
+                </h:column>
 
 
                 <h:column>
                     <f:facet name="header">
-                        <h:outputText value="Materials Support Available" />
+                        <h:outputText value="Material Support Avaible" />
                     </f:facet>
-
-                    <h:selectOneMenu
-                        id="trainingMaterialSupport"
-                        value="#{administratorManager.newTrainingMaterial.support}" >
-                        <f:selectItems
-                            value="#{administratorManager.allTrainingMaterialSupports}"
-                            var="support"
-                            itemValue="#{support}"
-                            itemLabel="#{support}" />
-                    </h:selectOneMenu>
-                </h:column> 
+                    <h:outputText value="#{trainingMaterial.support}" />
+                    <!--Falta validar o formato-->
+                </h:column>
 
 
 
@@ -182,16 +105,52 @@
                     <f:facet name="header">
                         <h:outputText value="Actions" />
                     </f:facet>
-                    <h:commandLink value="Associate to caretaker "  actionListener="#{administratorManager.unrollPatients}">
-                        <f:param name="patientId" id="patientId" value="#{patient.id}" />
+                    <h:commandLink value="Associate to caretaker "  actionListener="#{administratorManager.enrollTrainingMaterial}">
+                        <f:param name="trainingMaterialId" id="trainingMaterialId" value="#{trainingMaterial.id}" />
                     </h:commandLink>
                 </h:column>
 
+                <br></br>
+
 
             </h:dataTable> 
-            
-            
-            <br></br>
+
+
+            <h:dataTable
+                var="materials"
+                summary="Enrolled materials"
+                value="#{administratorManager.currentCaretakerTrainingMaterials}"
+                rules="all"
+                cellpadding="5">
+
+                <f:facet name="header">
+                    <h:outputText value="Enrolled training materials " />
+                </f:facet>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Name" />
+                    </f:facet>
+                    <h:outputText value="#{trainingMaterial.name}" />
+                    <!--Falta validar o formato-->
+                </h:column> 
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="NecessityType" />
+                    </f:facet>
+                    <h:outputText value="#{trainingMaterial.type}" />
+                </h:column> 
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="NecessityType" />
+                    </f:facet>
+                    <h:outputText value="#{trainingMaterial.support}" />
+                </h:column> 
+
+
+            </h:dataTable> 
 
 
 

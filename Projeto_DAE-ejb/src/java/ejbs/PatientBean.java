@@ -8,6 +8,7 @@ package ejbs;
 import dtos.PatientDTO;
 import entities.Caretaker;
 import entities.Patient;
+import entities.TrainingMaterial;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -144,6 +145,9 @@ public class PatientBean {
             throw new EJBException(e.getMessage());
         }
     }
+    
+   
+    
 
     public void enrollPatient(int id, String username)
             throws EntityDoesNotExistsException, PatientAssociateException {

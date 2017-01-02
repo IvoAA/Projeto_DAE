@@ -301,6 +301,15 @@ public class AdministratorManager {
         return null;
     }
     
+        public List<TrainingMaterialDTO> getCurrentCaretakerTrainingMaterials() {
+        try {
+            return trainingMaterialBean.trainingMaterialsToDTO( trainingMaterialBean.getCaretakerTrainingMaterials(currentCaretaker.getUsername()) );
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return null;
+    }
+    
     
         public void enrollPatient(ActionEvent event) {
         try {
@@ -582,6 +591,20 @@ public class AdministratorManager {
             }
             
             return trainingMaterialSupports;
+    }
+    
+           public void enrollTrainingMaterial(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("trainingMaterialId");
+            int id = Integer.parseInt(param.getValue().toString()) ;
+            trainingMaterialBean.enrollTrainingMaterial(id, currentCaretaker.getUsername());
+            
+            
+        } catch (EntityDoesNotExistsException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
     }
     
     

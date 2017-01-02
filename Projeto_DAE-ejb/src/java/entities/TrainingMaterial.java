@@ -104,7 +104,13 @@ public class TrainingMaterial implements Serializable {
 
 
     
+   public void addCaretaker(Caretaker caretaker) {
+        caretakers.add(caretaker);
+    }
 
+    public void removeCaretaker(Caretaker caretaker) {
+        caretakers.remove(caretaker);
+    }
     
     
     
