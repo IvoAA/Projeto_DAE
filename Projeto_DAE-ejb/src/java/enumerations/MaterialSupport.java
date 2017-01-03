@@ -11,6 +11,6 @@ package enumerations;
  */
 public enum MaterialSupport {
     
-    texto, video, imagem
+    texto, video, imagem, PowerPoint, Prezi
     
 }
