@@ -8,6 +8,7 @@ package entities;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -15,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -38,8 +40,8 @@ public class Patient implements Serializable {
     protected String name;
     @NotNull(message = "Necessity must not be empty")
     private String necessity;
-    @NotNull(message = "NecessityTYpe must not be empty")
-    private String necessityType;
+    private List<String> necessities;
+    
     
     
     @ManyToOne
@@ -47,16 +49,21 @@ public class Patient implements Serializable {
     //@NotNull (message="A patient must have a caretaker")
     private Caretaker caretaker;
     
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.REMOVE)
+    private List<Procedure> procedures;
+    
     public Patient(){ 
   
+        procedures = new LinkedList<>();
     }
     
-    public Patient(int id, String name, String necessity, String necessityType) {
+    public Patient(int id, String name, String necessity,List<String> necessities ) {
         this.id = id;
         this.name = name;
         this.caretaker = null;
         this.necessity = necessity;
-        this.necessityType = necessityType; 
+        procedures = new LinkedList<>();
+        this.necessities = necessities;
        
     }
     
@@ -93,15 +100,21 @@ public class Patient implements Serializable {
         this.necessity = necessity;
     }
 
-    public String getNecessityType() {
-        return necessityType;
+
+
+    
+    public void addProcedure(Procedure p){
+        procedures.add(p);
     }
 
-    public void setNecessityType(String necessityType) {
-        this.necessityType = necessityType;
+    public List<String> getNecessities() {
+        return necessities;
     }
 
-
+    public void setNecessities(List<String> necessities) {
+        this.necessities = necessities;
+    }
+    
     
     
     

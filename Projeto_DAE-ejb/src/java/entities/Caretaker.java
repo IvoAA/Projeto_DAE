@@ -30,16 +30,22 @@ public class Caretaker extends User implements Serializable {
     @ManyToMany(mappedBy = "caretakers")
     private List<TrainingMaterial> trainingMaterials;
 
+    
+    @OneToMany(mappedBy = "caretaker", cascade = CascadeType.REMOVE)
+    private List<Procedure> procedures;
+
     public Caretaker() {
         patients = new LinkedList<>();
         trainingMaterials = new LinkedList<>();
 
+        procedures = new LinkedList<>();
     }
 
     public Caretaker(String username, String name, String password) {
         super(username, name, password);
         patients = new LinkedList<>();
         trainingMaterials = new LinkedList<>();
+        procedures = new LinkedList<>();
     }
 
     public List<Patient> getPatients() {
@@ -68,6 +74,10 @@ public class Caretaker extends User implements Serializable {
 
     public void removeTrainingMateial(TrainingMaterial trainingMaterial) {
         trainingMaterials.remove(trainingMaterial);
+    }
+    
+    public void addProcedure(Procedure p){
+        procedures.add(p);
     }
 
 }

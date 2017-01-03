@@ -9,6 +9,7 @@ package entities;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -36,21 +38,25 @@ private String name;
             = @JoinColumn(name = "MATERIAL_ID", referencedColumnName = "ID"))
 private List<TrainingMaterial> materials;
 
+
+
     public NecessityType() {
+        materials = new LinkedList<>();
     }
 
     public NecessityType(String name) {
         this.name = name;
-        this.materials = new LinkedList<>();
+        
+        materials = new LinkedList<>();
     }
     
-    public void Add(TrainingMaterial m){
+    public void addTrainingMaterial(TrainingMaterial m){
         materials.add(m);
     }
 
     public List<TrainingMaterial> getMaterials() {
         return materials;
     }
-
+    
     
 }

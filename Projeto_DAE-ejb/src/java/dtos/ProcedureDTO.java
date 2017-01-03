@@ -5,8 +5,11 @@
  */
 package dtos;
 
+import entities.Caretaker;
+import entities.NecessityType;
+import entities.Patient;
+import entities.TrainingMaterial;
 import java.io.Serializable;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,19 +22,17 @@ public class ProcedureDTO implements Serializable{
     
     protected int id;
     protected String description;
-    protected String necessity;
-    protected String caretaker;
-    protected int patient;
-    protected int material;
+    protected Caretaker caretaker;
+    protected Patient patient;
+    protected TrainingMaterial material;
     
     public ProcedureDTO(){
         
     }
 
-    public ProcedureDTO(int id, String description, String necessity, String caretaker, int patient, int material) {
+    public ProcedureDTO(int id, String description, Caretaker caretaker, Patient patient, TrainingMaterial material) {
         this.id = id;
         this.description = description;
-        this.necessity = necessity;
         this.caretaker = caretaker;
         this.patient = patient;
         this.material = material;
@@ -53,46 +54,38 @@ public class ProcedureDTO implements Serializable{
         this.description = description;
     }
 
-    public String getNecessity() {
-        return necessity;
-    }
-
-    public void setNecessity(String necessity) {
-        this.necessity = necessity;
-    }
-
-    public String getCaretaker() {
+    public Caretaker getCaretaker() {
         return caretaker;
     }
 
-    public void setCaretaker(String caretaker) {
+    public void setCaretaker(Caretaker caretaker) {
         this.caretaker = caretaker;
     }
 
-    public int getPatient() {
+    public Patient getPatient() {
         return patient;
     }
 
-    public void setPatient(int patient) {
+    public void setPatient(Patient patient) {
         this.patient = patient;
     }
 
-    public int getMaterial() {
+    public TrainingMaterial getMaterial() {
         return material;
     }
 
-    public void setMaterial(int material) {
+    public void setMaterial(TrainingMaterial material) {
         this.material = material;
     }
-    
+
+
     
     public void reset() {
         this.id = -1;
         this.description = null;
-        this.necessity = null;
         this.caretaker = null;
-        this.patient = -1;
-        this.material = -1;
+        this.patient = null;
+        this.material = null;
     }
     
 }

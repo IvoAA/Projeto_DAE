@@ -38,8 +38,8 @@ import javax.ws.rs.core.MediaType;
 @Path("/necessityTypes")
 public class NecessityTypeBean {
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    // addTrainingMaterial business logic below. (Right-click in editor and choose
+    // "Insert Code > addTrainingMaterial Business Method")
     @PersistenceContext
     private EntityManager em;
 
@@ -104,14 +104,14 @@ public class NecessityTypeBean {
 
             NecessityType necessityType = em.find(NecessityType.class, type);
             if (necessityType == null) {
-                throw new EntityDoesNotExistsException("There is no subject with that code.");
+                throw new EntityDoesNotExistsException("There is no NecessityType with that name.");
             }
 
             if (necessityType.getMaterials().contains(trainingMaterial)) {
                 throw new PatientAssociateException("Material is already associated to that caretaker.");
             }
 
-            necessityType.Add(trainingMaterial);
+            necessityType.addTrainingMaterial(trainingMaterial);
             trainingMaterial.addNecessityType(necessityType);
 
         } catch (PatientAssociateException | EntityDoesNotExistsException e) {

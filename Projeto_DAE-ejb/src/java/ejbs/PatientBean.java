@@ -8,7 +8,6 @@ package ejbs;
 import dtos.PatientDTO;
 import entities.Caretaker;
 import entities.Patient;
-import entities.TrainingMaterial;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -40,13 +39,13 @@ public class PatientBean {
     @PersistenceContext
     private EntityManager em;
 
-    public void create(int id, String name, String necessity, String necessityType) throws EntityAlreadyExistsException, MyConstraintViolationException {
+    public void create(int id, String name, String necessity, List<String> necessities) throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
             if (em.find(Patient.class, id) != null) {
                 throw new EntityAlreadyExistsException("A patient with that id already exists");
             }
 
-            Patient patient = new Patient(id, name, necessity, necessityType);
+            Patient patient = new Patient(id, name, necessity, necessities);
             em.persist(patient);
 
         } catch (EntityAlreadyExistsException e) {
@@ -227,7 +226,7 @@ public class PatientBean {
                 patient.getName(),
                 patient.getCaretaker() == null ? "Not Defined" : patient.getCaretaker().getUsername(),
                 patient.getNecessity(),
-                patient.getNecessityType());
+                patient.getNecessities());
     }
 
     public List<PatientDTO> patientsToDTOs(List<Patient> patients) {

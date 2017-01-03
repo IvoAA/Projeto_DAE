@@ -4,6 +4,8 @@ import enumerations.MaterialSupport;
 import enumerations.MaterialType;
 import enumerations.NecessityTypes;
 import entities.NecessityType;
+import java.util.LinkedList;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -23,6 +25,8 @@ public class ConfigBean {
     private TrainingMaterialBean trainingMaterialBean;
     @EJB
     private NecessityTypeBean necessityTypeBean;
+    @EJB
+    private ProcedureBean procedureBean;
 
     @PostConstruct
     public void populateBD() {
@@ -32,11 +36,6 @@ public class ConfigBean {
             for (NecessityTypes t : NecessityTypes.values()) {
                 necessityTypeBean.create(t.name());
             }
-            /*
-            necessityTypeBean.create(NecessityTypes.MEBROS_INFERIORES.name());
-            necessityTypeBean.create(NecessityTypes.MEMBROS_SUPERIORES.name());
-            necessityTypeBean.create(NecessityTypes.PSICOLOGICA.name());
-            necessityTypeBean.create(NecessityTypes.TRONCO.name());*/
             
             administratorBean.create("admin1", "adminName1", "adminPass1");
             administratorBean.create("admin2", "adminName2", "adminPass2");
@@ -44,9 +43,19 @@ public class ConfigBean {
             caretakerBean.create("user1", "name1", "pass1");
             caretakerBean.create("user2", "name2", "pass2");
 
-            patientBean.create(1, "Ivo Amador", "Dor de estômago", NecessityTypes.TRONCO.getNecessityType());
-            patientBean.create(2, "Rodrigo Faria", "Dor de cu",NecessityTypes.TRONCO.getNecessityType() );
-            patientBean.create(3, "Pedro Figueiredo", "Dor de corno",NecessityTypes.PSICOLOGICA.getNecessityType());
+            List<String> necessities1 = new LinkedList<>();
+            List<String> necessities2 = new LinkedList<>();
+            List<String> necessities3 = new LinkedList<>();
+            
+            
+            necessities1.add(NecessityTypes.MEMBROS_SUPERIORES.getNecessityType());
+            necessities2.add(NecessityTypes.MEMBROS_SUPERIORES.getNecessityType());
+            necessities2.add(NecessityTypes.PSICOLOGICA.getNecessityType());
+            
+
+            patientBean.create(1, "Ivo Amador", "Dor de estômago",necessities1);
+            patientBean.create(2, "Rodrigo Faria", "Dor de cu",necessities2 );
+            patientBean.create(3, "Pedro Figueiredo", "Dor de corno", necessities3);
 
 
             trainingMaterialBean.create(1, "Venancio de 4", MaterialType.questionários.name(), MaterialSupport.texto.name());
@@ -64,12 +73,10 @@ public class ConfigBean {
             necessityTypeBean.associateMaterialToNecessityType(2, NecessityTypes.PSICOLOGICA.name());
             necessityTypeBean.associateMaterialToNecessityType(3, NecessityTypes.PSICOLOGICA.name());
             necessityTypeBean.associateMaterialToNecessityType(3, NecessityTypes.TRONCO.name());
-            /*
-
-            teacherBean.addSubjectTeacher(1, "t1");
-            teacherBean.addSubjectTeacher(2, "t2");
-            teacherBean.addSubjectTeacher(1, "t3");
-             */
+            
+            procedureBean.create(1, "Aparafusar Joelho", NecessityTypes.MEBROS_INFERIORES.name(), "user2", 2, 2);
+            
+            
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }

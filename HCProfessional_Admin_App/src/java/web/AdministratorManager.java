@@ -149,7 +149,7 @@ public class AdministratorManager {
                     newPatient.getId(),
                     newPatient.getName(),
                     newPatient.getNecessity(),
-                    newPatient.getNecessityType()
+                    newPatient.getNecessities()
                     );
             
             newPatient.reset();

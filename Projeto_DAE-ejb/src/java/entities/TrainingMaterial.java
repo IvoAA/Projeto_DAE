@@ -9,13 +9,17 @@ package entities;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -25,7 +29,7 @@ import javax.validation.constraints.NotNull;
  * @author Figueiredo
  */
 @Entity
-@Table(name = "TrainingMaterials",
+@Table(name = "TRAINING_MATERIALS",
 uniqueConstraints =
 @UniqueConstraint(columnNames = {"NAME"}))
 @NamedQueries({
@@ -52,9 +56,12 @@ public class TrainingMaterial implements Serializable {
     @ManyToMany(mappedBy = "materials")
     private List<NecessityType> types;
     
+    @OneToMany(mappedBy = "material", cascade = CascadeType.REMOVE)
+    private List<Procedure> procedures;
     
     public TrainingMaterial() {
         caretakers = new LinkedList<>();
+        procedures = new LinkedList<>();
     }
 
     public TrainingMaterial(int id, String name, String type, String support) {
@@ -64,6 +71,7 @@ public class TrainingMaterial implements Serializable {
         this.support = support;
         caretakers = new LinkedList<>();
         types = new LinkedList<>();
+        procedures = new LinkedList<>();
     }
     
     public int getId() {
@@ -120,6 +128,10 @@ public class TrainingMaterial implements Serializable {
         types.add(necessityType);
     }
     
+    
+    public void addProcedure(Procedure p){
+        procedures.add(p);
+    }
     
     
     

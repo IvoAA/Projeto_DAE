@@ -7,9 +7,13 @@ package ejbs;
 
 import dtos.PatientDTO;
 import dtos.ProcedureDTO;
+import entities.Caretaker;
+import entities.NecessityType;
 import entities.Patient;
 import entities.Procedure;
+import entities.TrainingMaterial;
 import exceptions.EntityAlreadyExistsException;
+import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.ArrayList;
@@ -40,8 +44,29 @@ public class ProcedureBean {
             if(em.find(Procedure.class,id)!= null){
                throw new EntityAlreadyExistsException("A procedure whith that id already exists");
             }
+
+            /*NecessityType nT = em.find(NecessityType.class, necessity);
+            if (nT == null) {
+                throw new EntityDoesNotExistsException("There is no necessityType with that name.");
+            }*/
+            
+            Caretaker c = em.find(Caretaker.class, caretaker);
+            if (c == null) {
+                throw new EntityDoesNotExistsException("There is no caretaker with that username.");
+            }
+            
+            Patient p = em.find(Patient.class, patient);
+            if (p == null) {
+                throw new EntityDoesNotExistsException("There is no patient with that id.");
+            }
          
-            Procedure procedure = new Procedure(id, description, necessity, caretaker, patient, material);
+            TrainingMaterial tM = em.find(TrainingMaterial.class, material);
+            if (tM == null) {
+                throw new EntityDoesNotExistsException("There is no trainingMaterial with that id.");
+            }
+            
+            
+            Procedure procedure = new Procedure(id, description, c, p, tM);
             em.persist(procedure);
        // EntityDoesNotExistException missing
         }catch (EntityAlreadyExistsException e){
@@ -72,7 +97,6 @@ public class ProcedureBean {
         return new ProcedureDTO(
                         p.getId(),
                         p.getDescription(),
-                        p.getNecessity(),
                         p.getCaretaker(),
                         p.getPatient(),
                         p.getMaterial());

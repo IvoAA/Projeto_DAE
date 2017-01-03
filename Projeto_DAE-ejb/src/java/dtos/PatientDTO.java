@@ -1,7 +1,9 @@
 package dtos;
 
-import entities.Caretaker;
+
+
 import java.io.Serializable;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -15,18 +17,21 @@ public class PatientDTO implements Serializable{
     private String name;
     private String caretaker;
     private String necessity;
-    private String necessityType;
+    private List<String> necessities;
+
 
 
     public PatientDTO(){
+        
     }
 
-    public PatientDTO(int id, String name, String caretaker, String necessity, String necessityType) {
+    public PatientDTO(int id, String name, String caretaker, String necessity, List<String> necessities ) {
         this.id = id;
         this.name = name;
         this.caretaker = caretaker;
         this.necessity = necessity;
-        this.necessityType = necessityType;
+        this.necessities = necessities;
+        
     }    
 
     public int getId() {
@@ -52,11 +57,13 @@ public class PatientDTO implements Serializable{
     public void setCaretaker(String caretaker) {
         this.caretaker = caretaker;
     }
-    
-    public void reset() {
-        this.id = -1;
-        this.name = null;
-        this.caretaker = null;
+
+    public List<String> getNecessities() {
+        return necessities;
+    }
+
+    public void setNecessities(List<String> necessities) {
+        this.necessities = necessities;
     }
 
     public String getNecessity() {
@@ -66,14 +73,18 @@ public class PatientDTO implements Serializable{
     public void setNecessity(String necessity) {
         this.necessity = necessity;
     }
-
-    public String getNecessityType() {
-        return necessityType;
+    
+    
+    
+    
+    
+    public void reset() {
+        this.id = -1;
+        this.name = null;
+        this.caretaker = null;
     }
 
-    public void setNecessityType(String necessityType) {
-        this.necessityType = necessityType;
-    }
+
     
     
     
