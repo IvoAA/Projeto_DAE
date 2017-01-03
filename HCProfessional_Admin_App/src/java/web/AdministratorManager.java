@@ -51,19 +51,6 @@ import javax.ws.rs.core.MediaType;
 @SessionScoped
 public class AdministratorManager {
 
-    /*
-    @EJB
-    private CourseBean courseBean;
-    @EJB
-    private SubjectBean subjectBean;
-    private StudentDTO newStudent;
-    private StudentDTO currentStudent;
-    private CourseDTO newCourse;
-    private CourseDTO currentCourse;
-    private SubjectDTO newSubject;
-    private SubjectDTO currentSubject;
-    */
-    
     @EJB
     private PatientBean patientBean;
     @EJB
@@ -161,23 +148,6 @@ public class AdministratorManager {
         }
         return null;
     }
-    /*      
-    public String updatePatient() {
-        try {
-            patientBean.update(
-                    currentPatient.getId(),
-                    currentPatient.getName(),
-                    currentPatient.getCaretaker());
-            return "admin_index?faces-redirect=true";
-
-        } catch (EntityDoesNotExistsException | MyConstraintViolationException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-        return "admin_patient_update";
-    }
-    */
     
     public String updatePatientsREST(){   
         try {
@@ -201,24 +171,6 @@ public class AdministratorManager {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-    }
-/*
-    public List<StudentDTO> getAllStudents() {
-        try {
-            return studentBean.getAll();
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-        return null;
-    }
-
-    public List<SubjectDTO> getCurrentStudentSubjects() {
-        try {
-            return subjectBean.getStudentSubjects(currentStudent.getUsername());
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-            return null;
         }
     }
 
@@ -263,16 +215,7 @@ public class AdministratorManager {
         }
         return "admin_administrator_update";
     }
-/*
-    public List<CaretakerDTO> getAllCaretakers() {
-        try {
-            return caretakerBean.getAll();
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-        return null;
-    }
-*/
+
     public void removeCaretaker(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("caretakerUsername");
@@ -302,7 +245,7 @@ public class AdministratorManager {
         return null;
     }
     
-        public List<TrainingMaterialDTO> getCurrentCaretakerTrainingMaterials() {
+    public List<TrainingMaterialDTO> getCurrentCaretakerTrainingMaterials() {
         try {
             return trainingMaterialBean.trainingMaterialsToDTO( trainingMaterialBean.getCaretakerTrainingMaterials(currentCaretaker.getUsername()) );
         } catch (Exception e) {
@@ -311,8 +254,7 @@ public class AdministratorManager {
         return null;
     }
     
-    
-        public void enrollPatient(ActionEvent event) {
+    public void enrollPatient(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("patientId");
             int id = Integer.parseInt(param.getValue().toString()) ;
@@ -326,9 +268,7 @@ public class AdministratorManager {
         }
     }
     
-    
-    
-        public void unrollPatients(ActionEvent event) {
+    public void unrollPatients(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("patientId");
             int id = Integer.parseInt(param.getValue().toString());
@@ -340,16 +280,10 @@ public class AdministratorManager {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
     }
-        
-        
-    
-
-    
+       
     
     ////////////////////HealthCareProfessional ///////////////////////
     
-    
-
     public HealthCareProfessionalDTO getNewHealthCareProfessional() {
         return newHealthCareProfessional;
     }
@@ -365,10 +299,7 @@ public class AdministratorManager {
     public void setCurrentHealthCareProfessional(HealthCareProfessionalDTO currentHealthCareProfessional) {
         this.currentHealthCareProfessional = currentHealthCareProfessional;
     }
-
-    
-    
-    
+ 
    private List<HealthCareProfessionalDTO> getAllHealthCareProfessionalsREST() {
         List<HealthCareProfessionalDTO> returnedHealthCareProfessionals = null;
         returnedHealthCareProfessionals = client.target(baseUri)
@@ -397,7 +328,7 @@ public class AdministratorManager {
         return null;
     }
     
-        public String updateHealthCareProfessionalREST(){   
+    public String updateHealthCareProfessionalREST(){   
         try {
            client.target(baseUri)
                     .path("/healthCareProfessionals/updateREST")
@@ -409,7 +340,6 @@ public class AdministratorManager {
         }
         return "admin_administrator_update";
     }
-    
     
     public void removeHealthCareProfessional(ActionEvent event) {
         try {
@@ -431,7 +361,6 @@ public class AdministratorManager {
     }
     
     ////////////////////ADMINISTRATOR ///////////////////////
-    
     
     
    private List<AdministratorDTO> getAllAdministratorsREST() {
@@ -462,7 +391,7 @@ public class AdministratorManager {
         return null;
     }
     
-        public String updateAdministratorsREST(){   
+    public String updateAdministratorsREST(){   
         try {
            client.target(baseUri)
                     .path("/administrators/updateREST")
@@ -496,8 +425,7 @@ public class AdministratorManager {
     }
     
         
- ////////////////////TrainingMaterial ///////////////////////
-    
+    ////////////////////TrainingMaterial ///////////////////////
     
     
    private List<TrainingMaterialDTO> getAllTrainingMaterialsREST() {
@@ -530,17 +458,8 @@ public class AdministratorManager {
         }
         return null;
     }
-/*
-    public List<CaretakerDTO> getAllCaretakers() {
-        try {
-            return caretakerBean.getAll();
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-        return null;
-    }
-*/
-        public String updateTrainingMaterialsREST(){   
+
+    public String updateTrainingMaterialsREST(){   
         try {
            client.target(baseUri)
                     .path("/trainingMaterials/updateREST")
@@ -552,8 +471,7 @@ public class AdministratorManager {
         }
         return "admin_trainingMaterial_update";
     }
-    
-    
+        
     public void removeTrainingMaterial(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("trainingMaterialId");
@@ -571,10 +489,8 @@ public class AdministratorManager {
             FacesExceptionHandler.handleException(e, "Something is wrong!", logger);
         }
     }
-    
-    
       
-   public List<String> getAllTrainingMaterialTypes() {
+    public List<String> getAllTrainingMaterialTypes() {
             List<String> trainingMaterialsTypes = new LinkedList(); // = (List<TrainingMaterial>) em.createNamedQuery("getAllTrainingMaterials").getResultList();
             //return trainingMaterialsToDTOs(trainingMaterials);
             for (MaterialType type : MaterialType.values()) {
@@ -594,7 +510,7 @@ public class AdministratorManager {
             return trainingMaterialSupports;
     }
     
-           public void enrollTrainingMaterial(ActionEvent event) {
+    public void enrollTrainingMaterial(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("trainingMaterialId");
             int id = Integer.parseInt(param.getValue().toString()) ;
@@ -608,7 +524,7 @@ public class AdministratorManager {
         }
     }
            
-            public void unrollTrainingMaterial(ActionEvent event) {
+    public void unrollTrainingMaterial(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("trainingMaterialId");
             int id = Integer.parseInt(param.getValue().toString());
@@ -620,8 +536,6 @@ public class AdministratorManager {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
     }
-    
-    
     
     
     /////////////// GETTERS & SETTERS /////////////////    
@@ -666,8 +580,6 @@ public class AdministratorManager {
         return trainingMaterials;
     }
     
-    
-
     public String getUserType() {
         return userType;
     }
@@ -707,9 +619,7 @@ public class AdministratorManager {
     public void setSearchTrainingMaterialsText(String searchTrainingMaterialsText) {
         this.searchTrainingMaterialsText = searchTrainingMaterialsText;
     }
-    
-    
-    
+        
     public CaretakerDTO getNewCaretaker() {
         return newCaretaker;
     }
@@ -778,27 +688,8 @@ public class AdministratorManager {
                 FacesExceptionHandler.handleException(e, "Unkown error.", logger);
         }
     }
-    /*
-    public void validateUsername(FacesContext context, UIComponent toValidate, Object value) {
-        try {
-            //Your validation code goes here
-            String username = (String) value;
-            //If the validation fails
-            if (username.startsWith("xpto")) {
-                FacesMessage message = new FacesMessage("Error: invalid username.");
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
-                context.addMessage(toValidate.getClientId(context), message);
-                ((UIInput) toValidate).setValid(false);
-            }
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unkown error.", logger);
-        }
-    }
-    */
-    
     
     ///////////// SEARCH ////////////////////////
-    
     
     public void search() {
         switch(userType) {

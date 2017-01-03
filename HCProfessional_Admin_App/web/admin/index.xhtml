@@ -7,142 +7,6 @@
         <title>Admin</title>
     </h:head>
     <h:body>
-
-        <h:dataTable
-            var="patient"
-            summary="List of all patients"
-            value="#{administratorManager.allPatientsREST}"
-            rules="all"
-            cellpadding="5">
-            
-            <f:facet name="header">
-                <h:outputText value="Patients" />
-            </f:facet>            
-
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Id" />
-                </f:facet>
-                <h:outputText value="#{patient.id}" />
-                <!--Falta validar o formato-->
-            </h:column>
-
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Name" />
-                </f:facet>
-                <h:outputText value="#{patient.name}" />
-            </h:column>              
-
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Actions" />
-                </f:facet>
-                <h:form>
-                    <h:commandLink value="Details" action="admin_patient_details?faces-redirect=true">
-                        <f:setPropertyActionListener target="#{administratorManager.currentPatient}" value="#{patient}" />
-                    </h:commandLink>
-                    &nbsp;
-                    <h:commandLink value="Update" action="admin_patient_update?faces-redirect=true">
-                        <f:setPropertyActionListener target="#{administratorManager.currentPatient}" value="#{patient}" />
-                    </h:commandLink>
-                    &nbsp;
-                    <h:commandLink value="Remove" actionListener="#{administratorManager.removePatient}">
-                        <f:param name="patientId" id="patientId" value="#{patient.id}" />
-                    </h:commandLink>
-                </h:form>
-            </h:column>                        
-
-        </h:dataTable>
-        <br/>
-        <br/>
-        
-        <h:form>
-            <h:commandLink value="New patient" action="admin_patient_create?faces-redirect=true"/>
-        </h:form>
-        
-        <br/>
-        <br/>
-        
-        <h:form>
-        <h:dataTable
-            var="caretaker"
-            summary="List of caretakers"
-            value="#{administratorManager.caretakers}"
-            rules="all"
-            cellpadding="5">
-            
-            <f:facet name="header">
-                <h:outputText value="Caretakers" />
-            </f:facet>            
-            
-            
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="username" />
-                </f:facet>
-                <h:outputText value="#{caretaker.username}" />
-                <!--Falta validar o formato-->
-            </h:column>
-
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Name" />
-                </f:facet>
-                <h:outputText value="#{caretaker.name}" />
-            </h:column>              
-
-            <h:column>
-                <f:facet name="header">
-                    <h:outputText value="Actions" />
-                </f:facet>
-                    <h:commandLink value="Details" action="admin_caretaker_details?faces-redirect=true">
-                        <f:setPropertyActionListener target="#{administratorManager.currentCaretaker}" value="#{caretaker}" />
-                    </h:commandLink>
-                    &nbsp;
-                    <h:commandLink value="Update" action="admin_caretaker_update?faces-redirect=true">
-                        <f:setPropertyActionListener target="#{administratorManager.currentCaretaker}" value="#{caretaker}" />
-                    </h:commandLink>
-                    &nbsp;
-                    <h:commandLink value="Manage Materials" action="admin_caretaker_materialsManagement?faces-redirect=true">
-                        <f:setPropertyActionListener target="#{administratorManager.currentCaretaker}" value="#{caretaker}" />
-                    </h:commandLink>
-                    &nbsp;
-                    <h:commandLink value="Remove" actionListener="#{administratorManager.removeCaretaker}">
-                        <f:param name="caretakerUsername" id="caretakerUsername" value="#{caretaker.username}" />
-                    </h:commandLink>
-            </h:column>                        
-
-        </h:dataTable>
-        
-            <h:commandButton value="Add caretaker" action="admin_caretaker_create?faces-redirect=true"/>
-        <br/>
-        <br/>
-        <h:inputText 
-            id="searchCaretakers"
-            size="52"
-            required="false"                    
-            value="#{administratorManager.searchCaretakersText}" />
-
-        <h:commandButton
-            id="clearSearch"
-            value="Clear Search"
-            action="#{administratorManager.clearSearch}" >
-            <f:setPropertyActionListener  target="#{administratorManager.userType}" value="caretaker" />
-        </h:commandButton>
-        <br/>
-        <h:commandButton
-            id="search"
-            value="Search Caretakers"
-            action="#{administratorManager.search}">
-            <f:setPropertyActionListener  target="#{administratorManager.userType}" value="caretaker" />
-        </h:commandButton>
-                </h:form>
-        
-        
-        <br/>
-        <br/>
-        <br/>
         <h:form>
            <h:dataTable
             var="administrator"
@@ -174,11 +38,11 @@
                 <f:facet name="header">
                     <h:outputText value="Actions" />
                 </f:facet>
-                    <h:commandLink value="Details" action="admin_administrator_details?faces-redirect=true">
+                    <h:commandLink value="Details" action="administrator_details?faces-redirect=true">
                         <f:setPropertyActionListener target="#{administratorManager.currentAdministrator}" value="#{administrator}" />
                     </h:commandLink>
                     &nbsp;
-                    <h:commandLink value="Update" action="admin_administrator_update?faces-redirect=true">
+                    <h:commandLink value="Update" action="administrator_update?faces-redirect=true">
                         <f:setPropertyActionListener target="#{administratorManager.currentAdministrator}" value="#{administrator}" />
                     </h:commandLink>
                     &nbsp;
@@ -188,7 +52,7 @@
             </h:column>                        
 
         </h:dataTable>
-            <h:commandButton value="Add" action="admin_administrator_create?faces-redirect=true"/>
+            <h:commandButton value="Add" action="administrator_create?faces-redirect=true"/>
         <br/>
         <br/>
         <h:inputText 
@@ -249,11 +113,11 @@
                 <f:facet name="header">
                     <h:outputText value="Actions" />
                 </f:facet>
-                    <h:commandLink value="Details" action="admin_healthCareProfessional_details?faces-redirect=true">
+                    <h:commandLink value="Details" action="healthCareProfessional_details?faces-redirect=true">
                         <f:setPropertyActionListener target="#{administratorManager.currentHealthCareProfessional}" value="#{HealthCareProfessional}" />
                     </h:commandLink>
                     &nbsp;
-                    <h:commandLink value="Update" action="admin_healthCareProfessional_update?faces-redirect=true">
+                    <h:commandLink value="Update" action="healthCareProfessional_update?faces-redirect=true">
                         <f:setPropertyActionListener target="#{administratorManager.currentHealthCareProfessional}" value="#{HealthCareProfessional}" />
                     </h:commandLink>
                     &nbsp;
@@ -264,7 +128,7 @@
 
         </h:dataTable>
         
-            <h:commandButton value="Add" action="admin_healthCareProfessional_create?faces-redirect=true"/>
+            <h:commandButton value="Add" action="healthCareProfessional_create?faces-redirect=true"/>
         <br/>
          <br/>
         <h:inputText 
@@ -290,6 +154,83 @@
         
         
         <br/>
+        <br/>
+        <br/>
+        
+        <h:form>
+        <h:dataTable
+            var="caretaker"
+            summary="List of caretakers"
+            value="#{administratorManager.caretakers}"
+            rules="all"
+            cellpadding="5">
+            
+            <f:facet name="header">
+                <h:outputText value="Caretakers" />
+            </f:facet>            
+            
+            
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="username" />
+                </f:facet>
+                <h:outputText value="#{caretaker.username}" />
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Name" />
+                </f:facet>
+                <h:outputText value="#{caretaker.name}" />
+            </h:column>              
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions" />
+                </f:facet>
+                    <h:commandLink value="Details" action="admin_caretaker_details?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentCaretaker}" value="#{caretaker}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Update" action="admin_caretaker_update?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentCaretaker}" value="#{caretaker}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Remove" actionListener="#{administratorManager.removeCaretaker}">
+                        <f:param name="caretakerUsername" id="caretakerUsername" value="#{caretaker.username}" />
+                    </h:commandLink>
+            </h:column>                        
+
+        </h:dataTable>
+        
+            <h:commandButton value="Add caretaker" action="admin_caretaker_create?faces-redirect=true"/>
+        <br/>
+        <br/>
+        <h:inputText 
+            id="searchCaretakers"
+            size="52"
+            required="false"                    
+            value="#{administratorManager.searchCaretakersText}" />
+
+        <h:commandButton
+            id="clearSearch"
+            value="Clear Search"
+            action="#{administratorManager.clearSearch}" >
+            <f:setPropertyActionListener  target="#{administratorManager.userType}" value="caretaker" />
+        </h:commandButton>
+        <br/>
+        <h:commandButton
+            id="search"
+            value="Search Caretakers"
+            action="#{administratorManager.search}">
+            <f:setPropertyActionListener  target="#{administratorManager.userType}" value="caretaker" />
+        </h:commandButton>
+                </h:form>
+        
+        
+        
+        <br/>
+        
         <br/>
         <br/>
         <h:form>
