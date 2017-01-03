@@ -79,7 +79,7 @@ public class UserManager {
         if (isSomeUserAuthenticated()) {
             logout();
         }
-        return "index.xhtml?faces-redirect=true";
+        return "login.xhtml?faces-redirect=true";
     }
 
     public String getUsername() {

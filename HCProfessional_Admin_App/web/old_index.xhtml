@@ -1,0 +1,390 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Admin</title>
+    </h:head>
+    <h:body>
+
+        <h:dataTable
+            var="patient"
+            summary="List of all patients"
+            value="#{administratorManager.allPatientsREST}"
+            rules="all"
+            cellpadding="5">
+            
+            <f:facet name="header">
+                <h:outputText value="Patients" />
+            </f:facet>            
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id" />
+                </f:facet>
+                <h:outputText value="#{patient.id}" />
+                <!--Falta validar o formato-->
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Name" />
+                </f:facet>
+                <h:outputText value="#{patient.name}" />
+            </h:column>              
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions" />
+                </f:facet>
+                <h:form>
+                    <h:commandLink value="Details" action="admin_patient_details?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentPatient}" value="#{patient}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Update" action="admin_patient_update?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentPatient}" value="#{patient}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Remove" actionListener="#{administratorManager.removePatient}">
+                        <f:param name="patientId" id="patientId" value="#{patient.id}" />
+                    </h:commandLink>
+                </h:form>
+            </h:column>                        
+
+        </h:dataTable>
+        <br/>
+        <br/>
+        
+        <h:form>
+            <h:commandLink value="New patient" action="admin_patient_create?faces-redirect=true"/>
+        </h:form>
+        
+        <br/>
+        <br/>
+        
+        <h:form>
+        <h:dataTable
+            var="caretaker"
+            summary="List of caretakers"
+            value="#{administratorManager.caretakers}"
+            rules="all"
+            cellpadding="5">
+            
+            <f:facet name="header">
+                <h:outputText value="Caretakers" />
+            </f:facet>            
+            
+            
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="username" />
+                </f:facet>
+                <h:outputText value="#{caretaker.username}" />
+                <!--Falta validar o formato-->
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Name" />
+                </f:facet>
+                <h:outputText value="#{caretaker.name}" />
+            </h:column>              
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions" />
+                </f:facet>
+                    <h:commandLink value="Details" action="admin_caretaker_details?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentCaretaker}" value="#{caretaker}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Update" action="admin_caretaker_update?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentCaretaker}" value="#{caretaker}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Manage Materials" action="admin_caretaker_materialsManagement?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentCaretaker}" value="#{caretaker}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Remove" actionListener="#{administratorManager.removeCaretaker}">
+                        <f:param name="caretakerUsername" id="caretakerUsername" value="#{caretaker.username}" />
+                    </h:commandLink>
+            </h:column>                        
+
+        </h:dataTable>
+        
+            <h:commandButton value="Add caretaker" action="admin_caretaker_create?faces-redirect=true"/>
+        <br/>
+        <br/>
+        <h:inputText 
+            id="searchCaretakers"
+            size="52"
+            required="false"                    
+            value="#{administratorManager.searchCaretakersText}" />
+
+        <h:commandButton
+            id="clearSearch"
+            value="Clear Search"
+            action="#{administratorManager.clearSearch}" >
+            <f:setPropertyActionListener  target="#{administratorManager.userType}" value="caretaker" />
+        </h:commandButton>
+        <br/>
+        <h:commandButton
+            id="search"
+            value="Search Caretakers"
+            action="#{administratorManager.search}">
+            <f:setPropertyActionListener  target="#{administratorManager.userType}" value="caretaker" />
+        </h:commandButton>
+                </h:form>
+        
+        
+        <br/>
+        <br/>
+        <br/>
+        <h:form>
+           <h:dataTable
+            var="administrator"
+            summary="List of all Admninistrators"
+            value="#{administratorManager.admins}"
+            rules="all"
+            cellpadding="5">
+            
+            <f:facet name="header">
+                <h:outputText value="Administrators" />
+            </f:facet>            
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="username" />
+                </f:facet>
+                <h:outputText value="#{administrator.username}" />
+                <!--Falta validar o formato-->
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Name" />
+                </f:facet>
+                <h:outputText value="#{administrator.name}" />
+            </h:column>              
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions" />
+                </f:facet>
+                    <h:commandLink value="Details" action="admin_administrator_details?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentAdministrator}" value="#{administrator}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Update" action="admin_administrator_update?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentAdministrator}" value="#{administrator}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Remove" actionListener="#{administratorManager.removeAdministrator}">
+                        <f:param name="caretakerUsername" id="administratorUsername" value="#{administrator.username}" />
+                    </h:commandLink>
+            </h:column>                        
+
+        </h:dataTable>
+            <h:commandButton value="Add" action="admin_administrator_create?faces-redirect=true"/>
+        <br/>
+        <br/>
+        <h:inputText 
+            id="searchAdministrators"
+            size="52"
+            required="false"                    
+            value="#{administratorManager.searchAdminsText}" />
+
+        <h:commandButton
+            id="clearSearch"
+            value="Clear Search"
+            action="#{administratorManager.clearSearch}" >
+            <f:setPropertyActionListener  target="#{administratorManager.userType}" value="admin" />
+        </h:commandButton>
+        <br/>
+        <h:commandButton
+            id="search"
+            value="Search Administrators"
+            action="#{administratorManager.search}">
+            <f:setPropertyActionListener  target="#{administratorManager.userType}" value="admin" />
+        </h:commandButton>
+                </h:form>
+        
+        
+        
+        <br/>
+        <br/>
+        <br/>
+        <h:form>
+        
+           <h:dataTable
+            var="HealthCareProfessional"
+            summary="List of all HealthCareProfessionals"
+            value="#{administratorManager.hCPros}"
+            rules="all"
+            cellpadding="5">
+            
+            <f:facet name="header">
+                <h:outputText value="HealthCareProfessionals" />
+            </f:facet>            
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="username" />
+                </f:facet>
+                <h:outputText value="#{HealthCareProfessional.username}" />
+                <!--Falta validar o formato-->
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Name" />
+                </f:facet>
+                <h:outputText value="#{HealthCareProfessional.name}" />
+            </h:column>              
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions" />
+                </f:facet>
+                    <h:commandLink value="Details" action="admin_healthCareProfessional_details?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentHealthCareProfessional}" value="#{HealthCareProfessional}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Update" action="admin_healthCareProfessional_update?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentHealthCareProfessional}" value="#{HealthCareProfessional}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Remove" actionListener="#{administratorManager.removeHealthCareProfessional}">
+                        <f:param name="HealthCareProfessionalUsername" id="healthCareProfessionalUsername" value="#{HealthCareProfessional.username}" />
+                    </h:commandLink>
+            </h:column>                        
+
+        </h:dataTable>
+        
+            <h:commandButton value="Add" action="admin_healthCareProfessional_create?faces-redirect=true"/>
+        <br/>
+         <br/>
+        <h:inputText 
+            id="searchHealthCareProfessionals"
+            size="52"
+            required="false"                    
+            value="#{administratorManager.searchHCProsText}" />
+
+        <h:commandButton
+            id="clearSearch"
+            value="Clear Search"
+            action="#{administratorManager.clearSearch}" >
+            <f:setPropertyActionListener  target="#{administratorManager.userType}" value="hCPro" />
+        </h:commandButton>
+        <br/>
+        <h:commandButton
+            id="search"
+            value="Search HealthCareProfessionals"
+            action="#{administratorManager.search}">
+            <f:setPropertyActionListener  target="#{administratorManager.userType}" value="hCPro" />
+        </h:commandButton>
+                </h:form>
+        
+        
+        <br/>
+        <br/>
+        <br/>
+        <h:form>
+         <h:dataTable
+            var="trainingMaterial"
+            summary="List of all training materials"
+            value="#{administratorManager.trainingMaterials}"
+            rules="all"
+            cellpadding="5">
+            
+            <f:facet name="header">
+                <h:outputText value="TrainingMaterials" />
+            </f:facet>            
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Id" />
+                </f:facet>
+                <h:outputText value="#{trainingMaterial.id}" />
+                <!--Falta validar o formato-->
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Name" />
+                </f:facet>
+                <h:outputText value="#{trainingMaterial.name}" />
+            </h:column>     
+             
+             <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Type" />
+                </f:facet>
+                 <h:outputText value="#{trainingMaterial.type}" />
+            </h:column>   
+             
+             <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Support" />
+                </f:facet>
+                 <h:outputText value="#{trainingMaterial.support}" />
+            </h:column>    
+
+
+      <h:column>
+                <f:facet name="header">
+                    <h:outputText value="Actions" />
+                </f:facet>
+                    <h:commandLink value="Details" action="admin_trainingMaterial_details?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentTrainingMaterial}" value="#{trainingMaterial}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Update" action="admin_trainingMaterial_update?faces-redirect=true">
+                        <f:setPropertyActionListener target="#{administratorManager.currentTrainingMaterial}" value="#{trainingMaterial}" />
+                    </h:commandLink>
+                    &nbsp;
+                    <h:commandLink value="Remove" actionListener="#{administratorManager.removeTrainingMaterial}">
+                        <f:param name="trainingMaterialId" id="trainingMaterialId" value="#{trainingMaterial.id}" />
+                    </h:commandLink>
+            </h:column>                        
+                       
+
+        </h:dataTable>
+        
+            <h:commandButton value="Add" action="admin_trainingMaterial_create?faces-redirect=true"/>
+         <br/>
+         <br/>
+        <h:inputText 
+            id="searchTrainingMaterials"
+            size="52"
+            required="false"                    
+            value="#{administratorManager.searchTrainingMaterialsText}" />
+
+        <h:commandButton
+            id="clearSearch"
+            value="Clear Search"
+            action="#{administratorManager.clearSearch}" >
+            <f:setPropertyActionListener  target="#{administratorManager.userType}" value="trainingM" />
+        </h:commandButton>
+        <br/>
+        <h:commandButton
+            id="search"
+            value="Search Training Materials"
+            action="#{administratorManager.search}">
+            <f:setPropertyActionListener  target="#{administratorManager.userType}" value="trainingM" />
+        </h:commandButton>
+                </h:form>
+        
+        
+        <br/>
+        <br/>
+      
+        
+        <h:messages errorStyle="color: red" />
+        
+    </h:body>
+</html>
+
