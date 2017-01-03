@@ -1,6 +1,7 @@
 package entities;
 
 //import entities.UserGroup.GROUP;
+import entities.UserGroup.GROUP;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
@@ -29,16 +30,18 @@ public class User implements Serializable {
     protected String name;
     @NotNull
     protected String password;
-
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
+    protected UserGroup group;
     //@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     //protected UserGroup group;
 
     protected User() {
     }
 
-    protected User(String username, String name, String password) {
+    protected User(String username, String name, String password, GROUP group) {
         this.username = username;
         this.name = name;
+        this.group = new UserGroup(group, this);
         this.password = hashPassword(password);
     }
 

@@ -1,5 +1,6 @@
 package entities;
 
+import entities.UserGroup.GROUP;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +43,7 @@ public class Caretaker extends User implements Serializable {
     }
 
     public Caretaker(String username, String name, String password) {
-        super(username, name, password);
+        super(username, name, password, GROUP.Caretaker);
         patients = new LinkedList<>();
         trainingMaterials = new LinkedList<>();
         procedures = new LinkedList<>();

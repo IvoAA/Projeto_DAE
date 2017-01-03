@@ -36,24 +36,20 @@ public class UserManager {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request
                 = (HttpServletRequest) context.getExternalContext().getRequest();
-        /*try {
+        try {
             request.login(this.username, this.password);
         } catch (ServletException e) {
             logger.log(Level.WARNING, e.getMessage());
             return "error?faces-redirect=true";
-        }/*
+        }
         if (isUserInRole("Administrator")) {
-            return "/faces/admin/admin_index?faces-redirect=true";
+            return "/faces/admin/index?faces-redirect=true";
         }
-        if (isUserInRole("Student")) {
-            return "/faces/student/student_list_subjects?faces-redirect=true";
+        if (isUserInRole("HealthCareProfessional")) {
+            return "/faces/healthCareProfessional/index?faces-redirect=true";
         }
-        if (isUserInRole("Teacher")) {
-            return "/faces/teacher/teacher_list_subjects?faces-redirect=true";
-        }*/
-        return "/faces/admin/admin_index?faces-redirect=true";
         
-        //return "error?faces-redirect=true";
+        return "error?faces-redirect=true";
     }
 
     public boolean isUserInRole(String role) {
@@ -83,7 +79,7 @@ public class UserManager {
         if (isSomeUserAuthenticated()) {
             logout();
         }
-        return "index_login.xhtml?faces-redirect=true";
+        return "index.xhtml?faces-redirect=true";
     }
 
     public String getUsername() {

@@ -22,6 +22,8 @@ public class ConfigBean {
     @EJB
     private AdministratorBean administratorBean;
     @EJB
+    private HealthCareProfessionalBean healthCareProfessionalBean;
+    @EJB
     private TrainingMaterialBean trainingMaterialBean;
     @EJB
     private NecessityTypeBean necessityTypeBean;
@@ -37,8 +39,11 @@ public class ConfigBean {
                 necessityTypeBean.create(t.name());
             }
             
+            administratorBean.create("a", "a", "a");
             administratorBean.create("admin1", "adminName1", "adminPass1");
             administratorBean.create("admin2", "adminName2", "adminPass2");
+            
+            healthCareProfessionalBean.create("h", "h", "h");
 
             caretakerBean.create("user1", "name1", "pass1");
             caretakerBean.create("user2", "name2", "pass2");
