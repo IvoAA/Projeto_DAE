@@ -9,7 +9,7 @@ package enumerations;
  *
  * @author Figueiredo
  */
-public enum NecessityType {
+public enum NecessityTypes {
     
     TRONCO("Tronco"), MEMBROS_SUPERIORES("Membros Superiores"), 
     MEBROS_INFERIORES("Membros Inferiores"), PSICOLOGICA("Psicologioca");
@@ -18,7 +18,7 @@ public enum NecessityType {
     
     private String necessityType;
 
-    NecessityType(String necessityType) {
+    NecessityTypes(String necessityType) {
         this.necessityType = necessityType;
     }
 

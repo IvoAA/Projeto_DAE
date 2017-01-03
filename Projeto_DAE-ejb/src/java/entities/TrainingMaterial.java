@@ -49,6 +49,9 @@ public class TrainingMaterial implements Serializable {
     private List<Caretaker> caretakers;
     
     
+    @ManyToMany(mappedBy = "materials")
+    private List<NecessityType> types;
+    
     
     public TrainingMaterial() {
         caretakers = new LinkedList<>();
@@ -60,6 +63,7 @@ public class TrainingMaterial implements Serializable {
         this.type = type;
         this.support = support;
         caretakers = new LinkedList<>();
+        types = new LinkedList<>();
     }
     
     public int getId() {
@@ -110,6 +114,10 @@ public class TrainingMaterial implements Serializable {
 
     public void removeCaretaker(Caretaker caretaker) {
         caretakers.remove(caretaker);
+    }
+
+    public void addNecessityType(NecessityType necessityType) {
+        types.add(necessityType);
     }
     
     
