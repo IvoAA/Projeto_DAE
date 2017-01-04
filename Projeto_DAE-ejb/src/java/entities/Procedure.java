@@ -46,6 +46,10 @@ public class Procedure implements Serializable {
     private String patient;
     @NotNull
     private int materialId;
+    @NotNull
+    private String material;
+    @NotNull
+    private String date;
             
 
     public String getCaretakerUsername() {
@@ -71,10 +75,7 @@ public class Procedure implements Serializable {
     public void setMaterialId(int materialId) {
         this.materialId = materialId;
     }
-    @NotNull
-    private String material;
-    @NotNull
-    private String date;
+   
 
     public Procedure(){
     }

@@ -280,7 +280,7 @@ public class AdministratorManager {
             userType = "hCPro";
             allHCPros = getAllHealthCareProfessionals();
             search();
-            return "admin/index?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
         } catch (Exception e) {
@@ -351,14 +351,29 @@ public class AdministratorManager {
         return null;
     }
     
-    
+    public String updateAdministrator() {
+      try {
+          administratorBean.update(
+                  currentAdministrator.getUsername(),
+                   currentAdministrator.getName(),
+                  currentAdministrator.getPassword());
+
+          return "index?faces-redirect=true";
+
+      } catch (EntityDoesNotExistsException | MyConstraintViolationException e) {
+          FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+      } catch (Exception e) {
+          FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+      }
+    return "/faces/admin/administrator_update";
+  }
+        
     
     public void removeAdministrator(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("administratorUsername");
             String username = param.getValue().toString();
             
-            String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(Calendar.getInstance().getTime());
             administratorBean.remove(username);
          
             userType = "admin";
@@ -409,7 +424,7 @@ public class AdministratorManager {
     
     public String updateTrainingMaterials() {
         try {
-            trainingMaterialBean.update(newTrainingMaterial);
+            trainingMaterialBean.update(currentTrainingMaterial);
             return UserManager.class.newInstance().isUserInRole("Administrator") ? "/faces/admin/index?faces-redirect=true" : "/faces/healthCareProfessional/index?faces-redirect=true";
 
         } catch (Exception e) {

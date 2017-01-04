@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -119,7 +120,7 @@ public class ProcedureBean {
     }
     
     @GET
-    //@RolesAllowed({"Administrator"})
+    @RolesAllowed({"Caretaker"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("all")
     public List<ProcedureDTO> getAll() {

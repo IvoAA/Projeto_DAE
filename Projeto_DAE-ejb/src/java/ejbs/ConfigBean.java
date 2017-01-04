@@ -72,6 +72,9 @@ public class ConfigBean {
             patientBean.enrollPatient(2, "user1");
             
             trainingMaterialBean.enrollTrainingMaterial(1, "user1");
+            trainingMaterialBean.enrollTrainingMaterial(1, "c");
+            trainingMaterialBean.enrollTrainingMaterial(2, "c");
+            trainingMaterialBean.enrollTrainingMaterial(3, "c");
 
             necessityTypeBean.associateMaterialToNecessityType(1, NecessityTypes.MEBROS_INFERIORES.name());
             necessityTypeBean.associateMaterialToNecessityType(3, NecessityTypes.MEBROS_INFERIORES.name());

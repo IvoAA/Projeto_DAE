@@ -44,11 +44,8 @@ public class UserManager {
             logger.log(Level.WARNING, e.getMessage());
             return "error?faces-redirect=true";
         }
-        if (isUserInRole("Administrator")) {
-            return "/faces/admin/index?faces-redirect=true";
-        }
-        if (isUserInRole("HealthCareProfessional")) {
-            return "/faces/healthCareProfessional/index?faces-redirect=true";
+        if (isUserInRole("Caretaker")) {
+            return "/faces/caretaker/index?faces-redirect=true";
         }
         
         return "error?faces-redirect=true";

@@ -61,6 +61,7 @@ public class AdministratorManager {
     private PatientDTO currentPatient;
     private CaretakerDTO newCaretaker;
     private CaretakerDTO currentCaretaker;
+    private String cCaretaker;
     private AdministratorDTO newAdministrator;
     private AdministratorDTO currentAdministrator;
     private HealthCareProfessionalDTO newHealthCareProfessional; 
@@ -132,7 +133,7 @@ public class AdministratorManager {
             allProcedures = getAllProceduresREST();
             search();
 
-            return "/admin/index?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
         } catch (Exception e) {
@@ -140,17 +141,7 @@ public class AdministratorManager {
         }
         return null;
     }
-
-    /*
-    public List<CaretakerDTO> getAllCaretakers() {
-        try {
-            return caretakerBean.getAll();
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-        return null;
-    }
-     */
+    
     public String updateProceduresREST() {
         try {
             client.target(baseUri)
@@ -187,7 +178,7 @@ public class AdministratorManager {
     ////////////////////TrainingMaterial ///////////////////////
     public List<TrainingMaterialDTO> getCurrentCaretakerTrainingMaterials() {
         try {
-            return trainingMaterialBean.trainingMaterialsToDTO( trainingMaterialBean.getCaretakerTrainingMaterials(currentCaretaker.getUsername()) );
+            return trainingMaterialBean.trainingMaterialsToDTO( trainingMaterialBean.getCaretakerTrainingMaterials(cCaretaker) );
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
@@ -329,8 +320,10 @@ public class AdministratorManager {
     
     ///////////// LISTS ////////////////////////
     
-    public void onPageLoad(){
-        updateProcedure();
+    public void onPageLoad() throws InstantiationException, IllegalAccessException{
+        //updateProcedure();
+        //cCaretaker = UserManager.class.newInstance().getUsername();
+        cCaretaker = FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
     }
     private void updateProcedure() {
         allProcedures = getAllProceduresREST();

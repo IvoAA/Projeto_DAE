@@ -3,6 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
+    <f:metadata>
+        <f:viewAction action="#{administratorManager.onPageLoad}" />
+    </f:metadata>
     <h:head>
         <title>Caretaker</title>
     </h:head>
@@ -98,7 +101,54 @@
                 action="#{administratorManager.search}">
                 <f:setPropertyActionListener  target="#{administratorManager.userType}" value="procedure" />
             </h:commandButton>
+            
+            <br/>
+            <br/>
+            
+            
+             <h:dataTable
+                var="materials"
+                summary="Enrolled materials"
+                value="#{administratorManager.currentCaretakerTrainingMaterials}"
+                rules="all"
+                cellpadding="5">
+
+                <f:facet name="header">
+                    <h:outputText value="Enrolled training materials " />
+                </f:facet>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Name" />
+                    </f:facet>
+                    <h:outputText value="#{materials.name}" />
+                    <!--Falta validar o formato-->
+                </h:column> 
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Material Type" />
+                    </f:facet>
+                    <h:outputText value="#{materials.type}" />
+                </h:column> 
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Material Support" />
+                    </f:facet>
+                    <h:outputText value="#{materials.support}" />
+                </h:column> 
+
+
+            </h:dataTable> 
+            
+            
+            
+            
+            
         </h:form>
+        
+        
         
       
         
