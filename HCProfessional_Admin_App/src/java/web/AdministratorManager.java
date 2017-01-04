@@ -5,11 +5,13 @@ import dtos.AdministratorDTO;
 import dtos.CaretakerDTO;
 import dtos.HealthCareProfessionalDTO;
 import dtos.PatientDTO;
+import dtos.ProcedureDTO;
 import dtos.TrainingMaterialDTO;
 import ejbs.AdministratorBean;
 import ejbs.CaretakerBean;
 import ejbs.HealthCareProfessionalBean;
 import ejbs.PatientBean;
+import ejbs.ProcedureBean;
 import ejbs.TrainingMaterialBean;
 import enumerations.MaterialSupport;
 import enumerations.MaterialType;
@@ -95,13 +97,13 @@ public class AdministratorManager {
         newTrainingMaterial = new TrainingMaterialDTO();
         client = ClientBuilder.newClient();
  
-        allCaretakers = getAllCaretakersREST();
+        allCaretakers = getAllCaretakers();
         caretakers = allCaretakers;
-        allAdmins = getAllAdministratorsREST();
+        allAdmins = getAllAdministrators());
         admins = allAdmins;
-        allHCPros = getAllHealthCareProfessionalsREST();
+        allHCPros = getAllHealthCareProfessionals();
         hCPros = allHCPros;
-        allTrainingMaterials = getAllTrainingMaterialsREST();
+        allTrainingMaterials = getAllTrainingMaterials();
         trainingMaterials = allTrainingMaterials;
     }
 
@@ -136,40 +138,25 @@ public class AdministratorManager {
         }
         return null;
     }
-    
-    public String updatePatientsREST(){   
-        try {
-           client.target(baseUri)
-                    .path("/patients/updateREST")
-                    .request(MediaType.APPLICATION_XML).put(Entity.xml(currentPatient));
-            return "admin_index?faces-redirect=true";
-           
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-        return "admin_patient_update";
-    }
-
-    public void removePatient(ActionEvent event) {
-        try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("patientId");
-            int id = Integer.parseInt(param.getValue().toString());
-            patientBean.remove(id);
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-    }
 
     /////////////// CARETAKERS /////////////////*/
     
+    //DELETE
     private List<CaretakerDTO> getAllCaretakersREST() {
         List<CaretakerDTO> returnedCaretakers = client.target(baseUri)
                 .path("/caretakers/all")
                 .request(MediaType.APPLICATION_XML)
                 .get(new GenericType<List<CaretakerDTO>>() {});
         return returnedCaretakers;
+    }
+    
+    private List<CaretakerDTO> getAllCaretakers() {
+        try {
+            return caretakerBean.getAll();
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return null;
     }
     
     public String createCaretaker() {
@@ -180,9 +167,9 @@ public class AdministratorManager {
                     newCaretaker.getPassword());
             newCaretaker.reset();
             userType = "caretaker";
-            allCaretakers = getAllCaretakersREST();
+            allCaretakers = getAllCaretakers();
             search();
-            return "admin_index?faces-redirect=true";
+            return UserManager.class.newInstance().isUserInRole("Administrator") ? "/faces/admin/index?faces-redirect=true" : "/faces/healthCareProfessional/index?faces-redirect=true";
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
         } catch (Exception e) {
@@ -191,6 +178,7 @@ public class AdministratorManager {
         return null;
     }
     
+    //DELETE
     public String updateCaretakersREST(){   
         try {
            client.target(baseUri)
@@ -202,6 +190,17 @@ public class AdministratorManager {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
         return "admin_administrator_update";
+    }
+    
+    public String updateCaretaker() {
+        try {
+            caretakerBean.update(currentCaretaker);
+            return UserManager.class.newInstance().isUserInRole("Administrator") ? "/faces/admin/index?faces-redirect=true" : "/faces/healthCareProfessional/index?faces-redirect=true";
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return "/faces/admin_hcPro/caretaker_update?faces-redirect=true";
     }
 
     public void removeCaretaker(ActionEvent event) {
