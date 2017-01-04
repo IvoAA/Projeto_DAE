@@ -210,7 +210,7 @@ public class AdministratorManager {
             if(patientBean.getCaretakerPatients(username).isEmpty()){
                 caretakerBean.remove(username);
             userType = "caretaker";
-            allCaretakers = getAllCaretakersREST();
+            allCaretakers = getAllCaretakers();
             search();
             }else{
                 throw new EntityDoesNotExistsException("Can't remove a caretaker with patients!");
@@ -287,6 +287,7 @@ public class AdministratorManager {
         this.currentHealthCareProfessional = currentHealthCareProfessional;
     }
  
+    //DELETE
    private List<HealthCareProfessionalDTO> getAllHealthCareProfessionalsREST() {
         List<HealthCareProfessionalDTO> returnedHealthCareProfessionals = null;
         returnedHealthCareProfessionals = client.target(baseUri)
@@ -294,6 +295,15 @@ public class AdministratorManager {
                 .request(MediaType.APPLICATION_XML)
                 .get(new GenericType<List<HealthCareProfessionalDTO>>() {});
         return returnedHealthCareProfessionals;
+    }
+   
+      private List<HealthCareProfessionalDTO> getAllHealthCareProfessionals() {
+        try {
+            return healthCareProfessionalBean.getAll();
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return null;
     }
     
     public String createHealthCareProfessional() {
@@ -304,9 +314,9 @@ public class AdministratorManager {
                     newHealthCareProfessional.getPassword());
             newHealthCareProfessional.reset();
             userType = "hCPro";
-            allHCPros = getAllHealthCareProfessionalsREST();
+            allHCPros = getAllHealthCareProfessionals();
             search();
-            return "admin_index?faces-redirect=true";
+            return "admin/index?faces-redirect=true";
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
         } catch (Exception e) {
@@ -315,6 +325,7 @@ public class AdministratorManager {
         return null;
     }
     
+    //DELETE
     public String updateHealthCareProfessionalREST(){   
         try {
            client.target(baseUri)
@@ -328,6 +339,17 @@ public class AdministratorManager {
         return "admin_administrator_update";
     }
     
+    public String updateHealthCareProfessional() {
+        try {
+            healthCareProfessionalBean.update(currentHealthCareProfessional);
+            return UserManager.class.newInstance().isUserInRole("Administrator") ? "/faces/admin/index?faces-redirect=true" : "/faces/healthCareProfessional/index?faces-redirect=true";
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return "/faces/admin/healthCareProfessional_update?faces-redirect=true";
+    }
+    
     public void removeHealthCareProfessional(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("healthCareProfessionalUsername");
@@ -337,7 +359,7 @@ public class AdministratorManager {
             healthCareProfessionalBean.remove(username);
          
             userType = "hCPro";
-            allHCPros = getAllHealthCareProfessionalsREST();
+            allHCPros = getAllHealthCareProfessionals();
             search();
             
         } catch (EntityDoesNotExistsException e) {
@@ -376,9 +398,9 @@ public class AdministratorManager {
                     newAdministrator.getPassword());
             newAdministrator.reset();
             userType = "admin";
-            allAdmins = getAllAdministratorsREST();
+            allAdmins = getAllAdministrators();
             search();
-            return "admin_index?faces-redirect=true";
+            return "admin/index?faces-redirect=true";
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
         } catch (Exception e) {
@@ -410,7 +432,7 @@ public class AdministratorManager {
             administratorBean.remove(username);
          
             userType = "admin";
-            allAdmins = getAllAdministratorsREST();
+            allAdmins = getAllAdministrators();
             search();
             
         } catch (EntityDoesNotExistsException e) {
@@ -442,7 +464,7 @@ public class AdministratorManager {
                     newTrainingMaterial.getSupport());
             newTrainingMaterial.reset();
                         userType = "trainingM";
-            allTrainingMaterials = getAllTrainingMaterialsREST();
+            allTrainingMaterials = getAllTrainingMaterials();
             search();
             
             
@@ -475,7 +497,7 @@ public class AdministratorManager {
             
             trainingMaterialBean.remove(id);
             userType = "trainingM";
-            allTrainingMaterials = getAllTrainingMaterialsREST();
+            allTrainingMaterials = getAllTrainingMaterials();
             search();
                         
             
