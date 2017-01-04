@@ -49,12 +49,9 @@ public class Patient implements Serializable {
     //@NotNull (message="A patient must have a caretaker")
     private Caretaker caretaker;
     
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.REMOVE)
-    private List<Procedure> procedures;
     
     public Patient(){ 
   
-        procedures = new LinkedList<>();
     }
     
     public Patient(int id, String name, String necessity,List<String> necessities ) {
@@ -62,7 +59,6 @@ public class Patient implements Serializable {
         this.name = name;
         this.caretaker = null;
         this.necessity = necessity;
-        procedures = new LinkedList<>();
         this.necessities = necessities;
        
     }
@@ -98,13 +94,6 @@ public class Patient implements Serializable {
 
     public void setNecessity(String necessity) {
         this.necessity = necessity;
-    }
-
-
-
-    
-    public void addProcedure(Procedure p){
-        procedures.add(p);
     }
 
     public List<String> getNecessities() {

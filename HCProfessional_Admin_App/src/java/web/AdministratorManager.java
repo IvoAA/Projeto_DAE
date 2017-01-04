@@ -1,16 +1,5 @@
 package web;
 
-/*
-import dtos.CourseDTO;
-import dtos.StudentDTO;
-import dtos.SubjectDTO;
-import ejbs.CourseBean;
-import ejbs.StudentBean;
-import ejbs.SubjectBean;
-import exceptions.EntityAlreadyExistsException;
-import exceptions.EntityDoesNotExistsException;
-import exceptions.MyConstraintViolationException;
-*/
 
 import dtos.AdministratorDTO;
 import dtos.CaretakerDTO;
@@ -22,13 +11,14 @@ import ejbs.CaretakerBean;
 import ejbs.HealthCareProfessionalBean;
 import ejbs.PatientBean;
 import ejbs.TrainingMaterialBean;
-import entities.HealthCareProfessional;
 import enumerations.MaterialSupport;
 import enumerations.MaterialType;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.PatientAssociateException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -41,6 +31,7 @@ import javax.faces.component.UIInput;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.inject.Named;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -72,15 +63,13 @@ public class AdministratorManager {
     private HealthCareProfessionalDTO currentHealthCareProfessional; 
     private TrainingMaterialDTO newTrainingMaterial;
     private TrainingMaterialDTO currentTrainingMaterial;
-    
-    
+        
     private String userType;
     private String searchCaretakersText;
     private String searchAdminsText;
     private String searchHCProsText;
     private String searchTrainingMaterialsText;
-    
-    
+        
     private List<CaretakerDTO> allCaretakers;
     private List<CaretakerDTO> caretakers;
     private List<AdministratorDTO> allAdmins;
@@ -106,7 +95,6 @@ public class AdministratorManager {
         newTrainingMaterial = new TrainingMaterialDTO();
         client = ClientBuilder.newClient();
  
-        
         allCaretakers = getAllCaretakersREST();
         caretakers = allCaretakers;
         allAdmins = getAllAdministratorsREST();
@@ -371,6 +359,15 @@ public class AdministratorManager {
                 .get(new GenericType<List<AdministratorDTO>>() {});
         return returnedAdministrators;
     }
+   
+   private List<AdministratorDTO> getAllAdministratorsNOREST() {
+        try {
+            return administratorBean.getAll();
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return null;
+    }
     
     public String createAdministrator() {
         try {
@@ -410,7 +407,7 @@ public class AdministratorManager {
             UIParameter param = (UIParameter) event.getComponent().findComponent("administratorUsername");
             String username = param.getValue().toString();
             
-            
+            String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(Calendar.getInstance().getTime());
             administratorBean.remove(username);
          
             userType = "admin";

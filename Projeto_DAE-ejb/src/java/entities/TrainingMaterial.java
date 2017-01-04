@@ -56,12 +56,8 @@ public class TrainingMaterial implements Serializable {
     @ManyToMany(mappedBy = "materials")
     private List<NecessityType> types;
     
-    @OneToMany(mappedBy = "material", cascade = CascadeType.REMOVE)
-    private List<Procedure> procedures;
-    
     public TrainingMaterial() {
         caretakers = new LinkedList<>();
-        procedures = new LinkedList<>();
     }
 
     public TrainingMaterial(int id, String name, String type, String support) {
@@ -71,7 +67,6 @@ public class TrainingMaterial implements Serializable {
         this.support = support;
         caretakers = new LinkedList<>();
         types = new LinkedList<>();
-        procedures = new LinkedList<>();
     }
     
     public int getId() {
@@ -127,12 +122,6 @@ public class TrainingMaterial implements Serializable {
     public void addNecessityType(NecessityType necessityType) {
         types.add(necessityType);
     }
-    
-    
-    public void addProcedure(Procedure p){
-        procedures.add(p);
-    }
-    
     
     
     

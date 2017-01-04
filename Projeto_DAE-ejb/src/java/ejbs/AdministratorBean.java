@@ -139,5 +139,14 @@ public class AdministratorBean {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    public List<AdministratorDTO> getAllNOREST() {
+        try {
+            List<Administrator> administrators = (List<Administrator>) em.createNamedQuery("getAllAdministrators").getResultList();
+            return administratorToDTO(administrators);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
        
 }

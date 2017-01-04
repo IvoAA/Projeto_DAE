@@ -3,8 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/fariow/NetBeansProjects/Projeto_DAE/Projeto_DAE-ejb/src/java/entities/Caretaker.java</file>
-            <file>file:/home/fariow/NetBeansProjects/Projeto_DAE/Projeto_DAE-ejb/src/java/ejbs/ConfigBean.java</file>
+            <file>file:/D:/Desktop/Ivo/Escola/3ano/3_DAE/Projeto_DAE/Projeto_DAE-ejb/src/java/entities/Procedure.java</file>
+            <file>file:/D:/Desktop/Ivo/Escola/3ano/3_DAE/Projeto_DAE/Projeto_DAE-ejb/src/java/dtos/ProcedureDTO.java</file>
+            <file>file:/D:/Desktop/Ivo/Escola/3ano/3_DAE/Projeto_DAE/Projeto_DAE-ejb/src/java/ejbs/ProcedureBean.java</file>
         </group>
     </open-files>
 </project-private>

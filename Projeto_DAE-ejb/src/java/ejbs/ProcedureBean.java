@@ -16,7 +16,9 @@ import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -44,11 +46,6 @@ public class ProcedureBean {
             if(em.find(Procedure.class,id)!= null){
                throw new EntityAlreadyExistsException("A procedure whith that id already exists");
             }
-
-            /*NecessityType nT = em.find(NecessityType.class, necessity);
-            if (nT == null) {
-                throw new EntityDoesNotExistsException("There is no necessityType with that name.");
-            }*/
             
             Caretaker c = em.find(Caretaker.class, caretaker);
             if (c == null) {
@@ -65,8 +62,9 @@ public class ProcedureBean {
                 throw new EntityDoesNotExistsException("There is no trainingMaterial with that id.");
             }
             
+            String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(Calendar.getInstance().getTime());
             
-            Procedure procedure = new Procedure(id, description, c, p, tM);
+            Procedure procedure = new Procedure(id, description, c.getName(), p.getName(), tM.getName(), timeStamp);
             em.persist(procedure);
        // EntityDoesNotExistException missing
         }catch (EntityAlreadyExistsException e){
@@ -99,7 +97,8 @@ public class ProcedureBean {
                         p.getDescription(),
                         p.getCaretaker(),
                         p.getPatient(),
-                        p.getMaterial());
+                        p.getMaterial(),
+                        p.getDate());
         
     }
     

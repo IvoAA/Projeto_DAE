@@ -10,6 +10,7 @@ import entities.NecessityType;
 import entities.Patient;
 import entities.TrainingMaterial;
 import java.io.Serializable;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -22,21 +23,25 @@ public class ProcedureDTO implements Serializable{
     
     protected int id;
     protected String description;
-    protected Caretaker caretaker;
-    protected Patient patient;
-    protected TrainingMaterial material;
+    private String caretaker;
+    private String patient;
+    private String material;
+    private String date;
     
     public ProcedureDTO(){
         
     }
 
-    public ProcedureDTO(int id, String description, Caretaker caretaker, Patient patient, TrainingMaterial material) {
+    public ProcedureDTO(int id, String description, String caretaker, String patient, String material, String date) {
         this.id = id;
         this.description = description;
         this.caretaker = caretaker;
         this.patient = patient;
         this.material = material;
+        this.date = date;
     }
+
+    
 
     public int getId() {
         return id;
@@ -54,29 +59,38 @@ public class ProcedureDTO implements Serializable{
         this.description = description;
     }
 
-    public Caretaker getCaretaker() {
+    public String getCaretaker() {
         return caretaker;
     }
 
-    public void setCaretaker(Caretaker caretaker) {
+    public void setCaretaker(String caretaker) {
         this.caretaker = caretaker;
     }
 
-    public Patient getPatient() {
+    public String getPatient() {
         return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public void setPatient(String patient) {
         this.patient = patient;
     }
 
-    public TrainingMaterial getMaterial() {
+    public String getMaterial() {
         return material;
     }
 
-    public void setMaterial(TrainingMaterial material) {
+    public void setMaterial(String material) {
         this.material = material;
     }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
 
 
     
@@ -86,6 +100,7 @@ public class ProcedureDTO implements Serializable{
         this.caretaker = null;
         this.patient = null;
         this.material = null;
+        this.date = null;
     }
     
 }
