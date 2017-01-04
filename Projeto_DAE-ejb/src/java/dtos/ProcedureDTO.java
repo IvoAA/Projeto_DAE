@@ -24,15 +24,15 @@ public class ProcedureDTO implements Serializable{
     protected int id;
     protected String description;
     private String caretaker;
-    private String patient;
-    private String material;
+    private int patient;
+    private int material;
     private String date;
     
     public ProcedureDTO(){
         
     }
 
-    public ProcedureDTO(int id, String description, String caretaker, String patient, String material, String date) {
+    public ProcedureDTO(int id, String description, String caretaker, int patient, int material, String date) {
         this.id = id;
         this.description = description;
         this.caretaker = caretaker;
@@ -67,19 +67,19 @@ public class ProcedureDTO implements Serializable{
         this.caretaker = caretaker;
     }
 
-    public String getPatient() {
+    public int getPatient() {
         return patient;
     }
 
-    public void setPatient(String patient) {
+    public void setPatient(int patient) {
         this.patient = patient;
     }
 
-    public String getMaterial() {
+    public int getMaterial() {
         return material;
     }
 
-    public void setMaterial(String material) {
+    public void setMaterial(int material) {
         this.material = material;
     }
 
@@ -98,8 +98,8 @@ public class ProcedureDTO implements Serializable{
         this.id = -1;
         this.description = null;
         this.caretaker = null;
-        this.patient = null;
-        this.material = null;
+        this.patient = -1;
+        this.material = -1;
         this.date = null;
     }
     

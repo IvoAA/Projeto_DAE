@@ -354,11 +354,11 @@ public class AdministratorManager {
             case "procedure":
                 List<ProcedureDTO> resultP = new LinkedList();
                 procedures = allProcedures;                    
-                procedures.stream().filter((p) -> (p.getDescription().contains(searchProcedureText))).forEach((t) -> {
+                procedures.stream().filter((p) -> (p.getDescription().contains(searchProcedureText))).forEach((p) -> {
                     resultP.add(p);
                 });
 
-                trainingMaterials = resultT;
+                procedures = resultP;
                 break;
         }
     }

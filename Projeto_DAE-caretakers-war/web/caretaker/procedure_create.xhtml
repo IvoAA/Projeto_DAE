@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Create Training Material</title>
+    </h:head>
+    <h:body>
+        <h:form>                  
+            <h:panelGrid columns="3">
+
+                <h:outputLabel for="id" value="Id :" />
+                <h:inputText 
+                    id="id"
+                    size="20"
+                    validator="#{administratorManager.validateId}"  
+                    required="true"
+                    requiredMessage="Error: Username cannot be empty."
+                    value="#{administratorManager.newProcedure.id}">
+                </h:inputText>
+                <h:message for="username" errorStyle="color: red" />
+
+                <h:outputLabel for="description" value="Description: " />
+                <h:inputText 
+                    id="name"
+                    size="52"
+                    required="true"
+                    requiredMessage="Error: Name cannot be empty."                            
+                    value="#{administratorManager.newProcedure.description}" />
+                <h:message for="name" errorStyle="color: red" />
+
+                  <br></br>  
+                
+
+                <h:outputLabel for="patient" value="Patient Name: " />
+                <h:selectOneMenu
+                    id="patientName"
+                    value="#{administratorManager.newProcedure.patient}" >
+                    <f:selectItems
+                        value="#{administratorManager.allPatientsREST}"
+                        var="patient"
+                        itemValue="#{patient.id}"
+                        itemLabel="#{patient.name}" />
+                </h:selectOneMenu>
+
+                <br></br>  
+
+                <h:outputLabel for="caretaker" value="Caretaker Name: " />
+                <h:selectOneMenu
+                    id="caretakerName"
+                    value="#{administratorManager.newProcedure.caretaker}" >
+                    <f:selectItems
+                        value="#{administratorManager.caretakers}"
+                        var="caretaker"
+                        itemValue="#{caretaker.username}"
+                        itemLabel="#{caretaker.name}" />
+                </h:selectOneMenu>
+
+                <br></br>      
+
+
+                <h:outputLabel for="trainingMaterial" value="Training Material Name: " />
+                <h:selectOneMenu
+                    id="trainingMaterialName"
+                    value="#{administratorManager.newProcedure.material}" >
+                    <f:selectItems
+                        value="#{administratorManager.trainingMaterials}"
+                        var="material"
+                        itemValue="#{material.id}"
+                        itemLabel="#{material.name}" />
+                </h:selectOneMenu>
+
+
+                <h:commandButton
+                    id="submit"
+                    value="Create"
+                    binding="#{administratorManager.component}" 
+                    action="#{administratorManager.createProcedure()}" />
+                <h:message for="submit" style="color: red"/>
+            </h:panelGrid >                       
+
+        </h:form>
+
+        <!--<h:messages style="color:red"/> -->        
+
+    </h:body>
+</html>
+

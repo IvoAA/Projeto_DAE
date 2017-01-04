@@ -79,7 +79,7 @@ public class ConfigBean {
             necessityTypeBean.associateMaterialToNecessityType(3, NecessityTypes.PSICOLOGICA.name());
             necessityTypeBean.associateMaterialToNecessityType(3, NecessityTypes.TRONCO.name());
             
-            procedureBean.create(1, "Aparafusar Joelho", NecessityTypes.MEBROS_INFERIORES.name(), "user2", 2, 2);
+            procedureBean.create(1, "Aparafusar Joelho", "user1", 2, 2);
             
             
         } catch (Exception e) {

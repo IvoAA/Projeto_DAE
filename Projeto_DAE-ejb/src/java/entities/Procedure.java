@@ -37,9 +37,40 @@ public class Procedure implements Serializable {
     @NotNull
     private String description;
     @NotNull
+    private String caretakerUsername;
+    @NotNull
     private String caretaker;
     @NotNull
+    private int patientId;
+    @NotNull
     private String patient;
+    @NotNull
+    private int materialId;
+            
+
+    public String getCaretakerUsername() {
+        return caretakerUsername;
+    }
+
+    public void setCaretakerUsername(String caretakerUsername) {
+        this.caretakerUsername = caretakerUsername;
+    }
+
+    public int getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
+    }
+
+    public int getMaterialId() {
+        return materialId;
+    }
+
+    public void setMaterialId(int materialId) {
+        this.materialId = materialId;
+    }
     @NotNull
     private String material;
     @NotNull
@@ -48,11 +79,14 @@ public class Procedure implements Serializable {
     public Procedure(){
     }
 
-    public Procedure(int id, String description, String caretaker, String patient, String material, String date) {
+    public Procedure(int id, String description, String caretakerUsername, String caretakerName, int patientId, String patient, int materialId, String material, String date) {
         this.id = id;
         this.description = description;
-        this.caretaker = caretaker;
+        this.caretakerUsername = caretakerUsername;
+        this.caretaker = caretakerName;
+        this.patientId = patientId;
         this.patient = patient;
+        this.materialId = materialId;
         this.material = material;
         this.date = date;
     }
