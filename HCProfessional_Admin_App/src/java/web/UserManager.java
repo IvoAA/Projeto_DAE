@@ -56,6 +56,11 @@ public class UserManager {
         return (isSomeUserAuthenticated()
                 && FacesContext.getCurrentInstance().getExternalContext().isUserInRole(role));
     }
+    
+    public String isUserInRoleForPages() {
+        return isUserInRole("Administrator") ? "/faces/admin/index?faces-redirect=true" : "/faces/healthCareProfessional/index?faces-redirect=true";
+
+    }
 
     public boolean isSomeUserAuthenticated() {
         return FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal() != null;

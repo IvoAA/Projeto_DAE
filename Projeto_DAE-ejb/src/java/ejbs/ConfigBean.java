@@ -45,6 +45,7 @@ public class ConfigBean {
             
             healthCareProfessionalBean.create("h", "h", "h");
 
+            caretakerBean.create("c", "c", "c");
             caretakerBean.create("user1", "name1", "pass1");
             caretakerBean.create("user2", "name2", "pass2");
 

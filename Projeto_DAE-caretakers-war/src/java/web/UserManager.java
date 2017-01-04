@@ -74,7 +74,7 @@ public class UserManager {
                 = (HttpSession) context.getExternalContext().getSession(false);
         session.invalidate();
         // using faces-redirect to initiate a new request:
-        return "/index_login.xhtml?faces-redirect=true";
+        return "/faces/login.xhtml?faces-redirect=true";
     }
 
     public String clearLogin() {
