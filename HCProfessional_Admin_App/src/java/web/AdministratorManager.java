@@ -208,7 +208,7 @@ public class AdministratorManager {
            client.target(baseUri)
                     .path("/caretakers/updateREST")
                     .request(MediaType.APPLICATION_XML).put(Entity.xml(currentCaretaker));
-            return "admin_index?faces-redirect=true";
+            return UserManager.class.newInstance().isUserInRole("Administrator") ? "/faces/admin/index?faces-redirect=true" : "/faces/healthCareProfessional/index?faces-redirect=true" ;
            
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);

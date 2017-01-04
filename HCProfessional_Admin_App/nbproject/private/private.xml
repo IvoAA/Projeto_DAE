@@ -2,6 +2,17 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/fariow/NetBeansProjects/Projeto_DAE/HCProfessional_Admin_App/web/patient_details.xhtml</file>
+            <file>file:/home/fariow/NetBeansProjects/Projeto_DAE/HCProfessional_Admin_App/web/admin_hcPro/caretaker_update.xhtml</file>
+            <file>file:/home/fariow/NetBeansProjects/Projeto_DAE/HCProfessional_Admin_App/web/healthCareProfessional/caretaker_patientsManagement.xhtml</file>
+            <file>file:/home/fariow/NetBeansProjects/Projeto_DAE/HCProfessional_Admin_App/src/java/web/AdministratorManager.java</file>
+            <file>file:/home/fariow/NetBeansProjects/Projeto_DAE/HCProfessional_Admin_App/web/WEB-INF/web.xml</file>
+            <file>file:/home/fariow/NetBeansProjects/Projeto_DAE/HCProfessional_Admin_App/web/login.xhtml</file>
+            <file>file:/home/fariow/NetBeansProjects/Projeto_DAE/HCProfessional_Admin_App/web/admin/index.xhtml</file>
+            <file>file:/home/fariow/NetBeansProjects/Projeto_DAE/HCProfessional_Admin_App/web/healthCareProfessional/index.xhtml</file>
+            <file>file:/home/fariow/NetBeansProjects/Projeto_DAE/HCProfessional_Admin_App/src/java/web/UserManager.java</file>
+            <file>file:/home/fariow/NetBeansProjects/Projeto_DAE/HCProfessional_Admin_App/web/healthCareProfessional/caretaker_materialsManagement.xhtml</file>
+        </group>
     </open-files>
 </project-private>
