@@ -50,10 +50,10 @@
         <br/>       
 
         <h:form>                  
-            <h:commandLink
-                id="return"
-                value="Return"
-                action="admin_index?faces-redirect=true" />
+              <h:commandButton
+                    id="return"
+                    value="Return"
+                    action="#{userManager.isUserInRoleForFaces}" />
         </h:form>
 
         <h:messages errorStyle="color: red" />        

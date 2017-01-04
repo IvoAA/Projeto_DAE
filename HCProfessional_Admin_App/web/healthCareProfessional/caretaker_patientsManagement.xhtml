@@ -115,10 +115,10 @@
                               
         <br/>
             
-        <h:commandLink
-                id="return"
-                value="Return"
-                action="index?faces-redirect=true"/>
+        <h:commandButton
+                    id="return"
+                    value="Return"
+                    action="#{userManager.isUserInRoleForFaces}" />
           
         
         </h:form>

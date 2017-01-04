@@ -71,6 +71,29 @@ public class CaretakerBean {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    public void update(CaretakerDTO caretakerDTO) 
+        throws EntityDoesNotExistsException, MyConstraintViolationException{
+        try {
+            Caretaker caretaker = em.find(Caretaker.class, caretakerDTO.getUsername());
+            if (caretaker == null) {
+                throw new EntityDoesNotExistsException("There is no caretaker with that username.");
+            }
+           
+
+            caretaker.setName(caretakerDTO.getName());
+            caretaker.setPassword(caretakerDTO.getPassword());
+            em.merge(caretaker);
+            
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (ConstraintViolationException e) {
+            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));            
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
 
     public void remove(String username) throws EntityDoesNotExistsException {
 

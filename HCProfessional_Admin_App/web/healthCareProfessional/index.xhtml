@@ -62,7 +62,7 @@
 
         </h:dataTable>
         
-            <h:commandButton value="Add caretaker" action="admin_caretaker_create?faces-redirect=true"/>
+            <h:commandButton value="Add caretaker" action="/faces/admin_hcPro/caretaker_create?faces-redirect=true"/>
         <br/>
         <br/>
         <h:inputText 
@@ -134,11 +134,11 @@
                 <f:facet name="header">
                     <h:outputText value="Actions" />
                 </f:facet>
-                    <h:commandLink value="Details" action="admin_trainingMaterial_details?faces-redirect=true">
+                    <h:commandLink value="Details" action="/faces/admin_hcPro/trainingMaterial_details?faces-redirect=true">
                         <f:setPropertyActionListener target="#{administratorManager.currentTrainingMaterial}" value="#{trainingMaterial}" />
                     </h:commandLink>
                     &nbsp;
-                    <h:commandLink value="Update" action="admin_trainingMaterial_update?faces-redirect=true">
+                    <h:commandLink value="Update" action="/faces/admin_hcPro/trainingMaterial_update?faces-redirect=true">
                         <f:setPropertyActionListener target="#{administratorManager.currentTrainingMaterial}" value="#{trainingMaterial}" />
                     </h:commandLink>
                     &nbsp;
@@ -150,7 +150,7 @@
 
         </h:dataTable>
         
-            <h:commandButton value="Add" action="admin_trainingMaterial_create?faces-redirect=true"/>
+            <h:commandButton value="Add" action="/faces/admin_hcPro/trainingMaterial_create?faces-redirect=true"/>
          <br/>
          <br/>
         <h:inputText 

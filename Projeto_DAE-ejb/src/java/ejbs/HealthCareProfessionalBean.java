@@ -56,18 +56,18 @@ public class HealthCareProfessionalBean {
     }
     
 
-    public void update(String username, String name, String password) 
+     public void update(HealthCareProfessionalDTO healthCareProfessionalDTO) 
         throws EntityDoesNotExistsException, MyConstraintViolationException{
         try {
             
-            HealthCareProfessional healthCareProfessional = em.find(HealthCareProfessional.class, username);
+            HealthCareProfessional healthCareProfessional = em.find(HealthCareProfessional.class, healthCareProfessionalDTO.getUsername());
             if (healthCareProfessional == null) {
                 throw new EntityDoesNotExistsException("There is no healthCareProfessional with that username.");
             }
             
 
-            healthCareProfessional.setName(name);
-            healthCareProfessional.setPassword(password);
+            healthCareProfessional.setName(healthCareProfessionalDTO.getName());
+            healthCareProfessional.setPassword(healthCareProfessionalDTO.getPassword());
             em.merge(healthCareProfessional);
             
         } catch (EntityDoesNotExistsException e) {

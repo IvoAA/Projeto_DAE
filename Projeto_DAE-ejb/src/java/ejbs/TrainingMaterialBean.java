@@ -81,6 +81,27 @@ public class TrainingMaterialBean {
             throw new EJBException(e.getMessage());
         }
     }
+    
+     public void update(TrainingMaterialDTO trainingMaterialDTO)
+            throws EntityDoesNotExistsException, MyConstraintViolationException {
+        try {
+            TrainingMaterial trainingMaterial = em.find(TrainingMaterial.class, trainingMaterialDTO.getId());
+            if (trainingMaterial == null) {
+                throw new EntityDoesNotExistsException("There is no trainingMaterial with that username.");
+            }
+
+            trainingMaterial.setName(trainingMaterialDTO.getName());
+            em.merge(trainingMaterial);
+
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (ConstraintViolationException e) {
+            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
 
     public void remove(int id) throws EntityDoesNotExistsException {
 

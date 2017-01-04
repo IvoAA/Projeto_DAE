@@ -97,14 +97,7 @@ public class AdministratorManager {
         newTrainingMaterial = new TrainingMaterialDTO();
         client = ClientBuilder.newClient();
  
-        allCaretakers = getAllCaretakers();
-        caretakers = allCaretakers;
-        allAdmins = getAllAdministrators());
-        admins = allAdmins;
-        allHCPros = getAllHealthCareProfessionals();
-        hCPros = allHCPros;
-        allTrainingMaterials = getAllTrainingMaterials();
-        trainingMaterials = allTrainingMaterials;
+        
     }
 
     
@@ -130,7 +123,7 @@ public class AdministratorManager {
                     );
             
             newPatient.reset();
-            return "admin_index?faces-redirect=true";
+            return "admin/index?faces-redirect=true";
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
         } catch (Exception e) {
@@ -141,14 +134,6 @@ public class AdministratorManager {
 
     /////////////// CARETAKERS /////////////////*/
     
-    //DELETE
-    private List<CaretakerDTO> getAllCaretakersREST() {
-        List<CaretakerDTO> returnedCaretakers = client.target(baseUri)
-                .path("/caretakers/all")
-                .request(MediaType.APPLICATION_XML)
-                .get(new GenericType<List<CaretakerDTO>>() {});
-        return returnedCaretakers;
-    }
     
     private List<CaretakerDTO> getAllCaretakers() {
         try {
@@ -178,19 +163,6 @@ public class AdministratorManager {
         return null;
     }
     
-    //DELETE
-    public String updateCaretakersREST(){   
-        try {
-           client.target(baseUri)
-                    .path("/caretakers/updateREST")
-                    .request(MediaType.APPLICATION_XML).put(Entity.xml(currentCaretaker));
-            return UserManager.class.newInstance().isUserInRole("Administrator") ? "/faces/admin/index?faces-redirect=true" : "/faces/healthCareProfessional/index?faces-redirect=true" ;
-           
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-        return "admin_administrator_update";
-    }
     
     public String updateCaretaker() {
         try {
@@ -287,15 +259,7 @@ public class AdministratorManager {
         this.currentHealthCareProfessional = currentHealthCareProfessional;
     }
  
-    //DELETE
-   private List<HealthCareProfessionalDTO> getAllHealthCareProfessionalsREST() {
-        List<HealthCareProfessionalDTO> returnedHealthCareProfessionals = null;
-        returnedHealthCareProfessionals = client.target(baseUri)
-                .path("/healthCareProfessionals/all")
-                .request(MediaType.APPLICATION_XML)
-                .get(new GenericType<List<HealthCareProfessionalDTO>>() {});
-        return returnedHealthCareProfessionals;
-    }
+    
    
       private List<HealthCareProfessionalDTO> getAllHealthCareProfessionals() {
         try {
@@ -325,19 +289,6 @@ public class AdministratorManager {
         return null;
     }
     
-    //DELETE
-    public String updateHealthCareProfessionalREST(){   
-        try {
-           client.target(baseUri)
-                    .path("/healthCareProfessionals/updateREST")
-                    .request(MediaType.APPLICATION_XML).put(Entity.xml(currentHealthCareProfessional));
-            return "admin_index?faces-redirect=true";
-           
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-        return "admin_administrator_update";
-    }
     
     public String updateHealthCareProfessional() {
         try {
@@ -371,17 +322,8 @@ public class AdministratorManager {
     
     ////////////////////ADMINISTRATOR ///////////////////////
     
-    
-   private List<AdministratorDTO> getAllAdministratorsREST() {
-        List<AdministratorDTO> returnedAdministrators = null;
-        returnedAdministrators = client.target(baseUri)
-                .path("/administrators/all")
-                .request(MediaType.APPLICATION_XML)
-                .get(new GenericType<List<AdministratorDTO>>() {});
-        return returnedAdministrators;
-    }
    
-   private List<AdministratorDTO> getAllAdministratorsNOREST() {
+    private List<AdministratorDTO> getAllAdministrators() {
         try {
             return administratorBean.getAll();
         } catch (Exception e) {
@@ -400,7 +342,7 @@ public class AdministratorManager {
             userType = "admin";
             allAdmins = getAllAdministrators();
             search();
-            return "admin/index?faces-redirect=true";
+            return "index?faces-redirect=true";
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
         } catch (Exception e) {
@@ -409,18 +351,6 @@ public class AdministratorManager {
         return null;
     }
     
-    public String updateAdministratorsREST(){   
-        try {
-           client.target(baseUri)
-                    .path("/administrators/updateREST")
-                    .request(MediaType.APPLICATION_XML).put(Entity.xml(currentAdministrator));
-            return "admin_index?faces-redirect=true";
-           
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-        return "admin_administrator_update";
-    }
     
     
     public void removeAdministrator(ActionEvent event) {
@@ -445,14 +375,14 @@ public class AdministratorManager {
         
     ////////////////////TrainingMaterial ///////////////////////
     
-    
-   private List<TrainingMaterialDTO> getAllTrainingMaterialsREST() {
-        List<TrainingMaterialDTO> returnedTrainingMaterials = null;
-        returnedTrainingMaterials = client.target(baseUri)
-                .path("/trainingMaterials/all")
-                .request(MediaType.APPLICATION_XML)
-                .get(new GenericType<List<TrainingMaterialDTO>>() {});
-        return returnedTrainingMaterials;
+   
+   private List<TrainingMaterialDTO> getAllTrainingMaterials() {
+        try {
+            return trainingMaterialBean.getAll();
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+        return null;
     }
     
     public String createTrainingMaterial() {
@@ -468,7 +398,7 @@ public class AdministratorManager {
             search();
             
             
-            return "admin_index?faces-redirect=true";
+            return UserManager.class.newInstance().isUserInRole("Administrator") ? "/faces/admin/index?faces-redirect=true" : "/faces/healthCareProfessional/index?faces-redirect=true";
         } catch (EntityAlreadyExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
         } catch (Exception e) {
@@ -476,18 +406,16 @@ public class AdministratorManager {
         }
         return null;
     }
-
-    public String updateTrainingMaterialsREST(){   
+    
+    public String updateTrainingMaterials() {
         try {
-           client.target(baseUri)
-                    .path("/trainingMaterials/updateREST")
-                    .request(MediaType.APPLICATION_XML).put(Entity.xml(currentTrainingMaterial));
-            return "admin_index?faces-redirect=true";
-           
+            trainingMaterialBean.update(newTrainingMaterial);
+            return UserManager.class.newInstance().isUserInRole("Administrator") ? "/faces/admin/index?faces-redirect=true" : "/faces/healthCareProfessional/index?faces-redirect=true";
+
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
-        return "admin_trainingMaterial_update";
+        return "/faces/admin_hcPro/trainingMaterial_update";
     }
         
     public void removeTrainingMaterial(ActionEvent event) {
@@ -707,7 +635,35 @@ public class AdministratorManager {
         }
     }
     
-    ///////////// SEARCH ////////////////////////
+    ///////////// LISTS ////////////////////////
+    
+    public void onPageLoad(){
+        updateAdmins();
+        updateCaretakers();
+        updateHCPros();
+        updateTMaterials();
+    }
+    
+    public void updateCaretakers() {
+        allCaretakers = getAllCaretakers();
+        caretakers = allCaretakers;
+    }  
+    
+    public void updateAdmins() {
+        allAdmins = getAllAdministrators();
+        admins = allAdmins;
+    }  
+    
+    public void updateHCPros() {
+        allHCPros = getAllHealthCareProfessionals();
+        hCPros = allHCPros;
+    }  
+    
+    public void updateTMaterials() {
+        allTrainingMaterials = getAllTrainingMaterials();
+        trainingMaterials = allTrainingMaterials;
+    }
+
     
     public void search() {
         switch(userType) {
